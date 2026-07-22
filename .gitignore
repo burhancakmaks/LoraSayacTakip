@@ -1,0 +1,14 @@
+/.pnpm-store/
+/.tools/
+/node-v24.18.0-win-x64.zip
+
+/LoraSayacTakip-main/node_modules/
+/LoraSayacTakip-main/.next/
+/LoraSayacTakip-main/.next.stale-*/
+/LoraSayacTakip-main/.chrome-map-debug/
+/LoraSayacTakip-main/dev-server*.log
+/LoraSayacTakip-main/map-debug.png
+/LoraSayacTakip-main/*.tsbuildinfo
+/LoraSayacTakip-main/next-env.d.ts
+/LoraSayacTakip-main/data/*.db-shm
+/LoraSayacTakip-main/data/*.db-wal

@@ -1,0 +1,73 @@
+import { NextResponse } from "next/server";
+import { DatabaseSync } from "node:sqlite";
+import path from "node:path";
+
+const CACHE_DURATION_MS = 5 * 60 * 1000;
+let buildingCache: { expiresAt: number; data: unknown[] } | null = null;
+
+export async function GET() {
+  if (buildingCache && buildingCache.expiresAt > Date.now()) {
+    return NextResponse.json(buildingCache.data, {
+      headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=300" },
+    });
+  }
+
+  let db: DatabaseSync | null = null;
+  try {
+    const dbPath = path.join(process.cwd(), "data", "binalar.db");
+    db = new DatabaseSync(dbPath, { readOnly: true });
+    
+    // Check if building has config in bina_bilgi
+    const query = db.prepare(`
+      SELECT b.*,
+        EXISTS(SELECT 1 FROM bina_bilgi WHERE bina_id = b.id) AS is_configured,
+        COALESCE(e.excel_kayit_sayisi, 0) AS excel_kayit_sayisi,
+        COALESCE(e.excel_abone_sayisi, 0) AS excel_abone_sayisi,
+        COALESCE(e.excel_sayac_sayisi, 0) AS excel_sayac_sayisi,
+        COALESCE(e.eksik_abone_sayisi, 0) AS eksik_abone_sayisi,
+        COALESCE(e.eksik_sayac_sayisi, 0) AS eksik_sayac_sayisi
+      FROM binalar b
+      LEFT JOIN (
+        SELECT bina_id,
+          COUNT(*) AS excel_kayit_sayisi,
+          COUNT(DISTINCT NULLIF(abone_no, '')) AS excel_abone_sayisi,
+          COUNT(DISTINCT NULLIF(sayac_no, '')) AS excel_sayac_sayisi,
+          SUM(CASE WHEN abone_no = '' THEN 1 ELSE 0 END) AS eksik_abone_sayisi,
+          SUM(CASE WHEN sayac_no = '' THEN 1 ELSE 0 END) AS eksik_sayac_sayisi
+        FROM excel_abonelikler
+        WHERE bina_id IS NOT NULL
+        GROUP BY bina_id
+      ) e ON e.bina_id = b.id
+    `);
+    const rows = query.all() as any[];
+    
+    const binalar = rows.map((row) => ({
+      id: row.id,
+      oda_id: row.oda_id,
+      kml_id: row.kml_id,
+      id_2: row.id_2,
+      value: row.value,
+      layer: row.layer,
+      abone_sayisi: row.abone_sayisi,
+      aktif_abone_sayisi: row.aktif_abone_sayisi,
+      building_type_id: row.building_type_id,
+      coordinates: JSON.parse(row.coordinates),
+      is_configured: row.is_configured === 1,
+      excel_kayit_sayisi: row.excel_kayit_sayisi,
+      excel_abone_sayisi: row.excel_abone_sayisi,
+      excel_sayac_sayisi: row.excel_sayac_sayisi,
+      eksik_abone_sayisi: row.eksik_abone_sayisi,
+      eksik_sayac_sayisi: row.eksik_sayac_sayisi,
+    }));
+
+    buildingCache = { expiresAt: Date.now() + CACHE_DURATION_MS, data: binalar };
+    return NextResponse.json(binalar, {
+      headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=300" },
+    });
+  } catch (error: any) {
+    console.error("Error fetching binalar from SQLite:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  } finally {
+    db?.close();
+  }
+}

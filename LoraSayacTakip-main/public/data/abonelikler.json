@@ -1,0 +1,1793 @@
+{
+  "source": "MASKI_Abonelik_Yonetim_Sistemi_NİDANUR_SAHİN_.xlsx",
+  "generatedAt": "2026-07-20T13:43:26.820239+03:00",
+  "summary": {
+    "kayitSayisi": 3303,
+    "aboneSayisi": 1728,
+    "sayacSayisi": 2962,
+    "konumSayisi": 127,
+    "adresSayisi": 18,
+    "konumNotu": "Kullanıcı izniyle OpenStreetMap üzerinden adres eşleştirmesi yapıldı.",
+    "geocodedAdresSayisi": 0
+  },
+  "locations": [
+    {
+      "ada": "37-50 Ada",
+      "blok": "A",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Beypınarı Sok. Dış Kapı No:8",
+      "aboneSayisi": 234,
+      "sayacSayisi": 233,
+      "kayitSayisi": 234,
+      "coordinates": [
+        38.35419840361612,
+        38.318596434129475
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "37-50 Ada",
+      "blok": "B",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Beypınarı Sok. Dış Kapı No:8",
+      "aboneSayisi": 110,
+      "sayacSayisi": 108,
+      "kayitSayisi": 110,
+      "coordinates": [
+        38.35397938301944,
+        38.31848241922345
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "37-50 Ada",
+      "blok": "E BLOK",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Altınkayısı Sok. Dış Kapı No:7",
+      "aboneSayisi": 75,
+      "sayacSayisi": 74,
+      "kayitSayisi": 75,
+      "coordinates": [
+        38.35099564224561,
+        38.31784111270913
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-01",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.353899338956126,
+        38.318557061520046
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-02",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 19,
+      "kayitSayisi": 19,
+      "coordinates": [
+        38.35416391303797,
+        38.31873320274665
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-03",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354158181461784,
+        38.3185197972173
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-04",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.35391258365952,
+        38.3187239193403
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-05",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.353894872215946,
+        38.31856659032787
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-06",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35391850841237,
+        38.318527844631454
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-07",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-02",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35394120873743,
+        38.31850535664617
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-08",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-02",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35388335291037,
+        38.318651213260345
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-09",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-02",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35396058451828,
+        38.31876749619891
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-10",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-02",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354151390519355,
+        38.31874636973117
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-11",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-02",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35419774190671,
+        38.31866593948279
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-12",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-02",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354004178570314,
+        38.31847421014907
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-13*",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-03",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35419779921036,
+        38.318593707831305
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-14",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-03",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35389968632821,
+        38.31855638375652
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-15*",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-03",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35388195820106,
+        38.318625384800065
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-16",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354109518921874,
+        38.31877470924593
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-17",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35420151024804,
+        38.3186408610358
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-18",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35391581827942,
+        38.31872820583605
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-19",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35389252713176,
+        38.31868703887193
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-20",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354156994368054,
+        38.31874084533928
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-21",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354075165870526,
+        38.318473196383884
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-22",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-05",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35390925398839,
+        38.318719170864554
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-23",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-05",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354155037084986,
+        38.31874283708499
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-24",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.354119469539235,
+        38.318769639153146
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-25",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.35409445660736,
+        38.31878082181518
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-26",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.35413514649583,
+        38.31849968042065
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-27",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.35416541216017,
+        38.31873140912589
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-28",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.35398120221287,
+        38.31877773978735
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DB-29",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.35420181366085,
+        38.3186244444245
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-01",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.353928459536355,
+        38.318516867109366
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-02",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.35388724123135,
+        38.31867069591785
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-03",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.35420184232443,
+        38.31862540432115
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-04",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35419386866929,
+        38.318579644794944
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-05",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354198448136515,
+        38.31859664427503
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-06",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.35418984373157,
+        38.31869063153772
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-07",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-01",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.353968496983576,
+        38.3184875310963
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-08",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-02",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.354195978671804,
+        38.318672824968345
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-09",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-02",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35403885379118,
+        38.31846972900072
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-10",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-02",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.35414000524236,
+        38.318756093676356
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-11",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-03",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35402013520605,
+        38.318788212755784
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-12",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-03",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.35394140615509,
+        38.318505197039656
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-13",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-03",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.35402896695536,
+        38.31847022355549
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-14",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.35404469238503,
+        38.31878967563123
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-15",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.353906212304615,
+        38.31871448708228
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-16",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.35390062838514,
+        38.31855458454996
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-17",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35416265353283,
+        38.31852473055537
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-18",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.35419644813221,
+        38.318671111047216
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-19",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-04",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.353959493908015,
+        38.31849255323189
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-20",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-05",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35410697786289,
+        38.318775867273224
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-21",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-05",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.354109518921874,
+        38.318484690754076
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-22",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-05",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.354142591262566,
+        38.31850535664617
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-23",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35396692962804,
+        38.31877104865874
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-24",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354168385185964,
+        38.31872768723249
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-25",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.35401800682942,
+        38.31878790593036
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-26",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.35419370978856,
+        38.31868023501852
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "DC-27",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 21,
+      "coordinates": [
+        38.3541622214423,
+        38.31873516445146
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-01",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-02",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35413920109525,
+        38.31850268623357
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-02",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-02",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.353883564897544,
+        38.318652721627444
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-03",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-03",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354049259518526,
+        38.318469869347474
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-04",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-03",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.354160633152915,
+        38.31852245057857
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-05",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-03",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35420170649367,
+        38.318621833324634
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-06",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-03",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.353897541046024,
+        38.3186986963217
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-07",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-03",
+      "aboneSayisi": 0,
+      "sayacSayisi": 21,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35388446479422,
+        38.318658233418674
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-08",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-05",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354148960897014,
+        38.31874860317208
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-09",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-05",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354158916592255,
+        38.318520580262394
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-10",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-05",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35410183705495,
+        38.318778049416736
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-11",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.35388343433106,
+        38.31865180501679
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-12",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35404994565325,
+        38.31846990241722
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-13",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35416848571928,
+        38.31872755732305
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-14",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35410577516364,
+        38.318483003157944
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-15",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.354136741216315,
+        38.3185008390529
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "4. Etap",
+      "blok": "GB-16",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. 4. Etap, 4.ETAP ADA-06",
+      "aboneSayisi": 0,
+      "sayacSayisi": 22,
+      "kayitSayisi": 22,
+      "coordinates": [
+        38.35405405278171,
+        38.318309930849054
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "41-134 Ada",
+      "blok": "A BLOK",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Kelam Sok. Dış Kapı No:2",
+      "aboneSayisi": 127,
+      "sayacSayisi": 126,
+      "kayitSayisi": 127,
+      "coordinates": [
+        38.35077743567292,
+        38.317883527770185
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "41-134 Ada",
+      "blok": "B BLOK",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Kelam Sok. Dış Kapı No:2",
+      "aboneSayisi": 80,
+      "sayacSayisi": 79,
+      "kayitSayisi": 80,
+      "coordinates": [
+        38.35075912713177,
+        38.31803263887193
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "41-134 Ada",
+      "blok": "BLOK",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Kelam Sok. Dış Kapı No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.3509444921687,
+        38.31781940078964
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "41-134 Ada",
+      "blok": "C BLOK",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Kelam Sok. Dış Kapı No:2",
+      "aboneSayisi": 114,
+      "sayacSayisi": 113,
+      "kayitSayisi": 114,
+      "coordinates": [
+        38.3508122095963,
+        38.318103081681606
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "41-134 Ada",
+      "blok": "D BLOK",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Kelam Sok. Dış Kapı No:2",
+      "aboneSayisi": 20,
+      "sayacSayisi": 20,
+      "kayitSayisi": 20,
+      "coordinates": [
+        38.350877970560745,
+        38.31813236034935
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "46 Ada",
+      "blok": "A BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Pınarcık Sok. No:2",
+      "aboneSayisi": 54,
+      "sayacSayisi": 52,
+      "kayitSayisi": 54,
+      "coordinates": [
+        38.35389154918067,
+        38.31868442322293
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "46 Ada",
+      "blok": "B BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Pınarcık Sok. No:2",
+      "aboneSayisi": 2,
+      "sayacSayisi": 2,
+      "kayitSayisi": 2,
+      "coordinates": [
+        38.353905373458936,
+        38.31871312963254
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "46 Ada",
+      "blok": "B1 BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Pınarcık Sok. No:1",
+      "aboneSayisi": 28,
+      "sayacSayisi": 28,
+      "kayitSayisi": 28,
+      "coordinates": [
+        38.3540669295144,
+        38.31847166986551
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "46 Ada",
+      "blok": "B2 BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Pınarcık Sok. No:3",
+      "aboneSayisi": 30,
+      "sayacSayisi": 30,
+      "kayitSayisi": 30,
+      "coordinates": [
+        38.35391581827942,
+        38.31872820583605
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "46 Ada",
+      "blok": "C BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Pınarcık Sok. No:2",
+      "aboneSayisi": 2,
+      "sayacSayisi": 2,
+      "kayitSayisi": 2,
+      "coordinates": [
+        38.35419305262231,
+        38.3186821679404
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "46 Ada",
+      "blok": "C1 BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Pınarcık Sok. No:1",
+      "aboneSayisi": 30,
+      "sayacSayisi": 30,
+      "kayitSayisi": 30,
+      "coordinates": [
+        38.35388483965065,
+        38.31866022943926
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "46 Ada",
+      "blok": "C2 BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Pınarcık Sok. No:3",
+      "aboneSayisi": 30,
+      "sayacSayisi": 30,
+      "kayitSayisi": 30,
+      "coordinates": [
+        38.354155037084986,
+        38.31874283708499
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "46 Ada",
+      "blok": "KONUT KULLANIM SUYU DEPOSU",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Pınarcık Sok. No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 0,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.354074385030614,
+        38.31847303244501
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "46 Ada",
+      "blok": "TİCARET KULLANIM SUYU DEPOSU",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Pınarcık Sok. No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 0,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35388216301789,
+        38.318620529583065
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "46 Ada",
+      "blok": "YANGIN SUYU DEPOSU",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Pınarcık Sok. No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 0,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35412702513224,
+        38.31876517587188
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "46 Ada",
+      "blok": "YAĞMUR SUYU DEPOSU",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Pınarcık Sok. No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 0,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.353951110687234,
+        38.31849795289116
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "(10) ON ADET DÜKKAN KULLANIMLI BAĞIMSIZ BÖLÜMDEN OLUŞMAKTADIR.",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.353901960846855,
+        38.31870726953924
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "(16) ON ALTI ADET DAİRE KULLANIMLI - (14) ON DÖRT ADET DÜKKAN KULLANIMLI BAĞIMSIZ BÖLÜMDEN OLUŞMAKTADIR.",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.353981022636404,
+        38.318481733968085
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "(16) ON ALTI ADET DAİRE KULLANIMLI - (16) ON ALTI ADET DÜKKAN KULLANIMLI BAĞIMSIZ BÖLÜMDEN OLUŞMAKTADIR.",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.3538830015997,
+        38.31864844295552
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "(16) ON ALTI ADET DAİRE KULLANIMLI - (17) ON YEDİ ADET DÜKKAN KULLANIMLI BAĞIMSIZ BÖLÜMDEN OLUŞMAKTADIR.",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35405280777419,
+        38.318470072244075
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "(16) ON ALTI ADET DÜKKAN KULLANIMLI BAĞIMSIZ BÖLÜMDEN OLUŞMAKTADIR.",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.353968132836094,
+        38.31848771970021
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "(3) ÜÇ ADET DÜKKAN KULLANIMLI BAĞIMSIZ BÖLÜMDEN OLUŞMAKTADIR.",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35404976667537,
+        38.31878950649367
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "(4) DÖRT ADET DÜKKAN KULLANIMLI BAĞIMSIZ BÖLÜMDEN OLUŞMAKTADIR.",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35412861598755,
+        38.31849523685448
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "(8) SEKİZ ADET DÜKKAN KULLANIMLI BAĞIMSIZ BÖLÜMDEN OLUŞMAKTADIR.",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.354040630682945,
+        38.318789694965034
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "A BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 26,
+      "sayacSayisi": 2,
+      "kayitSayisi": 26,
+      "coordinates": [
+        38.35419310013099,
+        38.318682030874136
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "B BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 30,
+      "sayacSayisi": 2,
+      "kayitSayisi": 30,
+      "coordinates": [
+        38.35395306154019,
+        38.318762770387615
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35400220798222,
+        38.31878469852814
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "C BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 53,
+      "sayacSayisi": 4,
+      "kayitSayisi": 53,
+      "coordinates": [
+        38.35420168072556,
+        38.318638073753
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "D BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 65,
+      "sayacSayisi": 4,
+      "kayitSayisi": 70,
+      "coordinates": [
+        38.35410018572835,
+        38.31877870595247
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "E BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 33,
+      "sayacSayisi": 2,
+      "kayitSayisi": 33,
+      "coordinates": [
+        38.353907299434745,
+        38.318716202530794
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "F BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 35,
+      "sayacSayisi": 2,
+      "kayitSayisi": 35,
+      "coordinates": [
+        38.35394359433705,
+        38.31875593785737
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "G BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 0,
+      "sayacSayisi": 1,
+      "kayitSayisi": 16,
+      "coordinates": [
+        38.35394022546142,
+        38.31850615936618
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "H BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 10,
+      "sayacSayisi": 1,
+      "kayitSayisi": 10,
+      "coordinates": [
+        38.35391593193019,
+        38.31892386329715
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "I BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 3,
+      "sayacSayisi": 1,
+      "kayitSayisi": 3,
+      "coordinates": [
+        38.35434413381849,
+        38.31852455857639
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "J BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 3,
+      "sayacSayisi": 1,
+      "kayitSayisi": 3,
+      "coordinates": [
+        38.35372201640211,
+        38.31863833039988
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "K BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 10,
+      "sayacSayisi": 1,
+      "kayitSayisi": 10,
+      "coordinates": [
+        38.35400239791182,
+        38.318947252491775
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "L BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 8,
+      "sayacSayisi": 1,
+      "kayitSayisi": 8,
+      "coordinates": [
+        38.354185818141275,
+        38.31834388962823
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "49 Ada",
+      "blok": "M BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Akpınar Sok. Dış Kapı No:2",
+      "aboneSayisi": 4,
+      "sayacSayisi": 1,
+      "kayitSayisi": 4,
+      "coordinates": [
+        38.35435323528467,
+        38.31870366175036
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "53 Ada",
+      "blok": "A BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Buhara Cad. No:131",
+      "aboneSayisi": 77,
+      "sayacSayisi": 76,
+      "kayitSayisi": 77,
+      "coordinates": [
+        38.354109518921874,
+        38.31877470924593
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "53 Ada",
+      "blok": "A1 BLOK KULLANIM SUYU",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Altınkayısı Sok. No:10",
+      "aboneSayisi": 1,
+      "sayacSayisi": 0,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35388483965065,
+        38.31866022943926
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "53 Ada",
+      "blok": "A2 BLOK KULLANIM SUYU",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Altınkayısı Sok. No:10",
+      "aboneSayisi": 1,
+      "sayacSayisi": 0,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35410183705495,
+        38.31848135058327
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "53 Ada",
+      "blok": "B BLOK",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Altınkayısı Sok. No:10",
+      "aboneSayisi": 169,
+      "sayacSayisi": 167,
+      "kayitSayisi": 169,
+      "coordinates": [
+        38.35389573272678,
+        38.318694777862895
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "53 Ada",
+      "blok": "KULLANIM SUYU",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Altınkayısı Sok. No:10",
+      "aboneSayisi": 1,
+      "sayacSayisi": 0,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.353883869865506,
+        38.31865472951441
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "53 Ada",
+      "blok": "YANGIN DEPOSU",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Altınkayısı Sok. No:10",
+      "aboneSayisi": 1,
+      "sayacSayisi": 0,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35419570187135,
+        38.31858559802307
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "53 Ada",
+      "blok": "YAĞMUR SUYU",
+      "mahalle": "Halfettin Mah.",
+      "adres": "Halfettin Mah. Altınkayısı Sok. No:10",
+      "aboneSayisi": 1,
+      "sayacSayisi": 0,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35392876291501,
+        38.318516562915015
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "Şire Pazarı",
+      "blok": "A BLOK",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Şire Pazarı Sok. No:3",
+      "aboneSayisi": 63,
+      "sayacSayisi": 63,
+      "kayitSayisi": 63,
+      "coordinates": [
+        38.35258061024804,
+        38.3179200610358
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "Şire Pazarı",
+      "blok": "B BLOK",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Şire Pazarı Sok. No:4",
+      "aboneSayisi": 63,
+      "sayacSayisi": 63,
+      "kayitSayisi": 63,
+      "coordinates": [
+        38.352440499094946,
+        38.31775009261574
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "Şire Pazarı",
+      "blok": "C BLOK",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Şire Pazarı Sok. No:2",
+      "aboneSayisi": 64,
+      "sayacSayisi": 64,
+      "kayitSayisi": 64,
+      "coordinates": [
+        38.352309854660724,
+        38.318023994368055
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "Şire Pazarı",
+      "blok": "D BLOK",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Şire Pazarı Sok. No:2",
+      "aboneSayisi": 62,
+      "sayacSayisi": 62,
+      "kayitSayisi": 62,
+      "coordinates": [
+        38.352309854660724,
+        38.318023994368055
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "Şire Pazarı",
+      "blok": "ORTAK ALAN KULLANIM SUYU DEPOSU MAHALİ",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Şire Pazarı Sok. No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35243494491884,
+        38.3180682911517
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "Şire Pazarı",
+      "blok": "ORTAK ALAN YANGIN DEPOSU MAHALİ",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Şire Pazarı Sok. No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.35226393965065,
+        38.31787837056074
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    },
+    {
+      "ada": "Şire Pazarı",
+      "blok": "ORTAK ALAN YAĞMUR SUYU DEPOSU MAHALİ",
+      "mahalle": "Yenihamam Mah.",
+      "adres": "Yenihamam Mah. Şire Pazarı Sok. No:2",
+      "aboneSayisi": 1,
+      "sayacSayisi": 1,
+      "kayitSayisi": 1,
+      "coordinates": [
+        38.352467779472754,
+        38.317755891239045
+      ],
+      "konumTuru": "OpenStreetMap mahalle/tesis merkezi (yaklaşık)"
+    }
+  ]
+}
