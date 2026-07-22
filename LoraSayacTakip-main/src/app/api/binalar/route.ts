@@ -31,12 +31,13 @@ export async function GET() {
         COALESCE(e.excel_mahalle, '') AS excel_mahalle,
         COALESCE(e.excel_adres, '') AS excel_adres,
         CASE
-          WHEN COALESCE(e.excel_sayac_sayisi, 0) > 0
-            OR EXISTS (
+          WHEN EXISTS (
               SELECT 1
               FROM sayac s
               WHERE s.bina_id = b.id
                 AND TRIM(COALESCE(s.sayac_id, '')) <> ''
+                AND LENGTH(TRIM(s.sayac_id)) >= 5
+                AND TRIM(s.sayac_id) NOT GLOB '*[^0-9]*'
             )
           THEN 1
           ELSE 0
@@ -46,9 +47,17 @@ export async function GET() {
         SELECT bina_id,
           COUNT(*) AS excel_kayit_sayisi,
           COUNT(DISTINCT NULLIF(abone_no, '')) AS excel_abone_sayisi,
-          COUNT(DISTINCT NULLIF(sayac_no, '')) AS excel_sayac_sayisi,
+          COUNT(DISTINCT CASE
+            WHEN LENGTH(TRIM(sayac_no)) >= 5
+              AND TRIM(sayac_no) NOT GLOB '*[^0-9]*'
+            THEN TRIM(sayac_no)
+          END) AS excel_sayac_sayisi,
           SUM(CASE WHEN abone_no = '' THEN 1 ELSE 0 END) AS eksik_abone_sayisi,
-          SUM(CASE WHEN sayac_no = '' THEN 1 ELSE 0 END) AS eksik_sayac_sayisi,
+          SUM(CASE
+            WHEN LENGTH(TRIM(sayac_no)) < 5
+              OR TRIM(sayac_no) GLOB '*[^0-9]*'
+            THEN 1 ELSE 0
+          END) AS eksik_sayac_sayisi,
           MIN(NULLIF(TRIM(ada), '')) AS excel_ada,
           MIN(NULLIF(TRIM(blok), '')) AS excel_blok,
           MIN(NULLIF(TRIM(mahalle), '')) AS excel_mahalle,

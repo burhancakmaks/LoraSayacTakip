@@ -834,8 +834,8 @@ export default function MapComponent() {
             <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-bold text-emerald-600 dark:bg-emerald-950/40">CANLI</span>
           </div>
           <div className="space-y-2 text-xs text-gray-600 dark:text-gray-400">
-            <div className="flex items-center gap-2.5"><span className="h-3 w-3 rounded-sm border border-emerald-600 bg-emerald-500/60" /> Verili / yapılandırılmış bina</div>
-            <div className="flex items-center gap-2.5"><span className="h-3 w-3 rounded-sm border border-brand-600 bg-brand-500/25" /> Veri bekleyen bina</div>
+            <div className="flex items-center gap-2.5"><span className="h-3 w-3 rounded-sm border border-emerald-600 bg-emerald-500/60" /> Geçerli sayaç numarası olan bina</div>
+            <div className="flex items-center gap-2.5"><span className="h-3 w-3 rounded-sm border border-brand-600 bg-brand-500/25" /> Sayaç numarası olmayan bina</div>
             <div className="flex items-center gap-2.5"><span className="h-0 w-4 border-t-2 border-dashed border-orange-500" /> Seçili mahalle sınırı</div>
           </div>
         </div>

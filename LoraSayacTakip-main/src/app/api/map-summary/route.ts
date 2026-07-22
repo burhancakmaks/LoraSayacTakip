@@ -22,12 +22,16 @@ export async function GET() {
         SUM(CASE WHEN e.bina_id IS NOT NULL AND b.layer <> 'MASKI_EXCEL_ABONELIK_YAKLASIK' THEN 1 ELSE 0 END) AS linked
       FROM excel_abonelikler e LEFT JOIN binalar b ON b.id=e.bina_id
       WHERE e.kaynak_dosya IN (${placeholders})
+        AND LENGTH(TRIM(e.sayac_no)) >= 5
+        AND TRIM(e.sayac_no) NOT GLOB '*[^0-9]*'
     `).get(...PRESENTATION_SOURCES) as { total: number; linked: number };
     const buildingSummary = db.prepare(`
       SELECT COUNT(DISTINCT s.bina_id) AS metered
       FROM sayac s JOIN binalar b ON b.id=s.bina_id
       WHERE b.layer <> 'MASKI_EXCEL_ABONELIK_YAKLASIK'
         AND TRIM(COALESCE(s.sayac_id,'')) <> ''
+        AND LENGTH(TRIM(s.sayac_id)) >= 5
+        AND TRIM(s.sayac_id) NOT GLOB '*[^0-9]*'
     `).get() as { metered: number };
 
     return NextResponse.json({
