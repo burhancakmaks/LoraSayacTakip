@@ -24,6 +24,11 @@ interface Building {
   excel_sayac_sayisi: number;
   eksik_abone_sayisi: number;
   eksik_sayac_sayisi: number;
+  excel_ada: string;
+  excel_blok: string;
+  excel_mahalle: string;
+  excel_adres: string;
+  has_meter_number: boolean;
 }
 
 interface SelectedBuilding {
@@ -41,7 +46,14 @@ interface MahalleListItem {
   center: [number, number];
 }
 
-type BuildingFilter = "all" | "excel" | "active" | "missing" | "configured";
+type BuildingFilter = "metered" | "all" | "excel" | "active" | "missing" | "configured";
+
+interface MapSummary {
+  totalMeters: number;
+  linkedMeters: number;
+  pendingMeters: number;
+  meteredBuildings: number;
+}
 
 interface BuildingLayerEntry {
   building: Building;
@@ -94,6 +106,7 @@ export default function MapComponent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState({ total: 0, activeSubscribers: 0, importedSubscribers: 0, excelRecords: 0 });
+  const [mapSummary, setMapSummary] = useState<MapSummary>({ totalMeters: 0, linkedMeters: 0, pendingMeters: 0, meteredBuildings: 0 });
   const [buildingIndex, setBuildingIndex] = useState<Building[]>([]);
   const [buildingSearch, setBuildingSearch] = useState("");
   const [buildingFilter, setBuildingFilter] = useState<BuildingFilter>("all");
@@ -115,6 +128,13 @@ export default function MapComponent() {
   const [sayacModalOpen, setSayacModalOpen] = useState(false);
 
   const { theme } = useTheme();
+
+  useEffect(() => {
+    fetch("/api/map-summary")
+      .then((response) => response.json())
+      .then((summary: MapSummary) => setMapSummary(summary))
+      .catch((summaryError) => console.error("Harita özeti alınamadı:", summaryError));
+  }, []);
 
   // Stable callback refs for Leaflet events
   const openInfoModalRef = useRef<(b: SelectedBuilding) => void>(() => {});
@@ -249,17 +269,22 @@ export default function MapComponent() {
 
         // Altlık haritayı hemen göster; bina katmanları aşağıda parça parça eklenir.
         setLoading(false);
-        setBuildingIndex(data);
+        const mapBuildings = data.filter(
+          (building) => building.layer !== "MASKI_EXCEL_ABONELIK_YAKLASIK",
+        );
+        const importedSubscribers = data
+          .filter((building) => building.layer === "MASKI_EXCEL_ABONELIK_YAKLASIK")
+          .reduce((total, building) => total + (building.aktif_abone_sayisi || 0), 0);
+        setBuildingIndex(mapBuildings);
         buildingLayersRef.current = [];
 
         let totalActive = 0;
-        let totalImported = 0;
         let totalExcelRecords = 0;
         // 75 bin LatLng nesnesini bellekte tutmadan sınırı adım adım genişlet.
         const bounds = L.latLngBounds([]);
 
-        for (let buildingIndex = 0; buildingIndex < data.length; buildingIndex += 1) {
-          const building = data[buildingIndex];
+        for (let buildingIndex = 0; buildingIndex < mapBuildings.length; buildingIndex += 1) {
+          const building = mapBuildings[buildingIndex];
           if (cancelled || !mapRef.current) return;
 
           // Ana iş parçacığını uzun süre bloke etmemek için her 200 binada
@@ -268,34 +293,22 @@ export default function MapComponent() {
             await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
           }
           totalActive += building.aktif_abone_sayisi || 0;
-          const isExcelImport = building.layer === "MASKI_EXCEL_ABONELIK_YAKLASIK";
-          if (isExcelImport) totalImported += building.aktif_abone_sayisi || 0;
           totalExcelRecords += building.excel_kayit_sayisi || 0;
           const excelMissing = (building.eksik_abone_sayisi || 0) + (building.eksik_sayac_sayisi || 0);
-          const hasExcelData = building.excel_kayit_sayisi > 0;
-          const wasOriginallyGreen = (building.aktif_abone_sayisi || 0) > 0 || building.is_configured;
-          const shouldBeGreen = wasOriginallyGreen || hasExcelData;
+          const shouldBeGreen = building.has_meter_number;
 
           // İlk sürümde yeşil olan binaları koru ve Excel verisi olanları ekle.
           const polyColor = shouldBeGreen ? "#10b981" : "#465fff";
-          const polyOpacity = shouldBeGreen ? (isExcelImport ? 0.72 : 0.48) : 0.18;
+          const polyOpacity = shouldBeGreen ? 0.48 : 0.18;
           const polyWeight = shouldBeGreen ? 3 : 1;
 
           building.coordinates.forEach((polygonCoords) => {
-            const polygon = isExcelImport
-              ? L.circleMarker(L.latLngBounds(polygonCoords).getCenter(), {
-                  radius: 10,
-                  color: polyColor,
-                  fillColor: polyColor,
-                  fillOpacity: polyOpacity,
-                  weight: polyWeight,
-                }).addTo(map)
-              : L.polygon(polygonCoords, {
-                  color: polyColor,
-                  fillColor: polyColor,
-                  fillOpacity: polyOpacity,
-                  weight: polyWeight,
-                }).addTo(map);
+            const polygon = L.polygon(polygonCoords, {
+              color: polyColor,
+              fillColor: polyColor,
+              fillOpacity: polyOpacity,
+              weight: polyWeight,
+            }).addTo(map);
 
             buildingLayersRef.current.push({ building, layer: polygon });
 
@@ -305,6 +318,16 @@ export default function MapComponent() {
 
             const escValue = (building.value || "").replace(/"/g, "&quot;");
             const escLayer = (building.layer || "").replace(/"/g, "&quot;");
+            const escapeHtml = (value: string) => value
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+            const excelAda = escapeHtml(building.excel_ada || "");
+            const excelBlok = escapeHtml(building.excel_blok || "");
+            const excelMahalle = escapeHtml(building.excel_mahalle || "");
+            const excelAdres = escapeHtml(building.excel_adres || "");
 
             // Ağır popup HTML'i başlangıçta 5.000 kez değil, yalnızca tıklanan
             // bina için oluşturulur.
@@ -323,6 +346,12 @@ export default function MapComponent() {
                     <span style="color:#92400e;">Excel Abone</span><strong>${building.excel_abone_sayisi}</strong>
                     <span style="color:#92400e;">Excel Sayaç</span><strong>${building.excel_sayac_sayisi}</strong>
                     <span style="color:#92400e;">Eksik Alan</span><strong>${excelMissing}</strong>
+                  </div>
+                  <div style="margin:0 0 10px;padding:9px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:7px;font-size:11px;line-height:1.45;">
+                    <div style="font-weight:700;color:#047857;margin-bottom:4px;">Excel Bina Bilgileri</div>
+                    ${excelAda || excelBlok ? `<div><span style="color:#64748b;">Ada / Blok:</span> <strong>${excelAda || "-"} / ${excelBlok || "-"}</strong></div>` : ""}
+                    ${excelMahalle ? `<div><span style="color:#64748b;">Mahalle:</span> <strong>${excelMahalle}</strong></div>` : ""}
+                    ${excelAdres ? `<div style="margin-top:3px;color:#334155;overflow-wrap:anywhere;">${excelAdres}</div>` : ""}
                   </div>
                 ` : ""}
                 <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
@@ -383,12 +412,20 @@ export default function MapComponent() {
 
         if (cancelled || !mapRef.current) return;
 
-        if (bounds.isValid()) {
+        const presentationBounds = L.latLngBounds([]);
+        buildingLayersRef.current.forEach(({ building, layer }) => {
+          if (building.has_meter_number && layer instanceof L.Polygon) {
+            presentationBounds.extend(layer.getBounds());
+          }
+        });
+        if (presentationBounds.isValid()) {
+          map.fitBounds(presentationBounds, { padding: [55, 55], maxZoom: 16 });
+        } else if (bounds.isValid()) {
           allBoundsRef.current = bounds;
           map.fitBounds(bounds, { padding: [20, 20] });
         }
 
-        setStats({ total: data.length, activeSubscribers: totalActive, importedSubscribers: totalImported, excelRecords: totalExcelRecords });
+        setStats({ total: mapBuildings.length, activeSubscribers: totalActive, importedSubscribers, excelRecords: totalExcelRecords });
       })
       .catch((err) => {
         if (cancelled) return;
@@ -499,6 +536,7 @@ export default function MapComponent() {
     for (const entry of buildingLayersRef.current) {
       const { building, layer } = entry;
       const visible = buildingFilter === "all"
+        || (buildingFilter === "metered" && building.has_meter_number)
         || (buildingFilter === "excel" && building.excel_kayit_sayisi > 0)
         || (buildingFilter === "active" && building.aktif_abone_sayisi > 0)
         || (buildingFilter === "missing" && (building.eksik_abone_sayisi + building.eksik_sayac_sayisi) > 0)
@@ -507,9 +545,23 @@ export default function MapComponent() {
       if (visible && !map.hasLayer(layer)) layer.addTo(map);
       if (!visible && map.hasLayer(layer)) map.removeLayer(layer);
     }
+
+    if (buildingFilter !== "all") {
+      const visibleBounds = L.latLngBounds([]);
+      for (const { building, layer } of buildingLayersRef.current) {
+        const visible = buildingFilter === "metered" ? building.has_meter_number
+          : buildingFilter === "excel" ? building.excel_kayit_sayisi > 0
+          : buildingFilter === "active" ? building.aktif_abone_sayisi > 0
+          : buildingFilter === "missing" ? (building.eksik_abone_sayisi + building.eksik_sayac_sayisi) > 0
+          : Boolean(building.is_configured);
+        if (visible && layer instanceof L.Polygon) visibleBounds.extend(layer.getBounds());
+      }
+      if (visibleBounds.isValid()) map.fitBounds(visibleBounds, { padding: [55, 55], maxZoom: 16 });
+    }
   }, [buildingFilter]);
 
   const filterLabels: Record<BuildingFilter, string> = {
+    metered: "Sayaçlı Binalar",
     all: "Tüm Binalar",
     excel: "Excel Verisi Olan",
     active: "Aktif Aboneli",
@@ -549,20 +601,20 @@ export default function MapComponent() {
           </h3>
           <div className="grid grid-cols-2 gap-3 text-center text-xs mt-1 sm:grid-cols-4">
             <div>
-              <div className="font-bold text-xl text-brand-500">{stats.total.toLocaleString("tr-TR")}</div>
-              <div className="text-gray-500 dark:text-gray-400 font-medium">Toplam Bina</div>
+              <div className="font-bold text-xl text-emerald-500">{mapSummary.meteredBuildings.toLocaleString("tr-TR")}</div>
+              <div className="text-gray-500 dark:text-gray-400 font-medium">Sayaçlı Bina</div>
             </div>
             <div>
-              <div className="font-bold text-xl text-amber-500">{stats.importedSubscribers.toLocaleString("tr-TR")}</div>
-              <div className="text-gray-500 dark:text-gray-400 font-medium">Excel Abone</div>
+              <div className="font-bold text-xl text-brand-500">{mapSummary.totalMeters.toLocaleString("tr-TR")}</div>
+              <div className="text-gray-500 dark:text-gray-400 font-medium">Excel Sayaç</div>
             </div>
             <div>
-              <div className="font-bold text-xl text-violet-500">{stats.excelRecords.toLocaleString("tr-TR")}</div>
-              <div className="text-gray-500 dark:text-gray-400 font-medium">Excel Kaydı</div>
+              <div className="font-bold text-xl text-violet-500">{mapSummary.linkedMeters.toLocaleString("tr-TR")}</div>
+              <div className="text-gray-500 dark:text-gray-400 font-medium">Eşleşen Kayıt</div>
             </div>
             <div>
-              <div className="font-bold text-xl text-emerald-500">{stats.activeSubscribers.toLocaleString("tr-TR")}</div>
-              <div className="text-gray-500 dark:text-gray-400 font-medium">Aktif Abone</div>
+              <div className="font-bold text-xl text-amber-500">{mapSummary.pendingMeters.toLocaleString("tr-TR")}</div>
+              <div className="text-gray-500 dark:text-gray-400 font-medium">Eşleştirme Bekliyor</div>
             </div>
           </div>
         </div>
@@ -598,7 +650,7 @@ export default function MapComponent() {
                     onClick={() => focusBuilding(building)}
                     className="flex w-full items-center gap-3 border-b border-gray-50 px-4 py-3 text-left transition last:border-0 hover:bg-brand-50 dark:border-gray-800 dark:hover:bg-brand-950/30"
                   >
-                    <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${building.excel_kayit_sayisi > 0 ? "bg-emerald-500" : "bg-brand-500"}`} />
+                    <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${building.has_meter_number ? "bg-emerald-500" : "bg-brand-500"}`} />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-semibold text-gray-800 dark:text-white">{building.value || `Bina #${building.id}`}</span>
                       <span className="block text-xs text-gray-400">ODA {building.oda_id || "—"} · {building.excel_kayit_sayisi} Excel kaydı</span>
@@ -784,7 +836,6 @@ export default function MapComponent() {
           <div className="space-y-2 text-xs text-gray-600 dark:text-gray-400">
             <div className="flex items-center gap-2.5"><span className="h-3 w-3 rounded-sm border border-emerald-600 bg-emerald-500/60" /> Verili / yapılandırılmış bina</div>
             <div className="flex items-center gap-2.5"><span className="h-3 w-3 rounded-sm border border-brand-600 bg-brand-500/25" /> Veri bekleyen bina</div>
-            <div className="flex items-center gap-2.5"><span className="h-3 w-3 rounded-full border-2 border-emerald-600 bg-emerald-400/60" /> Yaklaşık Excel konumu</div>
             <div className="flex items-center gap-2.5"><span className="h-0 w-4 border-t-2 border-dashed border-orange-500" /> Seçili mahalle sınırı</div>
           </div>
         </div>

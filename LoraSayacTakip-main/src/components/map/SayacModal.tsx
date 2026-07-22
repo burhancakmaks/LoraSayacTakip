@@ -97,31 +97,47 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
       .then((r) => r.json())
       .then(async (bilgi) => {
         const toplam: number = bilgi?.["toplam_bagımsız_bolum"] ?? bilgi?.toplam_bagımsız_bolum ?? 0;
-        if (!bilgi || toplam === 0) {
-          setNoBinaInfo(true);
-          setLoading(false);
-          return;
-        }
 
         // Dynamically build floor options in sorted order
         const opts: string[] = [];
-        if (bilgi.has_zemin === 1) {
+        if (bilgi?.has_zemin === 1) {
           opts.push("ZEMİN KAT");
         }
-        const katSayisi = bilgi.kat_sayisi || 0;
+        const katSayisi = bilgi?.kat_sayisi || 0;
         for (let k = 1; k <= katSayisi; k++) {
           opts.push(`${k}. KAT`);
         }
         opts.push("BODRUM KAT");
         opts.push("ORTAK ALAN");
         
-        // Sort floor options using getFloorWeight helper
-        const sortedOpts = [...opts].sort((a, b) => getFloorWeight(a) - getFloorWeight(b));
-        setFloorOptions(sortedOpts);
-
-        // Fetch existing sayac rows
+        // Always fetch meter rows. Imported buildings can have meters even when
+        // their independent-unit metadata has not been entered yet.
         const sayacRes = await fetch(`/api/sayac?bina_id=${building.id}`);
-        const existing: SayacRow[] = await sayacRes.json();
+        if (!sayacRes.ok) throw new Error("Sayaç verileri yüklenemedi.");
+        const sayacPayload = await sayacRes.json();
+        const existing: SayacRow[] = Array.isArray(sayacPayload) ? sayacPayload : [];
+
+        const highestUnitNumber = existing.reduce(
+          (highest, row) => Math.max(highest, Number(row.birim_no) || 0),
+          0
+        );
+        const rowCount = Math.max(toplam, existing.length, highestUnitNumber);
+
+        if (rowCount === 0) {
+          setNoBinaInfo(true);
+          setRows([]);
+          setLoading(false);
+          return;
+        }
+
+        setNoBinaInfo(false);
+
+        // Include floors found in imported data as well as building metadata.
+        const existingFloors = existing.map((row) => row.kat).filter(Boolean);
+        const sortedOpts = Array.from(new Set([...opts, ...existingFloors])).sort(
+          (a, b) => getFloorWeight(a) - getFloorWeight(b)
+        );
+        setFloorOptions(sortedOpts);
 
         // Check if there is configured data to choose default view mode
         const hasData = existing.some((r) => r.sayac_id || r.kapi_no);
@@ -130,7 +146,7 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
         // Build full row array
         const defaultBlok = building.value || "";
         const existingMap = new Map(existing.map((r) => [r.birim_no, r]));
-        const fullRows: SayacRow[] = Array.from({ length: toplam }, (_, i) => {
+        const fullRows: SayacRow[] = Array.from({ length: rowCount }, (_, i) => {
           const birim_no = i + 1;
           const found = existingMap.get(birim_no);
           return {

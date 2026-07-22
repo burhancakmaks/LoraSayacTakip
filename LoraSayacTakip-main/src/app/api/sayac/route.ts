@@ -62,7 +62,7 @@ export async function GET(request: NextRequest) {
         FROM excel_abonelikler e
         LEFT JOIN sayac s ON s.id = (
           SELECT sx.id FROM sayac sx WHERE sx.bina_id=e.bina_id AND
-            ((e.sayac_no!='' AND sx.sayac_id=e.sayac_no) OR (e.abone_no!='' AND sx.abone_no=e.abone_no))
+            e.sayac_no!='' AND sx.sayac_id=e.sayac_no
           LIMIT 1
         )
         WHERE e.bina_id=? ORDER BY e.excel_satir_no
@@ -84,12 +84,8 @@ export async function GET(request: NextRequest) {
       LEFT JOIN excel_abonelikler e ON e.kayit_id = (
         SELECT x.kayit_id FROM excel_abonelikler x
         WHERE x.bina_id = s.bina_id
-          AND (
-            (s.sayac_id != '' AND x.sayac_no = s.sayac_id)
-            OR (s.abone_no != '' AND x.abone_no = s.abone_no)
-          )
-        ORDER BY CASE WHEN x.sayac_no = s.sayac_id AND s.sayac_id != '' THEN 0 ELSE 1 END,
-                 x.excel_satir_no
+          AND s.sayac_id != '' AND x.sayac_no = s.sayac_id
+        ORDER BY x.excel_satir_no
         LIMIT 1
       )
       WHERE s.bina_id = ? 

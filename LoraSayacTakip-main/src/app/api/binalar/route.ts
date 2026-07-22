@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
 
-const CACHE_DURATION_MS = 5 * 60 * 1000;
+const CACHE_DURATION_MS = 10 * 1000;
 let buildingCache: { expiresAt: number; data: unknown[] } | null = null;
 
 export async function GET() {
@@ -25,7 +25,22 @@ export async function GET() {
         COALESCE(e.excel_abone_sayisi, 0) AS excel_abone_sayisi,
         COALESCE(e.excel_sayac_sayisi, 0) AS excel_sayac_sayisi,
         COALESCE(e.eksik_abone_sayisi, 0) AS eksik_abone_sayisi,
-        COALESCE(e.eksik_sayac_sayisi, 0) AS eksik_sayac_sayisi
+        COALESCE(e.eksik_sayac_sayisi, 0) AS eksik_sayac_sayisi,
+        COALESCE(e.excel_ada, '') AS excel_ada,
+        COALESCE(e.excel_blok, '') AS excel_blok,
+        COALESCE(e.excel_mahalle, '') AS excel_mahalle,
+        COALESCE(e.excel_adres, '') AS excel_adres,
+        CASE
+          WHEN COALESCE(e.excel_sayac_sayisi, 0) > 0
+            OR EXISTS (
+              SELECT 1
+              FROM sayac s
+              WHERE s.bina_id = b.id
+                AND TRIM(COALESCE(s.sayac_id, '')) <> ''
+            )
+          THEN 1
+          ELSE 0
+        END AS has_meter_number
       FROM binalar b
       LEFT JOIN (
         SELECT bina_id,
@@ -33,7 +48,11 @@ export async function GET() {
           COUNT(DISTINCT NULLIF(abone_no, '')) AS excel_abone_sayisi,
           COUNT(DISTINCT NULLIF(sayac_no, '')) AS excel_sayac_sayisi,
           SUM(CASE WHEN abone_no = '' THEN 1 ELSE 0 END) AS eksik_abone_sayisi,
-          SUM(CASE WHEN sayac_no = '' THEN 1 ELSE 0 END) AS eksik_sayac_sayisi
+          SUM(CASE WHEN sayac_no = '' THEN 1 ELSE 0 END) AS eksik_sayac_sayisi,
+          MIN(NULLIF(TRIM(ada), '')) AS excel_ada,
+          MIN(NULLIF(TRIM(blok), '')) AS excel_blok,
+          MIN(NULLIF(TRIM(mahalle), '')) AS excel_mahalle,
+          MIN(NULLIF(TRIM(adres), '')) AS excel_adres
         FROM excel_abonelikler
         WHERE bina_id IS NOT NULL
         GROUP BY bina_id
@@ -58,6 +77,11 @@ export async function GET() {
       excel_sayac_sayisi: row.excel_sayac_sayisi,
       eksik_abone_sayisi: row.eksik_abone_sayisi,
       eksik_sayac_sayisi: row.eksik_sayac_sayisi,
+      excel_ada: row.excel_ada,
+      excel_blok: row.excel_blok,
+      excel_mahalle: row.excel_mahalle,
+      excel_adres: row.excel_adres,
+      has_meter_number: row.has_meter_number === 1,
     }));
 
     buildingCache = { expiresAt: Date.now() + CACHE_DURATION_MS, data: binalar };

@@ -7,8 +7,10 @@
 /LoraSayacTakip-main/.next.stale-*/
 /LoraSayacTakip-main/.chrome-map-debug/
 /LoraSayacTakip-main/dev-server*.log
+/LoraSayacTakip-main/.codex-dev-server*.log
 /LoraSayacTakip-main/map-debug.png
 /LoraSayacTakip-main/*.tsbuildinfo
 /LoraSayacTakip-main/next-env.d.ts
+/LoraSayacTakip-main/scripts/__pycache__/
 /LoraSayacTakip-main/data/*.db-shm
 /LoraSayacTakip-main/data/*.db-wal

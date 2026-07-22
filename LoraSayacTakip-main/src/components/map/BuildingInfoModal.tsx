@@ -216,7 +216,7 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
               </div>
             )}
             <div className="flex flex-col gap-4">
-              {/* Ada Parsel & Dış Kapı No */}
+              {/* Ada/Parsel and Excel block code or actual exterior door number */}
               <div className="grid grid-cols-2 gap-3.5">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5">🗺️ Ada / Parsel</label>
@@ -228,13 +228,14 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5">🚪 Dış Kapı No</label>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-200 mb-1.5">🏢 Blok Kodu / Dış Kapı No</label>
                   <input
-                    type="text" placeholder="Örn: 2"
+                    type="text" placeholder="Örn: GB-13 veya No: 2"
                     value={form.dis_kapi_no}
                     onChange={(e) => { setForm((f) => ({ ...f, dis_kapi_no: e.target.value })); setSaved(false); }}
                     className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-2.5 text-gray-800 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 transition"
                   />
+                  <p className="mt-1 text-[10px] leading-4 text-gray-400">DB/GB/DC gibi değerler Excel blok kodudur.</p>
                 </div>
               </div>
 
