@@ -28,7 +28,11 @@ interface Building {
   excel_blok: string;
   excel_mahalle: string;
   excel_adres: string;
+  display_ada: string;
+  display_blok: string;
+  display_adres: string;
   has_meter_number: boolean;
+  meter_number_count: number;
 }
 
 interface SelectedBuilding {
@@ -94,6 +98,16 @@ const TILE_LAYERS = {
 } as const;
 
 type TileKey = keyof typeof TILE_LAYERS;
+
+const normalizeSearchText = (value: string) =>
+  value
+    .trim()
+    .toLocaleLowerCase("tr-TR")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/ı/g, "i")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 
 export default function MapComponent() {
   const mapContainerRef = useRef<HTMLDivElement>(null);
@@ -221,43 +235,45 @@ export default function MapComponent() {
 
     L.control.zoom({ position: "bottomright" }).addTo(map);
 
-    // Listen for popup buttons
-    map.on("popupopen", (e) => {
-      const el = e.popup.getElement();
-      if (!el) return;
+    // Popup HTML is created by Leaflet and can be replaced while the popup is
+    // open. Event delegation keeps every newly-created button functional.
+    const mapContainer = mapContainerRef.current;
+    const handlePopupButtonClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
 
-      const infoBtn = el.querySelector<HTMLButtonElement>(".bina-bilgi-btn");
-      if (infoBtn) {
-        infoBtn.onclick = () => {
-          const id = parseInt(infoBtn.dataset.binaId || "0");
-          const value = infoBtn.dataset.value || null;
-          const layer = infoBtn.dataset.layer || null;
-          const odaId = infoBtn.dataset.odaId ? parseInt(infoBtn.dataset.odaId) : null;
-          map.closePopup();
-          openInfoModalRef.current({ id, value, layer, oda_id: odaId });
-        };
+      const button = target.closest<HTMLButtonElement>(
+        ".bina-bilgi-btn, .bina-sayac-btn, .bina-excel-btn",
+      );
+      if (!button || !mapContainer.contains(button)) return;
+
+      const id = parseInt(button.dataset.binaId || "0");
+      if (!id) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (button.classList.contains("bina-excel-btn")) {
+        window.location.href = `/abonelikler/bina/${id}`;
+        return;
       }
 
-      const sayacBtn = el.querySelector<HTMLButtonElement>(".bina-sayac-btn");
-      if (sayacBtn) {
-        sayacBtn.onclick = () => {
-          const id = parseInt(sayacBtn.dataset.binaId || "0");
-          const value = sayacBtn.dataset.value || null;
-          const layer = sayacBtn.dataset.layer || null;
-          const odaId = sayacBtn.dataset.odaId ? parseInt(sayacBtn.dataset.odaId) : null;
-          map.closePopup();
-          openSayacModalRef.current({ id, value, layer, oda_id: odaId });
-        };
-      }
+      const selected = {
+        id,
+        value: button.dataset.value || null,
+        layer: button.dataset.layer || null,
+        oda_id: button.dataset.odaId ? parseInt(button.dataset.odaId) : null,
+      };
 
-      const excelBtn = el.querySelector<HTMLButtonElement>(".bina-excel-btn");
-      if (excelBtn) {
-        excelBtn.onclick = () => {
-          const id = parseInt(excelBtn.dataset.binaId || "0");
-          if (id) window.location.href = `/abonelikler/bina/${id}`;
-        };
+      map.closePopup();
+      if (button.classList.contains("bina-sayac-btn")) {
+        openSayacModalRef.current(selected);
+      } else {
+        openInfoModalRef.current(selected);
       }
-    });
+    };
+
+    mapContainer.addEventListener("click", handlePopupButtonClick);
 
     fetch("/api/binalar")
       .then((res) => {
@@ -324,10 +340,10 @@ export default function MapComponent() {
               .replace(/>/g, "&gt;")
               .replace(/"/g, "&quot;")
               .replace(/'/g, "&#039;");
-            const excelAda = escapeHtml(building.excel_ada || "");
-            const excelBlok = escapeHtml(building.excel_blok || "");
+            const excelAda = escapeHtml(building.display_ada || building.excel_ada || "");
+            const excelBlok = escapeHtml(building.display_blok || building.excel_blok || "");
             const excelMahalle = escapeHtml(building.excel_mahalle || "");
-            const excelAdres = escapeHtml(building.excel_adres || "");
+            const excelAdres = escapeHtml(building.display_adres || building.excel_adres || "");
 
             // Ağır popup HTML'i başlangıçta 5.000 kez değil, yalnızca tıklanan
             // bina için oluşturulur.
@@ -347,11 +363,13 @@ export default function MapComponent() {
                     <span style="color:#92400e;">Excel Sayaç</span><strong>${building.excel_sayac_sayisi}</strong>
                     <span style="color:#92400e;">Eksik Alan</span><strong>${excelMissing}</strong>
                   </div>
+                ` : ""}
+                ${building.has_meter_number ? `
                   <div style="margin:0 0 10px;padding:9px;background:#ecfdf5;border:1px solid #a7f3d0;border-radius:7px;font-size:11px;line-height:1.45;">
-                    <div style="font-weight:700;color:#047857;margin-bottom:4px;">Excel Bina Bilgileri</div>
-                    ${excelAda || excelBlok ? `<div><span style="color:#64748b;">Ada / Blok:</span> <strong>${excelAda || "-"} / ${excelBlok || "-"}</strong></div>` : ""}
+                    <div style="font-weight:700;color:#047857;margin-bottom:4px;">Bina Bilgileri</div>
+                    <div><span style="color:#64748b;">Ada / Blok:</span> <strong>${excelAda || "-"} / ${excelBlok || "-"}</strong></div>
                     ${excelMahalle ? `<div><span style="color:#64748b;">Mahalle:</span> <strong>${excelMahalle}</strong></div>` : ""}
-                    ${excelAdres ? `<div style="margin-top:3px;color:#334155;overflow-wrap:anywhere;">${excelAdres}</div>` : ""}
+                    ${excelAdres ? `<div style="margin-top:3px;color:#334155;overflow-wrap:anywhere;">${excelAdres}</div>` : `<div style="margin-top:3px;color:#64748b;">Adres bilgisi bulunmuyor.</div>`}
                   </div>
                 ` : ""}
                 <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
@@ -379,7 +397,9 @@ export default function MapComponent() {
                     data-oda-id="${building.oda_id ?? ""}"
                     style="width:100%;padding:8px 12px;background:#10b981;color:white;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;font-family:Outfit,sans-serif;"
                   >
-                    ⚡ Sayaç Ekle / Düzenle
+                    ${building.has_meter_number
+                      ? `⚡ Sayaçları Aç / Düzenle (${building.meter_number_count})`
+                      : "⚡ Sayaç Ekle"}
                   </button>
                   ${building.excel_kayit_sayisi > 0 ? `
                     <button
@@ -435,6 +455,7 @@ export default function MapComponent() {
 
     return () => {
       cancelled = true;
+      mapContainer.removeEventListener("click", handlePopupButtonClick);
       if (mapRef.current) {
         mapRef.current.remove();
         mapRef.current = null;
@@ -503,13 +524,13 @@ export default function MapComponent() {
     m.name.toLocaleLowerCase("tr-TR").includes(mahalleSearch.toLocaleLowerCase("tr-TR"))
   );
 
-  const normalizedBuildingSearch = buildingSearch.trim().toLocaleLowerCase("tr-TR");
+  const normalizedBuildingSearch = normalizeSearchText(buildingSearch);
   const buildingSearchResults = normalizedBuildingSearch.length >= 2
     ? buildingIndex
         .filter((building) =>
-          `${building.value || ""} ${building.oda_id || ""} ${building.id}`
-            .toLocaleLowerCase("tr-TR")
-            .includes(normalizedBuildingSearch)
+          normalizeSearchText(
+            `${building.value || ""} ${building.oda_id || ""} ${building.id} ${building.display_ada || building.excel_ada || ""} ${building.display_blok || building.excel_blok || ""} ${building.display_adres || building.excel_adres || ""}`,
+          ).includes(normalizedBuildingSearch)
         )
         .slice(0, 8)
     : [];
@@ -653,7 +674,12 @@ export default function MapComponent() {
                     <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${building.has_meter_number ? "bg-emerald-500" : "bg-brand-500"}`} />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-semibold text-gray-800 dark:text-white">{building.value || `Bina #${building.id}`}</span>
-                      <span className="block text-xs text-gray-400">ODA {building.oda_id || "—"} · {building.excel_kayit_sayisi} Excel kaydı</span>
+                      <span className="block text-xs text-gray-400">
+                        {building.display_ada || building.display_blok || building.excel_ada || building.excel_blok
+                          ? `${building.display_ada || building.excel_ada || "—"} / ${building.display_blok || building.excel_blok || "—"} · `
+                          : `ODA ${building.oda_id || "—"} · `}
+                        {building.excel_kayit_sayisi} Excel kaydı
+                      </span>
                     </span>
                     <span className="text-xs font-semibold text-brand-500">Göster</span>
                   </button>

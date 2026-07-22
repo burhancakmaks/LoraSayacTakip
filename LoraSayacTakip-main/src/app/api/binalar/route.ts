@@ -8,7 +8,7 @@ let buildingCache: { expiresAt: number; data: unknown[] } | null = null;
 export async function GET() {
   if (buildingCache && buildingCache.expiresAt > Date.now()) {
     return NextResponse.json(buildingCache.data, {
-      headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=300" },
+      headers: { "Cache-Control": "no-store" },
     });
   }
 
@@ -30,6 +30,16 @@ export async function GET() {
         COALESCE(e.excel_blok, '') AS excel_blok,
         COALESCE(e.excel_mahalle, '') AS excel_mahalle,
         COALESCE(e.excel_adres, '') AS excel_adres,
+        COALESCE(NULLIF(e.excel_ada, ''), NULLIF(bi.ada_parsel, ''), '') AS display_ada,
+        COALESCE(NULLIF(e.excel_blok, ''), NULLIF(bi.dis_kapi_no, ''), '') AS display_blok,
+        COALESCE(NULLIF(e.excel_adres, ''), NULLIF(bi.sokak, ''), '') AS display_adres,
+        (
+          SELECT COUNT(DISTINCT TRIM(s.sayac_id))
+          FROM sayac s
+          WHERE s.bina_id = b.id
+            AND LENGTH(TRIM(s.sayac_id)) >= 5
+            AND TRIM(s.sayac_id) NOT GLOB '*[^0-9]*'
+        ) AS meter_number_count,
         CASE
           WHEN EXISTS (
               SELECT 1
@@ -43,6 +53,7 @@ export async function GET() {
           ELSE 0
         END AS has_meter_number
       FROM binalar b
+      LEFT JOIN bina_bilgi bi ON bi.bina_id = b.id
       LEFT JOIN (
         SELECT bina_id,
           COUNT(*) AS excel_kayit_sayisi,
@@ -90,12 +101,16 @@ export async function GET() {
       excel_blok: row.excel_blok,
       excel_mahalle: row.excel_mahalle,
       excel_adres: row.excel_adres,
+      display_ada: row.display_ada,
+      display_blok: row.display_blok,
+      display_adres: row.display_adres,
       has_meter_number: row.has_meter_number === 1,
+      meter_number_count: Number(row.meter_number_count || 0),
     }));
 
     buildingCache = { expiresAt: Date.now() + CACHE_DURATION_MS, data: binalar };
     return NextResponse.json(binalar, {
-      headers: { "Cache-Control": "public, max-age=60, stale-while-revalidate=300" },
+      headers: { "Cache-Control": "no-store" },
     });
   } catch (error: any) {
     console.error("Error fetching binalar from SQLite:", error);
