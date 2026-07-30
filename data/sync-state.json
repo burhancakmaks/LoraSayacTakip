@@ -1,0 +1,73 @@
+{
+  "files": {
+    "etap5": {
+      "path": "C:\\Users\\Surface\\Downloads\\5. ETAP SAYAÇ NUMARALARI (1).xlsx",
+      "mtime": 1785223610608.1257,
+      "size": 68944
+    },
+    "etap4": {
+      "path": "C:\\Users\\Surface\\Downloads\\4.ETAP TS SAYAÇ NO.xlsx",
+      "mtime": 1784274859977.2144,
+      "size": 40512
+    },
+    "ada49": {
+      "path": "C:\\Users\\Surface\\Downloads\\49 ADA 301 ADET  MASKİ ABONELİK.xlsx",
+      "mtime": 1784275091988.3433,
+      "size": 27753
+    },
+    "ada3750ab": {
+      "path": "C:\\Users\\Surface\\Downloads\\37-50 ADA A-B BLOK 344 ADETMASKİ ABONELİK.xlsx",
+      "mtime": 1784274313995.9976,
+      "size": 167450
+    },
+    "ada3750e": {
+      "path": "C:\\Users\\Surface\\Downloads\\37-50 ADA E BLOK 72 ADET MASKİ ABONELİK.XLS",
+      "mtime": 1784274472920.6921,
+      "size": 29576
+    },
+    "ada41134": {
+      "path": "C:\\Users\\Surface\\Downloads\\41-134   341 ADET  maski abonelik.xlsx",
+      "mtime": 1784275099836.079,
+      "size": 48711
+    },
+    "ada46": {
+      "path": "C:\\Users\\Surface\\Downloads\\46 ADA KONUT MASKİ ABONELERİ.xlsx",
+      "mtime": 1784275096253.488,
+      "size": 34531
+    },
+    "ada53": {
+      "path": "C:\\Users\\Surface\\Downloads\\53 ADA MASKİ ABONELERİ.xlsx",
+      "mtime": 1784275108892.4304,
+      "size": 24832
+    },
+    "sire": {
+      "path": "C:\\Users\\Surface\\Downloads\\ŞİRE PAZARI MASKİ ABONELİKLERİ.xlsx",
+      "mtime": 1784275113057.1143,
+      "size": 27762
+    }
+  },
+  "last_sync": "2026-07-29T10:54:09.390Z",
+  "last_stats": {
+    "inserted": 0,
+    "updated": 67,
+    "unchanged": 5500,
+    "skipped_protected": 0,
+    "unmapped": 0,
+    "etap5_okunan": 2154,
+    "etap4_okunan": 1631,
+    "ada49_okunan": 282,
+    "ada3750ab_okunan": 325,
+    "ada3750e_okunan": 75,
+    "ada41134_okunan": 341,
+    "ada46_okunan": 175,
+    "ada53_okunan": 242,
+    "sire_okunan": 254,
+    "sorun_aktarildi": 98,
+    "counts": {
+      "gecerli": 6253,
+      "okunmadi": 6,
+      "eksik": 93,
+      "hatali": 0
+    }
+  }
+}

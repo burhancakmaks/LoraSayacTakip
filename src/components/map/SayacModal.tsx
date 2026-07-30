@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { Modal } from "@/components/ui/modal";
+import { classifySayacDurum, SAYAC_DURUM } from "@/lib/sayac-durum";
+import { useNotifications } from "@/context/NotificationContext";
 
 interface SelectedBuilding {
   id: number;
@@ -20,6 +22,7 @@ interface SayacRow {
   sayac_id: string;
   sicil_no: string;
   abone_no: string;
+  sayac_durum?: string;
 }
 
 interface SayacModalProps {
@@ -66,6 +69,7 @@ const getFloorWeight = (floor: string) => {
 };
 
 export default function SayacModal({ building, onClose }: SayacModalProps) {
+  const { refresh } = useNotifications();
   const [rows, setRows] = useState<SayacRow[]>([]);
   const [floorOptions, setFloorOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -167,7 +171,9 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
         body: JSON.stringify({ bina_id: building.id, rows }),
       });
       if (!res.ok) throw new Error("Kayıt sırasında hata oluştu.");
+      const data = await res.json();
       setSaved(true);
+      if (data.bildirimler?.length) await refresh();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -488,17 +494,31 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
 
                       {/* Cards Grid */}
                       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5">
-                        {floorRows.map((row) => (
+                        {floorRows.map((row) => {
+                          const durum = row.sayac_durum || classifySayacDurum(row.sayac_id);
+                          const meta = SAYAC_DURUM[durum];
+                          const borderClass =
+                            durum === "okunmadi" || durum === "hatali"
+                              ? "border-red-400/60 dark:border-red-500/40"
+                              : durum === "eksik"
+                                ? "border-amber-400/60 dark:border-amber-500/40"
+                                : "border-emerald-500/20 dark:border-emerald-500/10";
+                          return (
                           <div
                             key={row.birim_no}
-                            className="bg-white dark:bg-gray-900 border border-emerald-500/20 dark:border-emerald-500/10 rounded-xl p-4 flex flex-col justify-between shadow-xs hover:shadow-md transition-all hover:border-emerald-500/50 hover:-translate-y-0.5"
+                            className={`bg-white dark:bg-gray-900 border ${borderClass} rounded-xl p-4 flex flex-col justify-between shadow-xs hover:shadow-md transition-all hover:-translate-y-0.5`}
                           >
                             {/* Card Top */}
-                            <div className="flex items-center gap-1.5 text-xs font-bold text-gray-700 dark:text-gray-300">
-                              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                              <span>
+                            <div className="flex items-center justify-between gap-1.5 text-xs font-bold text-gray-700 dark:text-gray-300">
+                              <span className="flex items-center gap-1.5">
+                                <span className="h-2 w-2 rounded-full" style={{ backgroundColor: meta.color }}></span>
                                 {row.kullanilis_sekli} {row.kapi_no || `#${row.birim_no}`}
                               </span>
+                              {durum !== "gecerli" && (
+                                <span className="text-[9px] px-1.5 py-0.5 rounded font-bold text-white" style={{ backgroundColor: meta.color }}>
+                                  {meta.etiket}
+                                </span>
+                              )}
                             </div>
 
                             {/* Card Middle */}
@@ -520,7 +540,8 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
                               <span>{row.sayac_markasi || "Baylan"}</span>
                             </div>
                           </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   );

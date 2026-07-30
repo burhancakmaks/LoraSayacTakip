@@ -34,11 +34,53 @@ const MapIcon = () => (
   </svg>
 );
 
+const DataIcon = () => (
+  <svg className="fill-current" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path
+      d="M4 7C4 5.89543 4.89543 5 6 5H18C19.1046 5 20 5.89543 20 7V17C20 18.1046 19.1046 19 18 19H6C4.89543 19 4 18.1046 4 17V7Z"
+      stroke="currentColor"
+      strokeWidth="2"
+      fill="none"
+    />
+    <path d="M4 9H20" stroke="currentColor" strokeWidth="2" />
+    <path d="M8 13H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <path d="M8 16H13" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
+const CompareIcon = () => (
+  <svg className="fill-current" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7 4H5v16h2V4zm4 4H9v12h2V8zm4 4h-2v8h2v-8zm4-4h-2v12h2V12z" fill="currentColor" />
+  </svg>
+);
+
+const SearchIcon = () => (
+  <svg className="fill-current" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" fill="none" />
+    <path d="M20 20L16 16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+  </svg>
+);
+
 const navItems: NavItem[] = [
   {
     icon: <MapIcon />,
     name: "Map (Harita)",
     path: "/map",
+  },
+  {
+    icon: <DataIcon />,
+    name: "Sayaç Aktarım",
+    path: "/sayac-aktarim",
+  },
+  {
+    icon: <CompareIcon />,
+    name: "Bina-Abone Kıyası",
+    path: "/bina-abone-kiyas",
+  },
+  {
+    icon: <SearchIcon />,
+    name: "MASKİ Arama",
+    path: "/maski-arama",
   },
 ];
 

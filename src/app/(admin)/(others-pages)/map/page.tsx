@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import React from "react";
+import { NotificationProvider } from "@/context/NotificationContext";
 
 // Dynamic import with ssr: false is required since Leaflet relies on browser window global objects.
 const MapComponent = dynamic(
@@ -27,7 +28,9 @@ export default function MapPage() {
         name="description" 
         content="SQLite veritabanından alınan Malatya ili binaları ve sayaç aboneliklerinin interaktif harita gösterimi." 
       />
-      <MapComponent />
+      <NotificationProvider>
+        <MapComponent />
+      </NotificationProvider>
     </div>
   );
 }

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
+import { classifySayacDurum } from "@/lib/sayac-durum";
+import { createBildirim, getBildirimDb } from "@/lib/bildirim";
 
 function getDb() {
   const dbPath = path.join(process.cwd(), "data", "binalar.db");
@@ -34,6 +36,7 @@ function getDb() {
   try { db.exec(`ALTER TABLE sayac ADD COLUMN kullanilis_sekli TEXT DEFAULT 'DAİRE'`); } catch (e) {}
   try { db.exec(`ALTER TABLE sayac ADD COLUMN sicil_no TEXT DEFAULT ''`); } catch (e) {}
   try { db.exec(`ALTER TABLE sayac ADD COLUMN abone_no TEXT DEFAULT ''`); } catch (e) {}
+  try { db.exec(`ALTER TABLE sayac ADD COLUMN sayac_durum TEXT DEFAULT 'gecerli'`); } catch (e) {}
 
   return db;
 }
@@ -57,7 +60,8 @@ export async function GET(request: NextRequest) {
         sayac_markasi, 
         sayac_id,
         sicil_no,
-        abone_no
+        abone_no,
+        COALESCE(sayac_durum, 'gecerli') AS sayac_durum
       FROM sayac 
       WHERE bina_id = ? 
       ORDER BY birim_no ASC
@@ -80,6 +84,15 @@ export async function POST(request: NextRequest) {
     }
 
     const db = getDb();
+    const building = db.prepare(`SELECT value FROM binalar WHERE id = ?`).get(bina_id) as { value: string } | undefined;
+    const oldRows = db
+      .prepare(`SELECT birim_no, sayac_id, COALESCE(sayac_durum, 'gecerli') AS sayac_durum FROM sayac WHERE bina_id = ?`)
+      .all(bina_id) as Array<{ birim_no: number; sayac_id: string; sayac_durum: string }>;
+    const oldMap = new Map(oldRows.map((r) => [r.birim_no, r]));
+
+    const bildirimDb = getBildirimDb();
+    const yeniBildirimler: ReturnType<typeof createBildirim>[] = [];
+
     const stmt = db.prepare(`
       INSERT INTO sayac (
         bina_id, 
@@ -93,9 +106,10 @@ export async function POST(request: NextRequest) {
         sayac_id, 
         sicil_no,
         abone_no,
+        sayac_durum,
         updated_at
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
       ON CONFLICT(bina_id, birim_no) DO UPDATE SET
         blok_no = excluded.blok_no,
         kat = excluded.kat,
@@ -106,10 +120,39 @@ export async function POST(request: NextRequest) {
         sayac_id = excluded.sayac_id,
         sicil_no = excluded.sicil_no,
         abone_no = excluded.abone_no,
+        sayac_durum = excluded.sayac_durum,
         updated_at = datetime('now')
     `);
 
     for (const row of rows) {
+      const durum = classifySayacDurum(row.sayac_id);
+      const old = oldMap.get(row.birim_no);
+      const oldDurum = old?.sayac_durum || classifySayacDurum(old?.sayac_id);
+
+      if (durum !== oldDurum) {
+        const konum = [row.kapi_no && `Daire ${row.kapi_no}`, row.kullanilis_sekli].filter(Boolean).join(" · ");
+        const binaAd = building?.value || "Bina";
+        if (durum !== "gecerli") {
+          yeniBildirimler.push(
+            createBildirim(bildirimDb, {
+              tip: durum,
+              mesaj: `${binaAd}${konum ? ` — ${konum}` : ""}`,
+              bina_id,
+              birim_no: row.birim_no,
+            })
+          );
+        } else if (oldDurum !== "gecerli") {
+          yeniBildirimler.push(
+            createBildirim(bildirimDb, {
+              tip: "duzeltildi",
+              mesaj: `${binaAd}${konum ? ` — ${konum}` : ""} sayaç kaydı düzeltildi`,
+              bina_id,
+              birim_no: row.birim_no,
+            })
+          );
+        }
+      }
+
       stmt.run(
         bina_id, 
         row.birim_no, 
@@ -121,11 +164,12 @@ export async function POST(request: NextRequest) {
         row.sayac_markasi || "", 
         row.sayac_id || "",
         row.sicil_no || "",
-        row.abone_no || ""
+        row.abone_no || "",
+        durum
       );
     }
 
-    return NextResponse.json({ success: true, saved: rows.length });
+    return NextResponse.json({ success: true, saved: rows.length, bildirimler: yeniBildirimler });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

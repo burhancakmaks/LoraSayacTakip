@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
+import { getTarifeColor } from "@/lib/tarife";
 
 interface SelectedBuilding {
   id: number;
@@ -25,6 +26,16 @@ interface FormData {
   dis_kapi_no: string;
 }
 
+interface TarifeOzet {
+  tarife_sinif: string;
+  tarife_etiket: string;
+  tarife_turu: string;
+  karma: number;
+  abone_sayisi: number;
+  building_uavt?: string;
+  detay?: { tarife_turu: string; tarife_sinif: string; adet: number }[];
+}
+
 export default function BuildingInfoModal({ building, onClose }: BuildingInfoModalProps) {
   const [form, setForm] = useState<FormData>({
     kat_sayisi: "",
@@ -39,6 +50,7 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
   const [saved, setSaved] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [tarife, setTarife] = useState<TarifeOzet | null>(null);
 
   const kat = parseInt(form.kat_sayisi) || 0;
   const daire = parseInt(form.daire_sayisi) || 0;
@@ -50,10 +62,14 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
     setSaved(false);
     setError(null);
     setLoading(true);
+    setTarife(null);
 
-    fetch(`/api/bina-bilgi?bina_id=${building.id}`)
-      .then((r) => r.json())
-      .then((data) => {
+    Promise.all([
+      fetch(`/api/bina-bilgi?bina_id=${building.id}`).then((r) => r.json()),
+      fetch(`/api/bina-tarife?bina_id=${building.id}`).then((r) => r.json()),
+    ])
+      .then(([data, tarifeData]) => {
+        if (tarifeData && tarifeData.bina_id) setTarife(tarifeData);
         if (data) {
           setForm({
             kat_sayisi: String(data.kat_sayisi || ""),
@@ -144,6 +160,44 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
             <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
               Bina kimlik bilgilerini ve kat yapısını girerek ortak yapıyı tanımlayın.
             </p>
+
+            {tarife && (
+              <div
+                className="mb-5 rounded-xl border px-4 py-3"
+                style={{
+                  borderColor: `${getTarifeColor(tarife.tarife_sinif)}55`,
+                  backgroundColor: `${getTarifeColor(tarife.tarife_sinif)}12`,
+                }}
+              >
+                <div className="flex items-center justify-between gap-3 mb-2">
+                  <div className="text-xs font-bold uppercase tracking-wider text-gray-500">Rezerv Alan Tarifesi</div>
+                  <span
+                    className="text-[11px] font-bold px-2 py-0.5 rounded-full text-white"
+                    style={{ backgroundColor: getTarifeColor(tarife.tarife_sinif) }}
+                  >
+                    {tarife.tarife_etiket}{tarife.karma ? " · Karma" : ""}
+                  </span>
+                </div>
+                {tarife.tarife_turu && (
+                  <p className="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">{tarife.tarife_turu}</p>
+                )}
+                <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                  Rezerv abone: <strong className="text-gray-700 dark:text-gray-200">{tarife.abone_sayisi}</strong>
+                  {tarife.building_uavt ? <span className="ml-2">UAVT: {tarife.building_uavt}</span> : null}
+                </div>
+                {tarife.detay && tarife.detay.length > 1 && (
+                  <div className="mt-3 pt-2 border-t border-black/5 dark:border-white/10 space-y-1">
+                    {tarife.detay.slice(0, 5).map((d) => (
+                      <div key={d.tarife_turu} className="flex justify-between text-[11px] text-gray-600 dark:text-gray-300">
+                        <span className="truncate pr-2">{d.tarife_turu}</span>
+                        <span className="font-semibold shrink-0">{d.adet}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
             <div className="flex flex-col gap-4">
               {/* Ada Parsel & Dış Kapı No */}
               <div className="grid grid-cols-2 gap-3.5">
