@@ -79,7 +79,7 @@ function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: bool
 
   return (
     <article
-      className="sayac-tag group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-gray-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
+      className="sayac-tag group relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-gray-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
       data-highlight-birim={highlighted ? row.birim_no : undefined}
       data-sayac-row={row.sayac_id.trim() || undefined}
     >
@@ -90,12 +90,12 @@ function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: bool
       />
 
       {/* İçerik */}
-      <div className="relative z-10 flex min-w-0 flex-col gap-2 p-3 pt-3.5">
+      <div className="relative z-10 flex min-w-0 flex-col gap-1.5 p-2 pt-2.5">
         <div className="flex items-start justify-between gap-1">
           <div className="min-w-0">
-            <p className="truncate text-xs font-semibold text-gray-900 dark:text-white">No {doorLabel} · {row.kullanilis_sekli}</p>
+            <p className="truncate text-[11px] font-semibold text-gray-900 dark:text-white">No {doorLabel} · {row.kullanilis_sekli}</p>
             {subLabel ? (
-              <p className="mt-0.5 truncate text-[10px] text-gray-500 dark:text-gray-400">{subLabel}</p>
+              <p className="truncate text-[9px] text-gray-500 dark:text-gray-400">{subLabel}</p>
             ) : null}
           </div>
           <span
@@ -110,10 +110,10 @@ function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: bool
           </span>
         </div>
 
-        <div className="rounded-lg border border-gray-200 bg-gray-50 px-2 py-1.5 dark:border-gray-700 dark:bg-gray-800/60">
-          <p className="text-[8px] font-medium text-gray-500 dark:text-gray-400">Sayaç</p>
+        <div className="rounded-md border border-gray-200 bg-gray-50 px-2 py-1 dark:border-gray-700 dark:bg-gray-800/60">
+          <p className="text-[7px] font-medium text-gray-500 dark:text-gray-400">Sayaç</p>
           <p
-            className="truncate font-mono text-[11px] font-semibold leading-tight tabular-nums text-gray-900 dark:text-white"
+            className="truncate font-mono text-[10px] font-semibold leading-tight tabular-nums text-gray-900 dark:text-white"
             title={hasSayac ? row.sayac_id : undefined}
           >
             {hasSayac ? row.sayac_id : "— — —"}
@@ -121,17 +121,17 @@ function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: bool
         </div>
 
         <div
-          className={`flex items-center justify-between gap-1 rounded-lg border px-2 py-1.5 ${
+          className={`flex items-center justify-between gap-1 rounded-md border px-2 py-1 ${
             hasAbone
               ? "border-blue-light-300/70 bg-blue-light-50/90 dark:border-blue-light-700/50 dark:bg-blue-light-950/35"
               : "border-gray-200 bg-gray-50/80 dark:border-gray-700 dark:bg-gray-800/50"
           }`}
         >
-          <span className="text-[8px] font-medium text-gray-500 dark:text-gray-400">
+          <span className="text-[7px] font-medium text-gray-500 dark:text-gray-400">
             Abone
           </span>
           <span
-            className={`truncate font-mono text-[10px] font-semibold tabular-nums ${
+            className={`truncate font-mono text-[9px] font-semibold tabular-nums ${
               hasAbone ? "text-blue-light-800 dark:text-blue-light-300" : "text-gray-400"
             }`}
             title={hasAbone ? row.abone_no : undefined}
@@ -650,7 +650,7 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
                         </span>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-1.5 p-1.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
+                      <div className="grid grid-cols-2 gap-1 p-1 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 2xl:grid-cols-10">
                         {floorRows.map((row) => (
                           <SayacUnitCard
                             key={row.birim_no}
