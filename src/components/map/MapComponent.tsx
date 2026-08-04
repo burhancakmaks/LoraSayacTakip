@@ -1706,45 +1706,48 @@ export default function MapComponent() {
           </div>
 
           {/* Araç çubuğu */}
-          <div className={`pointer-events-auto flex w-full items-center gap-1.5 overflow-visible p-1.5 ${MAP_TOOLBAR_SURFACE}`}>
-            {isAdmin && (
-              <button
-                type="button"
-                onClick={handleJsonExport}
-                disabled={jsonExporting}
-                className={`${MAP_TOOLBAR_BTN} shrink-0 disabled:cursor-wait disabled:opacity-60`}
-                title="Harita, bina ve sayaç verilerini JSON olarak indir"
+          <div className={`pointer-events-auto flex w-full flex-col gap-1.5 overflow-visible p-1.5 ${MAP_TOOLBAR_SURFACE}`}>
+            <div className="flex w-full items-center gap-1.5">
+              {isAdmin && (
+                <button
+                  type="button"
+                  onClick={handleJsonExport}
+                  disabled={jsonExporting}
+                  className={`${MAP_TOOLBAR_BTN} min-w-0 flex-1 disabled:cursor-wait disabled:opacity-60`}
+                  title="Harita, bina ve sayaç verilerini JSON olarak indir"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 3v12" strokeLinecap="round" />
+                    <path d="m7 10 5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M5 20h14" strokeLinecap="round" />
+                  </svg>
+                  {jsonExporting ? "Hazırlanıyor" : "Export"}
+                </button>
+              )}
+              <Link
+                href="/sayac-aktarim"
+                className={`${MAP_TOOLBAR_BTN} min-w-0 flex-1`}
+                title="Excel'den sayaç verisi aktar"
               >
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M12 3v12" strokeLinecap="round" />
-                  <path d="m7 10 5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M5 20h14" strokeLinecap="round" />
+                  <path d="M4 7h16v10H4z" />
+                  <path d="M4 9h16M8 13h8M8 16h5" />
                 </svg>
-                {jsonExporting ? "Hazırlanıyor" : "Export"}
-              </button>
-            )}
-            <Link
-              href="/sayac-aktarim"
-              className={`${MAP_TOOLBAR_BTN} shrink-0`}
-              title="Excel'den sayaç verisi aktar"
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M4 7h16v10H4z" />
-                <path d="M4 9h16M8 13h8M8 16h5" />
-              </svg>
-              Aktarım
-            </Link>
-            <MapNotificationBell
-              onBinaClick={(binaId) => zoomToBuilding(binaId)}
-              onToggle={(open) => {
-                if (open) {
-                  setLayerPickerOpen(false);
-                  setMahallePickerOpen(false);
-                  setSayacSearchOpen(false);
-                }
-              }}
-            />
+                Aktarım
+              </Link>
+              <MapNotificationBell
+                onBinaClick={(binaId) => zoomToBuilding(binaId)}
+                onToggle={(open) => {
+                  if (open) {
+                    setLayerPickerOpen(false);
+                    setMahallePickerOpen(false);
+                    setSayacSearchOpen(false);
+                  }
+                }}
+              />
+            </div>
 
+            <div className="grid w-full grid-cols-2 gap-1.5">
             <div className="relative min-w-0 flex-1 overflow-visible">
             <button
               onClick={() => {
@@ -1864,6 +1867,7 @@ export default function MapComponent() {
                 </div>
               </div>
             )}
+            </div>
             </div>
           </div>
           {jsonExportError && (
