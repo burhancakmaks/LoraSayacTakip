@@ -20,11 +20,16 @@ export async function GET() {
       : `NULL AS tarife_sinif, NULL AS tarife_etiket, NULL AS tarife_turu,
          0 AS tarife_karma, 0 AS rezerv_abone_sayisi, 0 AS tarife_match_guven`;
     
-    // aktif_abone_sayisi: sayaç kaydı varsa gerçek sayaç sayısı, yoksa KML'deki statik değer
+    // sayac_kayit > 0 ise girilen sayaç sayısı; yoksa KML'deki statik değer
     const query = db.prepare(`
       SELECT
         b.*,
         EXISTS(SELECT 1 FROM bina_bilgi WHERE bina_id = b.id) AS is_configured,
+        (
+          SELECT COUNT(*)
+          FROM sayac s
+          WHERE s.bina_id = b.id
+        ) AS sayac_kayit,
         (
           SELECT COUNT(*)
           FROM sayac s
@@ -45,10 +50,12 @@ export async function GET() {
       layer: row.layer,
       abone_sayisi: row.abone_sayisi,
       aktif_abone_sayisi:
-        row.sayac_count > 0 ? row.sayac_count : row.aktif_abone_sayisi,
+        row.sayac_kayit > 0 ? row.sayac_count : row.aktif_abone_sayisi,
       building_type_id: row.building_type_id,
       coordinates: JSON.parse(row.coordinates),
-      is_configured: row.is_configured === 1,
+      is_configured: row.is_configured === 1 || row.sayac_count > 0,
+      sayac_count: row.sayac_count || 0,
+      sayac_kayit: row.sayac_kayit || 0,
       tarife_sinif: row.tarife_sinif || null,
       tarife_etiket: row.tarife_etiket || null,
       tarife_turu: row.tarife_turu || null,

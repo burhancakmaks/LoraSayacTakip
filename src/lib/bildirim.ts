@@ -57,7 +57,7 @@ export function createBildirim(
     )
     .run(input.tip, baslik, input.mesaj, input.bina_id ?? null, input.birim_no ?? null);
 
-  return db.prepare(`SELECT * FROM bildirim WHERE id = ?`).get(result.lastInsertRowid) as Bildirim;
+  return db.prepare(`SELECT * FROM bildirim WHERE id = ?`).get(result.lastInsertRowid) as unknown as Bildirim;
 }
 
 export function seedBildirimlerIfEmpty(db: DatabaseSync) {

@@ -10,10 +10,10 @@ export interface SayacDurumMeta {
 }
 
 export const SAYAC_DURUM: Record<SayacDurum, SayacDurumMeta> = {
-  gecerli: { durum: "gecerli", etiket: "Geçerli", color: "#10b981", icon: "✓" },
-  okunmadi: { durum: "okunmadi", etiket: "Okunmadı", color: "#ef4444", icon: "!" },
-  eksik: { durum: "eksik", etiket: "Eksik", color: "#eab308", icon: "?" },
-  hatali: { durum: "hatali", etiket: "Hatalı", color: "#dc2626", icon: "✕" },
+  gecerli: { durum: "gecerli", etiket: "Geçerli", color: "#0ba5ec", icon: "✓" },
+  okunmadi: { durum: "okunmadi", etiket: "Okunmadı", color: "#f04438", icon: "!" },
+  eksik: { durum: "eksik", etiket: "Eksik", color: "#f79009", icon: "?" },
+  hatali: { durum: "hatali", etiket: "Hatalı", color: "#d92d20", icon: "✕" },
 };
 
 export function classifySayacDurum(raw: string | null | undefined): SayacDurum {
@@ -37,7 +37,7 @@ export function buildingSorunSeverity(counts: {
 }
 
 export function getSorunMarkerColor(severity: SayacSorunSeverity): string {
-  if (severity === "kritik") return "#ef4444";
-  if (severity === "eksik") return "#eab308";
+  if (severity === "kritik") return "#f04438";
+  if (severity === "eksik") return "#f79009";
   return "#94a3b8";
 }

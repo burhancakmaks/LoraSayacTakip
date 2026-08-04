@@ -1,13 +1,13 @@
 {
   "files": {
     "etap5": {
-      "path": "C:\\Users\\Surface\\Downloads\\5. ETAP SAYAÇ NUMARALARI (1).xlsx",
-      "mtime": 1785223610608.1257,
+      "path": "C:/Users/Surface/Downloads/5. ETAP SAYAÇ NUMARALARI (1) (2).xlsx",
+      "mtime": 1785486266261.565,
       "size": 68944
     },
     "etap4": {
-      "path": "C:\\Users\\Surface\\Downloads\\4.ETAP TS SAYAÇ NO.xlsx",
-      "mtime": 1784274859977.2144,
+      "path": "C:/Users/Surface/Downloads/4.ETAP TS SAYAÇ NO (3).xlsx",
+      "mtime": 1785486344103.7332,
       "size": 40512
     },
     "ada49": {
@@ -26,45 +26,54 @@
       "size": 29576
     },
     "ada41134": {
-      "path": "C:\\Users\\Surface\\Downloads\\41-134   341 ADET  maski abonelik.xlsx",
-      "mtime": 1784275099836.079,
+      "path": "C:/Users/Surface/Downloads/41-134   341 ADET  maski abonelik (2).xlsx",
+      "mtime": 1785486353532.9004,
       "size": 48711
     },
     "ada46": {
-      "path": "C:\\Users\\Surface\\Downloads\\46 ADA KONUT MASKİ ABONELERİ.xlsx",
-      "mtime": 1784275096253.488,
+      "path": "C:/Users/Surface/Downloads/46 ADA KONUT MASKİ ABONELERİ (2).xlsx",
+      "mtime": 1785486350037.1228,
       "size": 34531
     },
+    "ada51": {
+      "path": "C:/Users/Surface/Downloads/51 ADA MASKİ ABONELİK.xlsx",
+      "mtime": 1785486263038.0574,
+      "size": 27745
+    },
     "ada53": {
-      "path": "C:\\Users\\Surface\\Downloads\\53 ADA MASKİ ABONELERİ.xlsx",
-      "mtime": 1784275108892.4304,
+      "path": "C:/Users/Surface/Downloads/53 ADA MASKİ ABONELERİ (2).xlsx",
+      "mtime": 1785486345734.6582,
       "size": 24832
     },
     "sire": {
-      "path": "C:\\Users\\Surface\\Downloads\\ŞİRE PAZARI MASKİ ABONELİKLERİ.xlsx",
-      "mtime": 1784275113057.1143,
+      "path": "C:/Users/Surface/Downloads/ŞİRE PAZARI MASKİ ABONELİKLERİ (2).xlsx",
+      "mtime": 1785486347858.5796,
       "size": 27762
     }
   },
-  "last_sync": "2026-07-29T10:54:09.390Z",
+  "last_sync": "2026-08-03T06:50:59.409Z",
   "last_stats": {
     "inserted": 0,
-    "updated": 67,
-    "unchanged": 5500,
+    "updated": 40,
+    "unchanged": 5842,
     "skipped_protected": 0,
+    "skipped_duplicate_global": 8,
     "unmapped": 0,
     "etap5_okunan": 2154,
     "etap4_okunan": 1631,
     "ada49_okunan": 282,
     "ada3750ab_okunan": 325,
     "ada3750e_okunan": 75,
-    "ada41134_okunan": 341,
+    "ada41134_okunan": 324,
     "ada46_okunan": 175,
+    "ada51_okunan": 340,
     "ada53_okunan": 242,
     "sire_okunan": 254,
     "sorun_aktarildi": 98,
+    "bina_bilgi_created": 1,
+    "bina_bilgi_expanded": 26,
     "counts": {
-      "gecerli": 6253,
+      "gecerli": 6615,
       "okunmadi": 6,
       "eksik": 93,
       "hatali": 0

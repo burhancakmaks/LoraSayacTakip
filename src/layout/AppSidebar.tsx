@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import {
   HorizontaLDots,
+  ChevronDownIcon,
 } from "../icons/index";
 
 type NavItem = {

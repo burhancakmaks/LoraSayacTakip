@@ -34,6 +34,18 @@ const FILTERS: { key: SorunListeFilter; label: string }[] = [
   { key: "eksik", label: "Eksik" },
 ];
 
+const MASKI_RIBBON = "#026aa2";
+const WAVE_BG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`;
+
+function StatLcd({ label, value, tone }: { label: string; value: number; tone: string }) {
+  return (
+    <div className="flex-1 overflow-hidden rounded-lg border border-blue-light-800/70 bg-gradient-to-b from-blue-light-950 to-[#041e2e] px-2 py-1.5 text-center shadow-inner">
+      <p className="text-[7px] font-bold uppercase tracking-[0.15em] text-blue-light-600/80">{label}</p>
+      <p className={`mt-0.5 text-sm font-black tabular-nums ${tone}`}>{value}</p>
+    </div>
+  );
+}
+
 export default function SayacSorunPanel({
   isOpen,
   onClose,
@@ -88,7 +100,10 @@ export default function SayacSorunPanel({
   const tabCount = (key: SorunListeFilter) => {
     if (key === "all") return ozet.toplam;
     if (key === "okuma") return ozet.okunmadi + ozet.hatali;
-    return ozet[key] ?? 0;
+    if (key === "eksik") return ozet.eksik;
+    if (key === "okunmadi") return ozet.okunmadi;
+    if (key === "hatali") return ozet.hatali;
+    return 0;
   };
 
   const panelTitle =
@@ -106,33 +121,52 @@ export default function SayacSorunPanel({
   if (!isOpen) return null;
 
   return (
-    <div className="pointer-events-auto w-80 sm:w-96 h-[calc(100dvh-2rem)] max-h-[calc(100dvh-2rem)] flex flex-col bg-white/98 dark:bg-gray-900/98 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-800 backdrop-blur-md overflow-hidden shrink-0">
-      <div className="flex items-start justify-between gap-2 px-4 py-3 border-b border-gray-100 dark:border-gray-800 bg-gray-50/80 dark:bg-gray-800/40 shrink-0">
-        <div className="min-w-0">
-          <h2 className="text-sm font-bold text-gray-900 dark:text-white">{panelTitle}</h2>
-          <p className="text-[11px] text-gray-500 dark:text-gray-400 mt-0.5">
-            Okunmayan, hatalı veya eksik sayaç kayıtları
-          </p>
+    <div className="pointer-events-auto flex h-[calc(100dvh-2rem)] max-h-[calc(100dvh-2rem)] min-h-0 w-full min-w-0 flex-col overflow-hidden rounded-2xl border border-blue-light-200/70 bg-white/98 shadow-2xl backdrop-blur-md dark:border-blue-light-900/40 dark:bg-gray-900/98">
+      {/* Üst başlık — MASKİ stili */}
+      <div className="relative shrink-0 overflow-hidden border-b border-blue-light-200/60 dark:border-blue-light-900/40">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.08] dark:opacity-[0.14]"
+          style={{ backgroundImage: WAVE_BG, backgroundSize: "120px 40px" }}
+        />
+        <div className="relative flex items-start justify-between gap-2 px-4 py-3 pr-10">
+          <div className="min-w-0">
+            <h2 className="text-sm font-bold text-gray-900 dark:text-white">{panelTitle}</h2>
+            <p className="mt-0.5 text-[10px] text-gray-500 dark:text-gray-400">
+              Okunmayan, hatalı veya eksik sayaç kayıtları
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            className="absolute right-3 top-3 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-gray-200 text-gray-400 transition hover:border-blue-light-300 hover:bg-blue-light-50 hover:text-gray-700 dark:border-gray-700 dark:hover:border-blue-light-700 dark:hover:bg-blue-light-950/40 dark:hover:text-white"
+            title="Kapat (Esc)"
+          >
+            ✕
+          </button>
+          <div
+            className="pointer-events-none absolute -right-6 top-3 w-16 rotate-45 py-px text-center text-[6px] font-bold uppercase tracking-wider text-white shadow-sm"
+            style={{ backgroundColor: MASKI_RIBBON }}
+          >
+            MASKİ
+          </div>
         </div>
-        <button
-          onClick={onClose}
-          className="shrink-0 h-8 w-8 flex items-center justify-center rounded-lg text-gray-400 hover:bg-gray-200/70 hover:text-gray-700 dark:hover:bg-gray-700 dark:hover:text-white transition"
-          title="Kapat (Esc)"
-        >
-          ✕
-        </button>
       </div>
 
-      <div className="px-4 py-3 flex flex-col flex-1 min-h-0 gap-3 overflow-hidden">
-        <div className="flex flex-wrap gap-1.5 shrink-0">
+      <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden px-4 py-3">
+        <div className="flex shrink-0 gap-1.5">
+          <StatLcd label="Hatalı" value={ozet.okunmadi + ozet.hatali} tone="text-error-300" />
+          <StatLcd label="Eksik" value={ozet.eksik} tone="text-warning-300" />
+          <StatLcd label="Toplam" value={ozet.toplam} tone="text-blue-light-300" />
+        </div>
+
+        <div className="flex shrink-0 flex-wrap gap-1.5">
           {FILTERS.map((f) => (
             <button
               key={f.key}
               onClick={() => setFilter(f.key)}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition border ${
+              className={`rounded-lg border px-2.5 py-1 text-[10px] font-semibold transition ${
                 filter === f.key
-                  ? "bg-brand-500 text-white border-brand-500"
-                  : "bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-700 hover:border-brand-300"
+                  ? "border-blue-light-600 bg-blue-light-600 text-white shadow-sm"
+                  : "border-blue-light-200 bg-blue-light-50/60 text-blue-light-800 hover:border-blue-light-400 dark:border-blue-light-800 dark:bg-blue-light-950/30 dark:text-blue-light-300 dark:hover:border-blue-light-600"
               }`}
             >
               {f.label}
@@ -146,48 +180,48 @@ export default function SayacSorunPanel({
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Bina, blok, daire ara..."
-          className="w-full rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm text-gray-800 dark:text-white placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500/30 shrink-0"
+          className="w-full shrink-0 rounded-xl border border-blue-light-200 bg-blue-light-50/50 px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-light-400 focus:outline-none focus:ring-2 focus:ring-blue-light-500/20 dark:border-blue-light-900/50 dark:bg-blue-light-950/25 dark:text-white"
         />
 
-        <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain rounded-xl border border-gray-100 dark:border-gray-800">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-xl border border-blue-light-100 dark:border-blue-light-900/40">
           {loading && (
             <div className="flex items-center justify-center py-12 text-sm text-gray-500">
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-brand-500 border-t-transparent mr-2" />
+              <div className="mr-2 h-5 w-5 animate-spin rounded-full border-2 border-blue-light-500 border-t-transparent" />
               Yükleniyor...
             </div>
           )}
-          {error && <div className="p-4 text-sm text-red-500 text-center">{error}</div>}
+          {error && <div className="p-4 text-center text-sm text-error-500">{error}</div>}
           {!loading && !error && items.length === 0 && (
             <div className="p-8 text-center text-sm text-gray-500">Kayıt bulunamadı.</div>
           )}
           {!loading && !error && items.length > 0 && (
             <table className="w-full text-xs">
-              <thead className="sticky top-0 bg-gray-50 dark:bg-gray-800/95 backdrop-blur-sm z-10">
+              <thead className="sticky top-0 z-10 bg-blue-light-50/95 backdrop-blur-sm dark:bg-blue-light-950/80">
                 <tr className="text-left text-gray-500 dark:text-gray-400">
-                  <th className="px-2.5 py-2 font-semibold">Durum</th>
-                  <th className="px-2.5 py-2 font-semibold">Bina / Konum</th>
-                  <th className="px-2.5 py-2 font-semibold">Okuma Değeri</th>
+                  <th className="px-2.5 py-2 text-[10px] font-bold uppercase tracking-wide">Durum</th>
+                  <th className="px-2.5 py-2 text-[10px] font-bold uppercase tracking-wide">Bina / Konum</th>
+                  <th className="px-2.5 py-2 text-[10px] font-bold uppercase tracking-wide">Değer</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
+              <tbody className="divide-y divide-blue-light-100/80 dark:divide-blue-light-900/30">
                 {items.map((item) => {
                   const meta = SAYAC_DURUM[item.sayac_durum];
                   return (
                     <tr
                       key={item.id}
                       onClick={() => onSelect(item)}
-                      className="cursor-pointer hover:bg-brand-50/60 dark:hover:bg-brand-500/10 transition-colors"
+                      className="cursor-pointer transition-colors hover:bg-blue-light-50/80 dark:hover:bg-blue-light-950/30"
                     >
                       <td className="px-2.5 py-2">
                         <span
-                          className="inline-flex px-1.5 py-0.5 rounded text-[9px] font-bold text-white"
+                          className="inline-flex rounded px-1.5 py-0.5 text-[9px] font-bold text-white"
                           style={{ backgroundColor: meta.color }}
                         >
                           {meta.etiket}
                         </span>
                       </td>
                       <td className="px-2.5 py-2">
-                        <div className="font-medium text-gray-800 dark:text-gray-200 truncate max-w-[130px]">
+                        <div className="max-w-[130px] truncate font-medium text-gray-800 dark:text-gray-200">
                           {item.building_name}
                         </div>
                         <div className="text-[10px] text-gray-500">
@@ -200,11 +234,11 @@ export default function SayacSorunPanel({
                         <span
                           className={`text-[11px] font-mono font-semibold ${
                             item.sayac_durum === "okunmadi"
-                              ? "text-red-600 dark:text-red-400"
+                              ? "text-error-600 dark:text-error-400"
                               : item.sayac_durum === "hatali"
-                                ? "text-red-700 dark:text-red-300"
+                                ? "text-error-700 dark:text-error-300"
                                 : item.sayac_durum === "eksik"
-                                  ? "text-amber-600 dark:text-amber-400 italic"
+                                  ? "italic text-warning-600 dark:text-warning-400"
                                   : "text-gray-600"
                           }`}
                         >
@@ -220,8 +254,8 @@ export default function SayacSorunPanel({
         </div>
 
         {!loading && !error && ozet.toplam > 0 && (
-          <div className="text-[10px] text-gray-500 dark:text-gray-400 shrink-0 pt-1 border-t border-gray-100 dark:border-gray-800">
-            Gösterilen: <strong>{ozet.gosterilen}</strong> / {ozet.toplam}
+          <div className="shrink-0 border-t border-blue-light-100 pt-1 text-[10px] text-gray-500 dark:border-blue-light-900/40 dark:text-gray-400">
+            Gösterilen: <strong className="text-gray-700 dark:text-gray-300">{ozet.gosterilen}</strong> / {ozet.toplam}
             {search.trim() ? " (filtreli)" : ""}
           </div>
         )}

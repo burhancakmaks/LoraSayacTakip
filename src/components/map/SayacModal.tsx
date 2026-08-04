@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import { Modal } from "@/components/ui/modal";
-import { classifySayacDurum, SAYAC_DURUM } from "@/lib/sayac-durum";
+import { classifySayacDurum, SAYAC_DURUM, type SayacDurum } from "@/lib/sayac-durum";
 import { useNotifications } from "@/context/NotificationContext";
+import { notifySayacGuncellendi } from "@/lib/sayac-events";
 
 interface SelectedBuilding {
   id: number;
@@ -27,7 +28,9 @@ interface SayacRow {
 
 interface SayacModalProps {
   building: SelectedBuilding | null;
+  highlightSayacId?: string | null;
   onClose: () => void;
+  onSaved?: (stats: { sayac_count: number; sayac_kayit: number }) => void;
 }
 
 const KULLANILIS_SEKILLERI = [
@@ -57,6 +60,133 @@ const SAYAC_MARKALARI = [
   "Manas",
 ];
 
+const NUM_INPUT_CLASS =
+  "w-full min-w-[5.5rem] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 rounded-md px-2 py-1 text-xs font-mono tabular-nums text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition outline-none";
+
+const MASKI_RIBBON = "#026aa2";
+
+function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: boolean }) {
+  const durum: SayacDurum =
+    row.sayac_durum && row.sayac_durum in SAYAC_DURUM
+      ? (row.sayac_durum as SayacDurum)
+      : classifySayacDurum(row.sayac_id);
+  const meta = SAYAC_DURUM[durum];
+  const hasSayac = row.sayac_id.trim() !== "";
+  const hasAbone = row.abone_no.trim() !== "";
+  const doorLabel = row.kapi_no || String(row.birim_no);
+  const subLabel = [row.kat, row.blok_no].filter(Boolean).join(" · ");
+
+  const lcdTone: Record<SayacDurum, string> = {
+    gecerli: "text-blue-light-300",
+    okunmadi: "text-error-300",
+    eksik: "text-warning-300",
+    hatali: "text-error-400",
+  };
+
+  const dialGlow: Record<SayacDurum, string> = {
+    gecerli: "shadow-[0_0_14px_rgba(11,165,236,0.35)]",
+    okunmadi: "shadow-[0_0_14px_rgba(240,68,56,0.35)]",
+    eksik: "shadow-[0_0_14px_rgba(247,144,9,0.35)]",
+    hatali: "shadow-[0_0_14px_rgba(217,45,32,0.35)]",
+  };
+
+  const showAlarm = highlighted;
+
+  return (
+    <article
+      className={`sayac-tag group relative flex overflow-hidden rounded-2xl border border-blue-light-200/80 bg-gradient-to-br from-blue-light-25 to-white shadow-sm transition-all duration-300 hover:shadow-md dark:border-blue-light-900/50 dark:from-blue-light-950/25 dark:to-gray-900`}
+      data-highlight-birim={highlighted ? row.birim_no : undefined}
+      data-sayac-row={row.sayac_id.trim() || undefined}
+    >
+      {showAlarm && <div className="sayac-highlight-bg pointer-events-none absolute inset-0 z-0" />}
+      <div
+        className="pointer-events-none absolute inset-0 z-[1] opacity-[0.08] dark:opacity-[0.14]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`,
+          backgroundSize: "120px 40px",
+        }}
+      />
+
+      {/* Sol gösterge */}
+      <div
+        className={`relative z-10 flex w-10 shrink-0 flex-col items-center justify-center gap-px bg-gradient-to-b from-blue-light-800 to-blue-light-950 px-0.5 py-2 text-white ${dialGlow[durum]}`}
+      >
+        <div
+          className="absolute inset-1.5 rounded-full border border-white/20"
+          style={{ boxShadow: `inset 0 0 0 1.5px ${meta.color}44` }}
+        />
+        <span className="relative text-[6px] font-bold uppercase tracking-[0.15em] text-blue-light-200/70">No</span>
+        <span className="relative text-xs font-black leading-none tabular-nums">{doorLabel}</span>
+        <span
+          className="relative mt-0.5 rounded px-0.5 py-px text-[6px] font-bold text-white"
+          style={{ backgroundColor: meta.color }}
+        >
+          {meta.icon}
+        </span>
+      </div>
+
+      {/* İçerik */}
+      <div className="relative z-10 flex min-w-0 flex-1 flex-col gap-1 p-1.5">
+        <div className="flex items-start justify-between gap-1">
+          <div className="min-w-0">
+            <p className="truncate text-[9px] font-bold text-gray-800 dark:text-white">{row.kullanilis_sekli}</p>
+            {subLabel ? (
+              <p className="truncate text-[7px] font-medium text-gray-500 dark:text-gray-400">{subLabel}</p>
+            ) : null}
+          </div>
+          <span
+            className="shrink-0 rounded-full border px-1 py-px text-[7px] font-bold uppercase tracking-wide"
+            style={{
+              color: meta.color,
+              borderColor: `${meta.color}44`,
+              backgroundColor: `${meta.color}12`,
+            }}
+          >
+            {meta.etiket}
+          </span>
+        </div>
+
+        <div className="relative overflow-hidden rounded-lg border border-blue-light-800/80 bg-gradient-to-b from-blue-light-950 to-[#041e2e] px-1.5 py-1 shadow-inner">
+          <p className="text-[6px] font-bold uppercase tracking-[0.2em] text-blue-light-600/80">Sayaç</p>
+          <p
+            className={`truncate font-mono text-[9px] font-bold leading-tight tabular-nums ${lcdTone[durum]}`}
+            title={hasSayac ? row.sayac_id : undefined}
+          >
+            {hasSayac ? row.sayac_id : "— — —"}
+          </p>
+        </div>
+
+        <div
+          className={`flex items-center justify-between gap-1 rounded-lg border border-dashed px-1.5 py-0.5 ${
+            hasAbone
+              ? "border-blue-light-300/70 bg-blue-light-50/90 dark:border-blue-light-700/50 dark:bg-blue-light-950/35"
+              : "border-gray-200 bg-gray-50/80 dark:border-gray-700 dark:bg-gray-800/50"
+          }`}
+        >
+          <span className="text-[6px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
+            Abone
+          </span>
+          <span
+            className={`truncate font-mono text-[8px] font-bold tabular-nums ${
+              hasAbone ? "text-blue-light-800 dark:text-blue-light-300" : "text-gray-400"
+            }`}
+            title={hasAbone ? row.abone_no : undefined}
+          >
+            {hasAbone ? row.abone_no : "—"}
+          </span>
+        </div>
+      </div>
+
+      <div
+        className="pointer-events-none absolute -right-6 top-2.5 z-20 w-20 rotate-45 py-px text-center text-[6px] font-bold uppercase tracking-wider text-white shadow-sm"
+        style={{ backgroundColor: MASKI_RIBBON }}
+      >
+        MASKİ
+      </div>
+    </article>
+  );
+}
+
 // Helper to determine floor sorting order
 const getFloorWeight = (floor: string) => {
   const fUpper = floor.toUpperCase();
@@ -68,7 +198,16 @@ const getFloorWeight = (floor: string) => {
   return 999; // other / unspecified
 };
 
-export default function SayacModal({ building, onClose }: SayacModalProps) {
+function normSayacDigits(value: string) {
+  return value.trim().replace(/^2025-/i, "").replace(/\D/g, "");
+}
+
+function matchesHighlightSayac(row: SayacRow, highlightSayacId?: string | null) {
+  if (!highlightSayacId?.trim() || !row.sayac_id.trim()) return false;
+  return normSayacDigits(row.sayac_id) === normSayacDigits(highlightSayacId);
+}
+
+export default function SayacModal({ building, highlightSayacId, onClose, onSaved }: SayacModalProps) {
   const { refresh } = useNotifications();
   const [rows, setRows] = useState<SayacRow[]>([]);
   const [floorOptions, setFloorOptions] = useState<string[]>([]);
@@ -152,6 +291,19 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
       });
   }, [building]);
 
+  useEffect(() => {
+    if (!highlightSayacId?.trim() || loading || rows.length === 0) return;
+    const matchRow = rows.find((r) => matchesHighlightSayac(r, highlightSayacId));
+    if (!matchRow) return;
+    if (matchRow.kat) setSelectedFloorFilter(matchRow.kat);
+    const timer = window.setTimeout(() => {
+      document
+        .querySelector(`[data-highlight-birim="${matchRow.birim_no}"]`)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 250);
+    return () => window.clearTimeout(timer);
+  }, [highlightSayacId, loading, rows, viewMode]);
+
   const updateRow = useCallback((birim_no: number, field: keyof Omit<SayacRow, "birim_no">, value: string) => {
     setRows((prev) =>
       prev.map((r) => (r.birim_no === birim_no ? { ...r, [field]: value } : r))
@@ -174,6 +326,11 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
       const data = await res.json();
       setSaved(true);
       if (data.bildirimler?.length) await refresh();
+      onSaved?.({
+        sayac_count: data.sayac_count ?? 0,
+        sayac_kayit: data.sayac_kayit ?? 0,
+      });
+      notifySayacGuncellendi();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -210,65 +367,121 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
 
   const sortedFloorKeys = Object.keys(groupedByFloor).sort((a, b) => getFloorWeight(a) - getFloorWeight(b));
 
+  const girilenSayac = rows.filter((r) => r.sayac_id.trim() !== "").length;
+  const dolulukYuzde = rows.length > 0 ? Math.round((girilenSayac / rows.length) * 100) : 0;
+
   return (
     <Modal
       isOpen={building !== null}
       onClose={onClose}
       className="max-w-6xl m-4 flex flex-col overflow-hidden bg-white dark:bg-gray-900 rounded-3xl"
     >
-      {/* Header */}
-      <div className="px-6 pt-6 pb-4 border-b border-gray-100 dark:border-gray-800 pr-12">
-        <h2 className="text-gray-900 dark:text-white font-bold text-lg leading-tight flex items-center gap-2">
-          ⚡ Sayaç Listesi ve Bölüm Planı
-        </h2>
-        <p className="text-gray-400 dark:text-gray-500 text-xs mt-1 truncate max-w-md">
-          {building?.value || "Bilinmeyen Bina"} — ODA #{building?.oda_id}
-        </p>
+      {/* Header — sayaç etiketi stili */}
+      <div className="relative overflow-hidden border-b border-blue-light-200/60 pr-12 dark:border-blue-light-900/40">
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.08] dark:opacity-[0.14]"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`,
+            backgroundSize: "120px 40px",
+          }}
+        />
+        <div className="relative flex">
+          <div className="relative z-10 flex w-14 shrink-0 flex-col items-center justify-center gap-0.5 bg-gradient-to-b from-blue-light-800 to-blue-light-950 px-1 py-3 text-white shadow-[0_0_14px_rgba(11,165,236,0.3)]">
+            <div className="absolute inset-2 rounded-full border border-white/20" style={{ boxShadow: "inset 0 0 0 2px #0ba5ec44" }} />
+            <span className="relative text-[7px] font-bold uppercase tracking-[0.15em] text-blue-light-200/70">Oda</span>
+            <span className="relative text-sm font-black leading-none tabular-nums">{building?.oda_id ?? "—"}</span>
+          </div>
+          <div className="relative z-10 flex min-w-0 flex-1 flex-wrap items-center justify-between gap-3 px-4 py-3">
+            <div className="min-w-0">
+              <h2 className="text-sm font-bold text-gray-900 dark:text-white">Sayaç Listesi</h2>
+              <p className="mt-0.5 truncate text-[10px] font-medium text-gray-600 dark:text-gray-300">
+                {building?.value || "Bilinmeyen Bina"}
+              </p>
+            </div>
+            {!loading && !noBinaInfo && rows.length > 0 && (
+              <div className="flex min-w-[120px] items-center gap-2 rounded-xl border border-dashed border-blue-light-300/60 bg-blue-light-50/80 px-2.5 py-1.5 dark:border-blue-light-700/40 dark:bg-blue-light-950/30">
+                <div className="flex-1">
+                  <div className="mb-0.5 flex justify-between text-[8px] font-bold uppercase tracking-wide text-gray-500">
+                    <span>Doluluk</span>
+                    <span className="tabular-nums text-blue-light-700 dark:text-blue-light-300">{dolulukYuzde}%</span>
+                  </div>
+                  <div className="h-1 overflow-hidden rounded-full bg-blue-light-100 dark:bg-blue-light-950">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-blue-light-500 to-blue-light-400"
+                      style={{ width: `${dolulukYuzde}%` }}
+                    />
+                  </div>
+                </div>
+                <span className="shrink-0 text-[9px] font-bold tabular-nums text-gray-500">
+                  {girilenSayac}/{rows.length}
+                </span>
+              </div>
+            )}
+          </div>
+          <div
+            className="pointer-events-none absolute -right-6 top-3 z-20 w-20 rotate-45 py-px text-center text-[6px] font-bold uppercase tracking-wider text-white shadow-sm"
+            style={{ backgroundColor: MASKI_RIBBON }}
+          >
+            MASKİ
+          </div>
+        </div>
       </div>
 
       {/* Toolbar: View Tabs & Floor Filter Select */}
       {!loading && !noBinaInfo && rows.length > 0 && (
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/10 px-6 py-1.5 sm:py-0 gap-2">
-          {/* Tabs */}
-          <div className="flex">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-100 dark:border-gray-800 px-5 py-2 gap-2">
+          <div className="inline-flex p-0.5 rounded-lg bg-gray-100 dark:bg-gray-800">
             <button
               onClick={() => setViewMode("grid")}
-              className={`px-4 py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2 ${
+              className={`px-3 py-1.5 rounded-md text-[11px] font-semibold transition-all ${
                 viewMode === "grid"
-                  ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
-                  : "border-transparent text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
               }`}
             >
-              📱 Daireler Görünümü
+              Kart
             </button>
             <button
               onClick={() => setViewMode("edit")}
-              className={`px-4 py-3 text-xs font-bold uppercase tracking-wider border-b-2 transition-all flex items-center gap-2 ${
+              className={`px-3 py-1.5 rounded-md text-[11px] font-semibold transition-all ${
                 viewMode === "edit"
-                  ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
-                  : "border-transparent text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                  ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm"
+                  : "text-gray-500 hover:text-gray-700"
               }`}
             >
-              ✏️ Düzenleme Tablosu
+              Tablo
             </button>
           </div>
 
-          {/* Floor filter dropdown (Only active when Daireler view is active) */}
           {viewMode === "grid" && (
-            <div className="flex items-center gap-2 self-end sm:self-center mb-1.5 sm:mb-0">
-              <label className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Kat Filtresi:</label>
-              <select
-                value={selectedFloorFilter}
-                onChange={(e) => setSelectedFloorFilter(e.target.value)}
-                className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-1.5 text-xs font-semibold text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer"
-              >
-                <option value="HEPSİ">Tüm Katlar (Hepsi)</option>
-                {floorOptions.map((opt) => (
-                  <option key={opt} value={opt}>
-                    {opt}
-                  </option>
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-1.5">
+                <label className="text-[10px] font-medium text-gray-500">Kat</label>
+                <select
+                  value={selectedFloorFilter}
+                  onChange={(e) => setSelectedFloorFilter(e.target.value)}
+                  className="rounded-md border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-2 py-1 text-[11px] font-medium text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-1 focus:ring-emerald-500/30 cursor-pointer"
+                >
+                  <option value="HEPSİ">Tüm katlar</option>
+                  {floorOptions.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="hidden sm:flex flex-wrap items-center gap-1.5">
+                {(Object.values(SAYAC_DURUM) as (typeof SAYAC_DURUM)[SayacDurum][]).map((d) => (
+                  <span
+                    key={d.durum}
+                    className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-semibold text-white"
+                    style={{ backgroundColor: d.color }}
+                  >
+                    <span>{d.icon}</span>
+                    {d.etiket}
+                  </span>
                 ))}
-              </select>
+              </div>
             </div>
           )}
         </div>
@@ -300,6 +513,8 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
                 <div className="px-6 py-3 bg-gray-50 dark:bg-gray-800/40 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
                   <span className="text-sm text-gray-500 dark:text-gray-400">
                     Toplam <strong className="text-gray-700 dark:text-gray-200">{rows.length}</strong> bağımsız bölüm
+                    <span className="mx-2 text-gray-300 dark:text-gray-600">|</span>
+                    Girilen sayaç: <strong className="text-emerald-600 dark:text-emerald-400">{girilenSayac}</strong>
                   </span>
                   {saved && (
                     <span className="text-sm text-emerald-600 flex items-center gap-1.5">
@@ -324,18 +539,22 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
                         <th className="px-4 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Oda Sayısı</th>
                         <th className="px-4 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Niteliği</th>
                         <th className="px-4 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-36">Sayaç Markası</th>
-                        <th className="px-4 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Sayaç No</th>
-                        <th className="px-4 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Sicil No</th>
-                        <th className="px-4 py-3 text-left text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Abone No</th>
+                        <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide w-32">Sayaç No</th>
+                        <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide w-28">Sicil No</th>
+                        <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide w-28">Abone No</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {sortedRows.map((row, idx) => (
+                      {sortedRows.map((row, idx) => {
+                        const highlighted = matchesHighlightSayac(row, highlightSayacId);
+                        const showAlarm = highlighted;
+                        return (
                         <tr
                           key={row.birim_no}
+                          data-highlight-birim={highlighted ? row.birim_no : undefined}
                           className={`border-b border-gray-50 dark:border-gray-800 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/40 ${
                             idx % 2 === 0 ? "" : "bg-gray-50/30 dark:bg-gray-900"
-                          }`}
+                          } ${showAlarm ? "sayac-highlight-row" : highlighted ? "bg-blue-light-50/70 dark:bg-blue-light-950/25" : ""}`}
                         >
                           {/* Bağımsız Bölüm No */}
                           <td className="px-4 py-2">
@@ -429,121 +648,73 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
                           </td>
 
                           {/* Sayaç No */}
-                          <td className="px-4 py-2">
+                          <td className="px-3 py-2">
                             <input
                               type="text"
                               value={row.sayac_id}
-                              placeholder="Örn: 02995735"
+                              placeholder="02995735"
                               onChange={(e) => updateRow(row.birim_no, "sayac_id", e.target.value)}
-                              className="w-full bg-transparent border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-brand-400 focus:bg-white dark:focus:bg-gray-800 rounded-md px-2.5 py-1.5 text-gray-800 dark:text-gray-200 text-sm focus:outline-none focus:ring-1 focus:ring-brand-400 transition placeholder-gray-300 dark:placeholder-gray-600"
+                              className={NUM_INPUT_CLASS}
                             />
                           </td>
 
-                          {/* Sicil No */}
-                          <td className="px-4 py-2">
+                          <td className="px-3 py-2">
                             <input
                               type="text"
                               value={row.sicil_no}
-                              placeholder="Örn: 641286"
+                              placeholder="641286"
                               onChange={(e) => updateRow(row.birim_no, "sicil_no", e.target.value)}
-                              className="w-full bg-transparent border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-brand-400 focus:bg-white dark:focus:bg-gray-800 rounded-md px-2.5 py-1.5 text-gray-800 dark:text-gray-200 text-sm focus:outline-none focus:ring-1 focus:ring-brand-400 transition placeholder-gray-300 dark:placeholder-gray-600"
+                              className={NUM_INPUT_CLASS}
                             />
                           </td>
 
-                          {/* Abone No */}
-                          <td className="px-4 py-2">
+                          <td className="px-3 py-2">
                             <input
                               type="text"
                               value={row.abone_no}
-                              placeholder="Örn: 462052"
+                              placeholder="462052"
                               onChange={(e) => updateRow(row.birim_no, "abone_no", e.target.value)}
-                              className="w-full bg-transparent border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-brand-400 focus:bg-white dark:focus:bg-gray-800 rounded-md px-2.5 py-1.5 text-gray-800 dark:text-gray-200 text-sm focus:outline-none focus:ring-1 focus:ring-brand-400 transition placeholder-gray-300 dark:placeholder-gray-600"
+                              className={NUM_INPUT_CLASS}
                             />
                           </td>
                         </tr>
-                      ))}
+                        );
+                      })}
                     </tbody>
                   </table>
                 </div>
               </>
             ) : (
-              /* Daireler Grid View grouped and colored by floor */
-              <div className="flex flex-col gap-6 bg-gray-50/30 dark:bg-gray-950/20">
-                {sortedFloorKeys.map((floorKey, floorIdx) => {
+              /* Daireler Grid View grouped by floor */
+              <div className="flex flex-col gap-2 p-2 sm:p-3">
+                {sortedFloorKeys.map((floorKey) => {
                   const floorRows = groupedByFloor[floorKey];
-                  const floorWeight = getFloorWeight(floorKey);
-                  // Alternating background colors for each floor for readability
-                  const isEvenFloor = floorWeight % 2 === 0;
-                  const floorBg = isEvenFloor ? "bg-white dark:bg-gray-900" : "bg-gray-50/40 dark:bg-gray-800/10";
-                  
+                  const floorDolu = floorRows.filter((r) => r.sayac_id.trim()).length;
+
                   return (
-                    <div 
-                      key={floorKey} 
-                      className={`p-6 border-b border-gray-100 dark:border-gray-800/50 last:border-b-0 ${floorBg}`}
+                    <section
+                      key={floorKey}
+                      className="overflow-hidden rounded-lg border border-gray-200/80 bg-white dark:border-gray-800 dark:bg-gray-900"
                     >
-                      {/* Floor Title Header */}
-                      <div className="flex items-center gap-2 mb-4 border-b border-gray-100 dark:border-gray-800 pb-2">
-                        <span className="text-base">🏢</span>
-                        <h3 className="text-sm font-extrabold text-gray-800 dark:text-gray-100 uppercase tracking-wider">
+                      <div className="flex items-center gap-2 border-b border-gray-100 px-2.5 py-1 dark:border-gray-800">
+                        <h3 className="min-w-0 flex-1 truncate text-[10px] font-semibold uppercase tracking-wide text-gray-800 dark:text-gray-100">
                           {floorKey}
                         </h3>
-                        <span className="ml-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-brand-50 text-brand-600 dark:bg-brand-950/40 dark:text-brand-400">
-                          {floorRows.length} Bağımsız Bölüm
+                        <span className="shrink-0 text-[9px] font-medium tabular-nums text-gray-600 dark:text-gray-400">
+                          {floorDolu}/{floorRows.length}
                         </span>
                       </div>
 
-                      {/* Cards Grid */}
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5">
-                        {floorRows.map((row) => {
-                          const durum = row.sayac_durum || classifySayacDurum(row.sayac_id);
-                          const meta = SAYAC_DURUM[durum];
-                          const borderClass =
-                            durum === "okunmadi" || durum === "hatali"
-                              ? "border-red-400/60 dark:border-red-500/40"
-                              : durum === "eksik"
-                                ? "border-amber-400/60 dark:border-amber-500/40"
-                                : "border-emerald-500/20 dark:border-emerald-500/10";
-                          return (
-                          <div
+                      <div className="grid grid-cols-2 gap-1.5 p-1.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8">
+                        {floorRows.map((row) => (
+                          <SayacUnitCard
                             key={row.birim_no}
-                            className={`bg-white dark:bg-gray-900 border ${borderClass} rounded-xl p-4 flex flex-col justify-between shadow-xs hover:shadow-md transition-all hover:-translate-y-0.5`}
-                          >
-                            {/* Card Top */}
-                            <div className="flex items-center justify-between gap-1.5 text-xs font-bold text-gray-700 dark:text-gray-300">
-                              <span className="flex items-center gap-1.5">
-                                <span className="h-2 w-2 rounded-full" style={{ backgroundColor: meta.color }}></span>
-                                {row.kullanilis_sekli} {row.kapi_no || `#${row.birim_no}`}
-                              </span>
-                              {durum !== "gecerli" && (
-                                <span className="text-[9px] px-1.5 py-0.5 rounded font-bold text-white" style={{ backgroundColor: meta.color }}>
-                                  {meta.etiket}
-                                </span>
-                              )}
-                            </div>
-
-                            {/* Card Middle */}
-                            <div className="my-4 text-center">
-                              <div className="text-[10px] text-gray-400 dark:text-gray-500 font-semibold tracking-wider">SAYAÇ NO</div>
-                              <div className="text-sm font-bold text-gray-800 dark:text-gray-100 mt-0.5 tracking-wider font-mono">
-                                {row.sayac_id || "GİRİLMEMİŞ"}
-                              </div>
-                              
-                              <div className="text-[10px] text-gray-400 dark:text-gray-500 font-semibold tracking-wider mt-2.5">ABONE NO</div>
-                              <div className="text-base font-extrabold text-brand-500 dark:text-brand-400 mt-0.5 font-mono">
-                                {row.abone_no || "YOK"}
-                              </div>
-                            </div>
-
-                            {/* Card Bottom */}
-                            <div className="mt-1 pt-2.5 border-t border-gray-100 dark:border-gray-800/80 flex items-center justify-between text-[10px] text-gray-400 dark:text-gray-500 font-medium">
-                              <span className="font-semibold text-gray-500 dark:text-gray-400">{row.kat || "KAT BELİRSİZ"}</span>
-                              <span>{row.sayac_markasi || "Baylan"}</span>
-                            </div>
-                          </div>
-                          );
-                        })}
+                            row={row}
+                            highlighted={matchesHighlightSayac(row, highlightSayacId)}
+                          />
+                        ))}
                       </div>
-                    </div>
+                    </section>
                   );
                 })}
               </div>
@@ -554,21 +725,24 @@ export default function SayacModal({ building, onClose }: SayacModalProps) {
 
       {/* Footer */}
       {!loading && !noBinaInfo && rows.length > 0 && (
-        <div className="px-6 py-4 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between shrink-0 bg-white dark:bg-gray-900">
-          <span className="text-xs text-gray-400 dark:text-gray-500">
-            Değişikliklerin kaydedilmesi için Kaydet butonuna basın.
-          </span>
-          <div className="flex gap-3">
-            <button onClick={onClose} className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+        <div className="px-5 py-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between shrink-0 bg-white dark:bg-gray-900">
+          <span className="text-[11px] text-gray-400">Kaydetmek için Kaydet&apos;e basın.</span>
+          <div className="flex gap-2">
+            <button
+              onClick={onClose}
+              className="px-3 py-1.5 rounded-lg text-xs font-medium text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+            >
               Kapat
             </button>
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-2"
+              className="px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-1.5"
             >
-              {saving && <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent inline-block"></span>}
-              💾 Kaydet
+              {saving && (
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent inline-block" />
+              )}
+              {saving ? "Kaydediliyor..." : "Kaydet"}
             </button>
           </div>
         </div>

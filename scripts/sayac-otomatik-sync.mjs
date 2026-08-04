@@ -13,7 +13,21 @@ const DB_PATH = join(ROOT, "data/binalar.db");
 const STATE_PATH = join(ROOT, "data/sync-state.json");
 const SEARCH_DIRS = ["C:/Users/Surface/Downloads", join(ROOT, "data")];
 
-const FILE_KEYS = ["etap5", "etap4", "ada49", "ada3750ab", "ada3750e", "ada41134", "ada46", "ada53", "sire"];
+const FILE_KEYS = ["etap5", "etap4", "ada49", "ada3750ab", "ada3750e", "ada41134", "ada46", "ada51", "ada53", "sire"];
+
+/** Kullanıcının belirttiği güncel Excel dosyaları (varsa öncelikli kullanılır) */
+const EXPLICIT_FILES = {
+  etap5: "C:/Users/Surface/Downloads/5. ETAP SAYAÇ NUMARALARI (1) (2).xlsx",
+  etap4: "C:/Users/Surface/Downloads/4.ETAP TS SAYAÇ NO (3).xlsx",
+  ada49: "C:/Users/Surface/Downloads/49 ADA 301 ADET  MASKİ ABONELİK (4).xlsx",
+  ada3750ab: "C:/Users/Surface/Downloads/37-50 ADA A-B BLOK 344 ADETMASKİ ABONELİK (2).xlsx",
+  ada3750e: "C:/Users/Surface/Downloads/37-50 ADA E BLOK 72 ADET MASKİ ABONELİK (5).XLS",
+  ada41134: "C:/Users/Surface/Downloads/41-134   341 ADET  maski abonelik (2).xlsx",
+  ada46: "C:/Users/Surface/Downloads/46 ADA KONUT MASKİ ABONELERİ (2).xlsx",
+  ada51: "C:/Users/Surface/Downloads/51 ADA MASKİ ABONELİK.xlsx",
+  ada53: "C:/Users/Surface/Downloads/53 ADA MASKİ ABONELERİ (2).xlsx",
+  sire: "C:/Users/Surface/Downloads/ŞİRE PAZARI MASKİ ABONELİKLERİ (2).xlsx",
+};
 
 const SHEET_5ETAP = {
   GB1: 1788, GB2: 1787, GB3: 1790, GB4: 1804, GB5: 1075, GB6: 1800, GB7: 1795,
@@ -66,6 +80,20 @@ const BLOCK_TARGETS = {
   "37-50 E": { "E BLOK": [1736, 1910] },
   "46 ADA": { _all: [1939] },
   SIRE: { _all: [1937] },
+};
+
+/** Dogrulanmis bina eslesmeleri (kopya poligonlari atlar) */
+const VERIFIED_51ADA = {
+  "A BLOK": 1723,
+  "B BLOK": 1749,
+  "C BLOK": 2016,
+  OTOPARK: 2600,
+};
+const VERIFIED_SIRE = {
+  "A BLOK": 1935,
+  "B BLOK": 1938,
+  "C BLOK": 1936,
+  "D BLOK": 1937,
 };
 
 const ADA_PARSel_MAP = {
@@ -139,9 +167,16 @@ const FILE_FINDERS = {
   ada3750e: () => findExcel((f) => f.includes("37-50") && /E BLOK/i.test(f)),
   ada41134: () => findExcel((f) => f.includes("41-134")),
   ada46: () => findExcel((f) => f.includes("46 ADA")),
+  ada51: () => findExcel((f) => f.includes("51 ADA")),
   ada53: () => findExcel((f) => f.includes("53 ADA")),
   sire: () => findExcel((f) => /ŞİRE|SIRE|İRE/i.test(f) && /PAZAR/i.test(f)),
 };
+
+function resolveFilePath(key) {
+  const explicit = EXPLICIT_FILES[key];
+  if (explicit && existsSync(explicit)) return explicit;
+  return FILE_FINDERS[key]?.() || null;
+}
 
 function loadState() {
   try {
@@ -175,6 +210,13 @@ function filesChanged(current, prev) {
 
 function buildBlokResolver(db) {
   const map = new Map();
+
+  for (const [blok, binaId] of Object.entries(VERIFIED_51ADA)) {
+    map.set(`51|${normBlok(blok)}`, { binaId, score: 20000 });
+  }
+  for (const [blok, binaId] of Object.entries(VERIFIED_SIRE)) {
+    map.set(`ŞİRE|${normBlok(blok)}`, { binaId, score: 20000 });
+  }
 
   for (const r of db.prepare(`
     SELECT bb.ada_parsel, s.blok_no, s.bina_id,
@@ -212,6 +254,14 @@ function buildBlokResolver(db) {
     const m = String(r.value).match(/53 ADA\s+(.+)/i);
     if (m) {
       const key = `53|${normBlok(m[1])}`;
+      if (!map.has(key)) map.set(key, { binaId: r.id, score: 0 });
+    }
+  }
+
+  for (const r of db.prepare(`SELECT id, value FROM binalar WHERE value LIKE '51 ADA%'`).all()) {
+    const m = String(r.value).match(/51 ADA\s+(.+)/i);
+    if (m) {
+      const key = `51|${normBlok(m[1])}`;
       if (!map.has(key)) map.set(key, { binaId: r.id, score: 0 });
     }
   }
@@ -363,14 +413,21 @@ function parseBagimsizBirim(path, adaParsel, resolveBina, stats) {
   const wb = XLSX.read(readFileSync(path), { type: "buffer" });
   const sheet = pickDataSheet(wb);
   const data = XLSX.utils.sheet_to_json(wb.Sheets[sheet], { header: 1, defval: "" });
+  const headerIdx = findHeaderRow(data);
+  const headerRow = data[headerIdx] || [];
+  const cBlok = colIndex(headerRow, [/BLOK/]);
+  const cKapi = colIndex(headerRow, [/BAGIMSIZ/, /KAPI/, /BOLUM/]);
+  const cTip = colIndex(headerRow, [/NITEL/, /KULLAN/]);
+  const cSayac = colIndex(headerRow, [/SAYAC/, /UZAKTAN/]);
   const rows = [];
-  for (let r = 3; r < data.length; r++) {
-    const blok = String(data[r][0] ?? "").trim();
-    if (!isBlokRow(blok)) continue;
-    const daire = String(data[r][1] ?? "").trim();
-    const tip = String(data[r][4] ?? "DAİRE").trim() || "DAİRE";
-    const parsed = parseSayacCell(data[r][5]);
-    if (!parsed) continue;
+  for (let r = headerIdx + 1; r < data.length; r++) {
+    const row = data[r];
+    const blok = String(row[cBlok >= 0 ? cBlok : 0] ?? "").trim();
+    if (!blok || !isBlokRow(blok)) continue;
+    const daire = String(row[cKapi >= 0 ? cKapi : 1] ?? "").trim();
+    const tip = cTip >= 0 ? String(row[cTip] ?? "DAİRE").trim() || "DAİRE" : "DAİRE";
+    const parsed = parseSayacCell(cSayac >= 0 ? row[cSayac] : row[5]);
+    if (!daire || !parsed) continue;
     const binaId = resolveBina(adaParsel, blok);
     if (!binaId) {
       stats.unmapped++;
@@ -412,9 +469,12 @@ function normHeader(s) {
 }
 
 function findHeaderRow(data) {
-  for (let i = 0; i < Math.min(8, data.length); i++) {
+  for (let i = 0; i < Math.min(12, data.length); i++) {
     const row = data[i].map((c) => normHeader(c));
-    if (row.some((c) => c.includes("KAPI"))) return i;
+    const cSayac = colIndex(row, [/SAYAC/, /UZAKTAN/]);
+    const cBlok = colIndex(row, [/BLOK/]);
+    const cKapi = colIndex(row, [/BAGIMSIZ/, /KAPI/, /BOLUM/]);
+    if (cSayac >= 0 && (cBlok >= 0 || cKapi >= 0)) return i;
   }
   return 2;
 }
@@ -500,6 +560,12 @@ function upsertSayac(db, rec, stats) {
     WHERE bina_id = ? AND REPLACE(REPLACE(REPLACE(UPPER(TRIM(sayac_id)),'2025-',''),'-',''),' ','') = ?
     LIMIT 1
   `);
+  const findGlobalSayac = db.prepare(`
+    SELECT bina_id, birim_no, sayac_id FROM sayac
+    WHERE TRIM(COALESCE(sayac_id,'')) != ''
+      AND REPLACE(REPLACE(REPLACE(UPPER(TRIM(sayac_id)),'2025-',''),'-',''),' ','') = ?
+    LIMIT 1
+  `);
   const nextBirim = db.prepare(`SELECT COALESCE(MAX(birim_no),0)+1 n FROM sayac WHERE bina_id=?`);
   const insert = db.prepare(`
     INSERT INTO sayac (bina_id, birim_no, blok_no, kat, kapi_no, kullanilis_sekli, sayac_id, sayac_durum, updated_at)
@@ -515,12 +581,27 @@ function upsertSayac(db, rec, stats) {
 
   const daire = String(rec.daire ?? "").trim();
   const sayacKey = normSayacKey(rec.sayacId);
-  let existing =
-    find.get(rec.binaId, daire, rec.blok, rec.tip) ||
-    findBlok.get(rec.binaId, daire, rec.blok);
+  const tip = String(rec.tip ?? "").trim();
+  let existing = find.get(rec.binaId, daire, rec.blok, rec.tip);
 
   if (!existing && sayacKey) {
     existing = findBySayac.get(rec.binaId, sayacKey);
+  }
+
+  // Ayni dairede birden fazla sayac tipi (5. ETAP sicak/soguk) icin blok eslesmesi kullanma
+  if (!existing && !tip) {
+    existing = findBlok.get(rec.binaId, daire, rec.blok);
+  }
+
+  if (!existing && sayacKey && rec.durum === "gecerli") {
+    const global = findGlobalSayac.get(sayacKey);
+    if (global) {
+      if (global.bina_id !== rec.binaId) {
+        stats.skipped_duplicate_global = (stats.skipped_duplicate_global || 0) + 1;
+        return;
+      }
+      existing = global;
+    }
   }
 
   if (existing && rec.durum !== "gecerli" && classify(existing.sayac_id) === "gecerli") {
@@ -549,12 +630,68 @@ function applyRecords(records, stats, counterKey) {
   }
 }
 
+function ensureBinaBilgiForSayacli(db, stats) {
+  const targets = db
+    .prepare(
+      `
+    SELECT
+      s.bina_id,
+      COUNT(*) AS sayac_sayisi,
+      MAX(bb.ada_parsel) AS ada_parsel
+    FROM sayac s
+    LEFT JOIN bina_bilgi bb ON bb.bina_id = s.bina_id
+    WHERE TRIM(COALESCE(s.sayac_id, '')) != ''
+    GROUP BY s.bina_id
+    HAVING NOT EXISTS (SELECT 1 FROM bina_bilgi bi WHERE bi.bina_id = s.bina_id)
+  `
+    )
+    .all();
+
+  const insert = db.prepare(`
+    INSERT INTO bina_bilgi (bina_id, kat_sayisi, daire_sayisi, ortak_alan_sayisi, toplam_bagımsız_bolum,
+      has_zemin, ada_parsel, sokak, dis_kapi_no, updated_at)
+    VALUES (?, 0, ?, 0, ?, 0, ?, '', '', datetime('now'))
+  `);
+
+  for (const row of targets) {
+    const n = row.sayac_sayisi || 1;
+    insert.run(row.bina_id, n, n, row.ada_parsel || "");
+    stats.bina_bilgi_created = (stats.bina_bilgi_created || 0) + 1;
+  }
+
+  const expand = db
+    .prepare(
+      `
+    SELECT bb.bina_id, bb.toplam_bagımsız_bolum AS kapasite, COUNT(s.id) AS sayac_sayisi
+    FROM bina_bilgi bb
+    JOIN sayac s ON s.bina_id = bb.bina_id AND TRIM(COALESCE(s.sayac_id, '')) != ''
+    GROUP BY bb.bina_id
+    HAVING sayac_sayisi > kapasite
+  `
+    )
+    .all();
+
+  const upd = db.prepare(`
+    UPDATE bina_bilgi SET
+      daire_sayisi = ?,
+      toplam_bagımsız_bolum = ?,
+      updated_at = datetime('now')
+    WHERE bina_id = ?
+  `);
+
+  for (const row of expand) {
+    const cap = Math.max(row.kapasite || 0, row.sayac_sayisi);
+    upd.run(cap, cap, row.bina_id);
+    stats.bina_bilgi_expanded = (stats.bina_bilgi_expanded || 0) + 1;
+  }
+}
+
 let dbRef = null;
 
 function runSync(force = false) {
   const files = {};
   for (const key of FILE_KEYS) {
-    files[key] = fileFingerprint(FILE_FINDERS[key]());
+    files[key] = fileFingerprint(resolveFilePath(key));
   }
 
   const prevState = loadState();
@@ -583,6 +720,7 @@ function runSync(force = false) {
     updated: 0,
     unchanged: 0,
     skipped_protected: 0,
+    skipped_duplicate_global: 0,
     unmapped: 0,
     etap5_okunan: 0,
     etap4_okunan: 0,
@@ -591,9 +729,12 @@ function runSync(force = false) {
     ada3750e_okunan: 0,
     ada41134_okunan: 0,
     ada46_okunan: 0,
+    ada51_okunan: 0,
     ada53_okunan: 0,
     sire_okunan: 0,
     sorun_aktarildi: 0,
+    bina_bilgi_created: 0,
+    bina_bilgi_expanded: 0,
     counts: { gecerli: 0, okunmadi: 0, eksik: 0, hatali: 0 },
   };
 
@@ -636,12 +777,17 @@ function runSync(force = false) {
     if (files.ada46?.path) {
       applyRecords(parseAdaSheets(files.ada46.path, "46", resolveBina, stats), stats, "ada46_okunan");
     }
+    if (files.ada51?.path) {
+      applyRecords(parseBagimsizBirim(files.ada51.path, "51", resolveBina, stats), stats, "ada51_okunan");
+    }
     if (files.ada53?.path) {
       applyRecords(parseAdaSheets(files.ada53.path, "53", resolveBina, stats), stats, "ada53_okunan");
     }
     if (files.sire?.path) {
       applyRecords(parseSire(files.sire.path, resolveBina, stats), stats, "sire_okunan");
     }
+
+    ensureBinaBilgiForSayacli(db, stats);
 
     const rows = db.prepare(`SELECT id, sayac_id FROM sayac`).all();
     const upd = db.prepare(`UPDATE sayac SET sayac_durum = ? WHERE id = ?`);

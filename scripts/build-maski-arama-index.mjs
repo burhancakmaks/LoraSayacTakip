@@ -11,7 +11,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_PATH = join(ROOT, "data/maski-arama-index.json");
 const SEARCH_DIRS = ["C:/Users/Surface/Downloads", join(ROOT, "data")];
 
-const FILE_KEYS = ["etap5", "etap4", "ada49", "ada3750ab", "ada3750e", "ada41134", "ada46", "ada53", "sire"];
+const FILE_KEYS = ["etap5", "etap4", "ada49", "ada3750ab", "ada3750e", "ada41134", "ada46", "ada51", "ada53", "sire"];
 
 const KAYNAK_LABELS = {
   etap5: "5. ETAP",
@@ -21,8 +21,22 @@ const KAYNAK_LABELS = {
   ada3750e: "37-50 E",
   ada41134: "41-134",
   ada46: "46 ADA",
+  ada51: "51 ADA",
   ada53: "53 ADA",
   sire: "ŞİRE Pazarı",
+};
+
+const EXPLICIT_FILES = {
+  etap5: "C:/Users/Surface/Downloads/5. ETAP SAYAÇ NUMARALARI (1) (2).xlsx",
+  etap4: "C:/Users/Surface/Downloads/4.ETAP TS SAYAÇ NO (3).xlsx",
+  ada49: "C:/Users/Surface/Downloads/49 ADA 301 ADET  MASKİ ABONELİK (4).xlsx",
+  ada3750ab: "C:/Users/Surface/Downloads/37-50 ADA A-B BLOK 344 ADETMASKİ ABONELİK (2).xlsx",
+  ada3750e: "C:/Users/Surface/Downloads/37-50 ADA E BLOK 72 ADET MASKİ ABONELİK (5).XLS",
+  ada41134: "C:/Users/Surface/Downloads/41-134   341 ADET  maski abonelik (2).xlsx",
+  ada46: "C:/Users/Surface/Downloads/46 ADA KONUT MASKİ ABONELERİ (2).xlsx",
+  ada51: "C:/Users/Surface/Downloads/51 ADA MASKİ ABONELİK.xlsx",
+  ada53: "C:/Users/Surface/Downloads/53 ADA MASKİ ABONELERİ (2).xlsx",
+  sire: "C:/Users/Surface/Downloads/ŞİRE PAZARI MASKİ ABONELİKLERİ (2).xlsx",
 };
 
 const COLS_5ETAP = [
@@ -53,9 +67,16 @@ const FILE_FINDERS = {
   ada3750e: () => findExcel((f) => f.includes("37-50") && /E BLOK/i.test(f)),
   ada41134: () => findExcel((f) => f.includes("41-134")),
   ada46: () => findExcel((f) => f.includes("46 ADA")),
+  ada51: () => findExcel((f) => f.includes("51 ADA")),
   ada53: () => findExcel((f) => f.includes("53 ADA")),
   sire: () => findExcel((f) => /ŞİRE|SIRE|İRE/i.test(f) && /PAZAR/i.test(f)),
 };
+
+function resolveFilePath(key) {
+  const explicit = EXPLICIT_FILES[key];
+  if (explicit && existsSync(explicit)) return explicit;
+  return FILE_FINDERS[key]?.() || null;
+}
 
 function fileMeta(path) {
   if (!path || !existsSync(path)) return null;
@@ -116,9 +137,12 @@ function pickDataSheet(wb, preferCarsaf = false) {
 }
 
 function findHeaderRow(data) {
-  for (let i = 0; i < Math.min(8, data.length); i++) {
+  for (let i = 0; i < Math.min(12, data.length); i++) {
     const row = data[i].map((c) => normHeader(c));
-    if (row.some((c) => c.includes("KAPI") || c.includes("SAYAC"))) return i;
+    const cSayac = colIndex(row, [/SAYAC/, /UZAKTAN/]);
+    const cBlok = colIndex(row, [/BLOK/]);
+    const cKapi = colIndex(row, [/BAGIMSIZ/, /KAPI/, /BOLUM/]);
+    if (cSayac >= 0 && (cBlok >= 0 || cKapi >= 0)) return i;
   }
   return 2;
 }
@@ -198,17 +222,26 @@ function parseBagimsizBirim(path, kaynak, dosya, ada) {
   const wb = XLSX.read(readFileSync(path), { type: "buffer" });
   const sheet = pickDataSheet(wb);
   const data = XLSX.utils.sheet_to_json(wb.Sheets[sheet], { header: 1, defval: "" });
-  const title = String(data[0]?.[0] ?? "").trim();
-  const adresLine = String(data[1]?.[0] ?? "").trim();
+  const title = String(data[0]?.[0] ?? data[0]?.[1] ?? "").trim();
+  const adresLine = String(data[1]?.[0] ?? data[1]?.[1] ?? "").trim();
   const adres = [title, adresLine].filter(Boolean).join(" | ");
+  const headerIdx = findHeaderRow(data);
+  const headerRow = data[headerIdx] || [];
+  const cBlok = colIndex(headerRow, [/BLOK/]);
+  const cKapi = colIndex(headerRow, [/BAGIMSIZ/, /KAPI/, /BOLUM/]);
+  const cKat = colIndex(headerRow, [/KAT/]);
+  const cTip = colIndex(headerRow, [/NITEL/, /KULLAN/]);
+  const cSayac = colIndex(headerRow, [/SAYAC/, /UZAKTAN/]);
+  const cAbone = colIndex(headerRow, [/ABONE/]);
   const records = [];
-  for (let r = 3; r < data.length; r++) {
-    const blok = String(data[r][0] ?? "").trim();
-    const kapi = String(data[r][1] ?? "").trim();
-    const kat = String(data[r][3] ?? "").trim();
-    const nitelik = String(data[r][4] ?? "").trim();
-    const sayac = String(data[r][5] ?? "").trim();
-    const abone = String(data[r][6] ?? "").trim();
+  for (let r = headerIdx + 1; r < data.length; r++) {
+    const row = data[r];
+    const blok = String(row[cBlok >= 0 ? cBlok : 0] ?? "").trim();
+    const kapi = String(row[cKapi >= 0 ? cKapi : 1] ?? "").trim();
+    const kat = cKat >= 0 ? String(row[cKat] ?? "").trim() : "";
+    const nitelik = cTip >= 0 ? String(row[cTip] ?? "").trim() : "";
+    const sayac = String(cSayac >= 0 ? row[cSayac] : row[5] ?? "").trim();
+    const abone = cAbone >= 0 ? String(row[cAbone] ?? "").trim() : "";
     if (!blok || !kapi) continue;
     pushRecord(records, {
       kaynak,
@@ -346,6 +379,7 @@ const PARSERS = {
   ada3750e: (p, k, d) => parseBagimsizBirim(p, k, d, "37-50"),
   ada41134: (p, k, d) => parseBagimsizBirim(p, k, d, "41-134"),
   ada46: (p, k, d) => parseAdaSheets(p, k, d, "46"),
+  ada51: (p, k, d) => parseBagimsizBirim(p, k, d, "51"),
   ada53: (p, k, d) => parseAdaSheets(p, k, d, "53"),
   sire: (p, k, d) => parseSire(p, k, d),
 };
@@ -356,7 +390,7 @@ function main() {
   const records = [];
 
   for (const key of FILE_KEYS) {
-    const path = FILE_FINDERS[key]();
+    const path = resolveFilePath(key);
     files[key] = fileMeta(path);
     const kaynak = KAYNAK_LABELS[key];
     const dosya = files[key]?.name || "";

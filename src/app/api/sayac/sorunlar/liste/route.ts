@@ -131,8 +131,10 @@ export async function GET(request: NextRequest) {
       )
       .all() as { durum: SayacDurum; c: number }[];
 
-    const ozetMap = { eksik: 0, okunmadi: 0, hatali: 0 };
-    for (const row of ozetRows) ozetMap[row.durum] = row.c;
+    const ozetMap: Record<"eksik" | "okunmadi" | "hatali", number> = { eksik: 0, okunmadi: 0, hatali: 0 };
+    for (const row of ozetRows) {
+      if (row.durum in ozetMap) ozetMap[row.durum as keyof typeof ozetMap] = row.c;
+    }
 
     const ozet = {
       toplam: ozetMap.eksik + ozetMap.okunmadi + ozetMap.hatali,

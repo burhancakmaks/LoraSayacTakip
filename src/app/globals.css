@@ -750,3 +750,127 @@ span.flatpickr-weekday,
   opacity: 0.8;
   cursor: grabbing; /* Changes the cursor to indicate dragging */
 }
+
+@keyframes sayacPinPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes sayacRadarPulse {
+  0% {
+    transform: scale(0.45);
+    opacity: 0.75;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes sayacHighlightBlink {
+  0%,
+  49% {
+    opacity: 0;
+  }
+  50%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes sayacAlarmGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(239, 68, 68, 0.45),
+      0 0 16px rgba(239, 68, 68, 0.35);
+  }
+  50% {
+    box-shadow:
+      0 0 0 5px rgba(239, 68, 68, 0),
+      0 0 24px rgba(239, 68, 68, 0.55);
+  }
+}
+
+.sayac-highlight-bg {
+  background: rgba(186, 230, 253, 0.75);
+  animation: sayacHighlightBlink 1.1s linear infinite;
+}
+
+.dark .sayac-highlight-bg {
+  background: rgba(11, 165, 236, 0.22);
+}
+
+.sayac-highlight-row > td {
+  animation: sayacHighlightBlinkBg 1.1s linear infinite;
+}
+
+@keyframes sayacHighlightBlinkBg {
+  0%,
+  49% {
+    background-color: transparent;
+  }
+  50%,
+  100% {
+    background-color: rgba(186, 230, 253, 0.75);
+  }
+}
+
+.dark .sayac-highlight-row > td {
+  animation: sayacHighlightBlinkBgDark 1.1s linear infinite;
+}
+
+@keyframes sayacHighlightBlinkBgDark {
+  0%,
+  49% {
+    background-color: transparent;
+  }
+  50%,
+  100% {
+    background-color: rgba(11, 165, 236, 0.22);
+  }
+}
+
+.sayac-alarm-strip {
+  animation: sayacAlarmGlow 1.6s ease-in-out infinite;
+}
+
+/* Harita bina popup — MASKİ etiket stili */
+.bina-map-popup-wrapper .leaflet-popup-content-wrapper {
+  border-radius: 16px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid rgba(185, 230, 254, 0.6);
+  box-shadow:
+    0 12px 24px -4px rgba(16, 24, 40, 0.12),
+    0 4px 8px -2px rgba(16, 24, 40, 0.06);
+}
+
+.bina-map-popup-wrapper .leaflet-popup-content {
+  margin: 0;
+  width: 270px !important;
+  line-height: 1.4;
+}
+
+.bina-map-popup-wrapper .leaflet-popup-tip {
+  border-top-color: #fff;
+}
+
+.bina-map-popup-btn {
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.bina-map-popup-btn:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+.bina-map-popup-btn:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}

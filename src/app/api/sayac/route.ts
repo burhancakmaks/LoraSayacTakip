@@ -169,7 +169,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    return NextResponse.json({ success: true, saved: rows.length, bildirimler: yeniBildirimler });
+    const sayacStats = db
+      .prepare(
+        `
+      SELECT
+        COUNT(*) AS sayac_kayit,
+        SUM(CASE WHEN TRIM(COALESCE(sayac_id, '')) != '' THEN 1 ELSE 0 END) AS sayac_count
+      FROM sayac
+      WHERE bina_id = ?
+    `
+      )
+      .get(bina_id) as { sayac_kayit: number; sayac_count: number };
+
+    return NextResponse.json({
+      success: true,
+      saved: rows.length,
+      sayac_kayit: sayacStats.sayac_kayit,
+      sayac_count: sayacStats.sayac_count,
+      bildirimler: yeniBildirimler,
+    });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

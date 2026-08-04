@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import React from "react";
+import React, { Suspense } from "react";
 import { NotificationProvider } from "@/context/NotificationContext";
 
 // Dynamic import with ssr: false is required since Leaflet relies on browser window global objects.
@@ -29,7 +29,18 @@ export default function MapPage() {
         content="SQLite veritabanından alınan Malatya ili binaları ve sayaç aboneliklerinin interaktif harita gösterimi." 
       />
       <NotificationProvider>
-        <MapComponent />
+        <Suspense
+          fallback={
+            <div className="flex h-full w-full flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
+              <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-500 border-t-transparent" />
+              <p className="mt-4 font-semibold text-gray-700 dark:text-gray-200">
+                Harita hazırlanıyor...
+              </p>
+            </div>
+          }
+        >
+          <MapComponent />
+        </Suspense>
       </NotificationProvider>
     </div>
   );

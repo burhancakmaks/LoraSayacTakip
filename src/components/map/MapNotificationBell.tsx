@@ -7,7 +7,7 @@ import { SAYAC_DURUM, type SayacDurum } from "@/lib/sayac-durum";
 function tipStyle(tip: string) {
   if (tip === "duzeltildi") return { bg: "bg-emerald-500", label: "Düzeltildi" };
   if (tip in SAYAC_DURUM) return { bg: "", label: SAYAC_DURUM[tip as SayacDurum].etiket, color: SAYAC_DURUM[tip as SayacDurum].color };
-  return { bg: "bg-brand-500", label: tip };
+  return { bg: "bg-blue-light-500", label: tip };
 }
 
 function timeAgo(iso: string) {
@@ -38,27 +38,27 @@ export default function MapNotificationBell({ onBinaClick, onToggle }: MapNotifi
   };
 
   return (
-    <div className="relative shrink-0">
+    <div className="relative shrink-0 overflow-visible">
       {panelOpen && (
-        <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 max-h-80 flex flex-col bg-white/98 dark:bg-gray-900/98 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-800 backdrop-blur-md overflow-hidden z-1000">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-800 shrink-0">
+        <div className="absolute right-0 top-full z-[1001] mt-1.5 flex max-h-80 w-80 flex-col overflow-hidden rounded-2xl border border-blue-light-200/70 bg-white/98 shadow-2xl backdrop-blur-md dark:border-blue-light-900/40 dark:bg-gray-900/98 sm:w-96">
+          <div className="flex shrink-0 items-center justify-between border-b border-blue-light-100 px-4 py-3 dark:border-blue-light-900/30">
             <div>
               <h3 className="text-sm font-bold text-gray-900 dark:text-white">Bildirimler</h3>
-              <p className="text-[10px] text-gray-400">Anlık sayaç uyarıları</p>
+              <p className="text-[10px] text-gray-500 dark:text-gray-400">Anlık sayaç uyarıları</p>
             </div>
             {unread > 0 && (
               <button
                 onClick={markAllRead}
-                className="text-[10px] font-semibold text-brand-600 dark:text-brand-400 hover:underline shrink-0"
+                className="shrink-0 text-[10px] font-semibold text-blue-light-700 hover:underline dark:text-blue-light-400"
               >
                 Tümünü oku
               </button>
             )}
           </div>
 
-          <div className="overflow-y-auto flex-1">
+          <div className="flex-1 overflow-y-auto">
             {items.length === 0 ? (
-              <div className="p-6 text-center text-xs text-gray-400">Henüz bildirim yok.</div>
+              <div className="p-6 text-center text-xs text-gray-500">Henüz bildirim yok.</div>
             ) : (
               items.map((item) => {
                 const style = tipStyle(item.tip);
@@ -66,21 +66,21 @@ export default function MapNotificationBell({ onBinaClick, onToggle }: MapNotifi
                   <button
                     key={item.id}
                     onClick={() => handleItemClick(item)}
-                    className={`w-full text-left px-4 py-3 border-b border-gray-50 dark:border-gray-800/80 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition flex gap-3 ${
-                      !item.okundu ? "bg-brand-50/40 dark:bg-brand-500/5" : ""
+                    className={`flex w-full gap-3 border-b border-blue-light-50 px-4 py-3 text-left transition last:border-0 hover:bg-blue-light-50/60 dark:border-blue-light-900/20 dark:hover:bg-blue-light-950/30 ${
+                      !item.okundu ? "bg-blue-light-50/40 dark:bg-blue-light-950/20" : ""
                     }`}
                   >
                     <span
-                      className={`shrink-0 w-2 h-2 rounded-full mt-1.5 ${style.bg || ""}`}
+                      className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${style.bg || ""}`}
                       style={style.color ? { backgroundColor: style.color } : undefined}
                     />
-                    <span className="flex-1 min-w-0">
+                    <span className="min-w-0 flex-1">
                       <span className="flex items-center gap-2">
                         <span className="text-xs font-semibold text-gray-800 dark:text-gray-200">{item.baslik}</span>
-                        {!item.okundu && <span className="w-1.5 h-1.5 rounded-full bg-brand-500 shrink-0" />}
+                        {!item.okundu && <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-blue-light-500" />}
                       </span>
-                      <span className="text-[11px] text-gray-500 dark:text-gray-400 block mt-0.5 truncate">{item.mesaj}</span>
-                      <span className="text-[10px] text-gray-400 mt-1 block">{timeAgo(item.created_at)}</span>
+                      <span className="mt-0.5 block truncate text-[11px] text-gray-500 dark:text-gray-400">{item.mesaj}</span>
+                      <span className="mt-1 block text-[10px] text-gray-400">{timeAgo(item.created_at)}</span>
                     </span>
                   </button>
                 );
@@ -91,20 +91,25 @@ export default function MapNotificationBell({ onBinaClick, onToggle }: MapNotifi
       )}
 
       <button
+        type="button"
         onClick={() => {
           const next = !panelOpen;
           onToggle?.(next);
           setPanelOpen(next);
         }}
-        className="relative flex items-center justify-center w-11 h-11 rounded-xl bg-white/95 dark:bg-gray-900/95 shadow-lg border border-gray-100 dark:border-gray-800 backdrop-blur-sm text-gray-600 dark:text-gray-300 hover:bg-white dark:hover:bg-gray-800 transition"
+        className={`relative flex h-[34px] w-[34px] items-center justify-center rounded-xl border transition ${
+          panelOpen
+            ? "border-blue-light-600 bg-blue-light-600 text-white shadow-sm"
+            : "border-blue-light-100 bg-blue-light-50/60 text-blue-light-800 hover:border-blue-light-300 hover:bg-blue-light-50 dark:border-blue-light-900/40 dark:bg-blue-light-950/25 dark:text-blue-light-300 dark:hover:border-blue-light-700"
+        }`}
         title="Bildirimler"
       >
         {unread > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
+          <span className="absolute -right-1 -top-1 flex h-[16px] min-w-[16px] items-center justify-center rounded-full bg-error-500 px-1 text-[9px] font-bold text-white">
             {unread > 9 ? "9+" : unread}
           </span>
         )}
-        <svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor">
           <path
             fillRule="evenodd"
             clipRule="evenodd"
