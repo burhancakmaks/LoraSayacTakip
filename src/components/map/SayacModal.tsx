@@ -64,8 +64,6 @@ const SAYAC_MARKALARI = [
 const NUM_INPUT_CLASS =
   "w-full min-w-[5.5rem] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 rounded-md px-2 py-1 text-xs font-mono tabular-nums text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition outline-none";
 
-const MASKI_RIBBON = "#026aa2";
-
 function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: boolean }) {
   const durum: SayacDurum =
     row.sayac_durum && row.sayac_durum in SAYAC_DURUM
@@ -77,62 +75,27 @@ function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: bool
   const doorLabel = row.kapi_no || String(row.birim_no);
   const subLabel = [row.kat, row.blok_no].filter(Boolean).join(" · ");
 
-  const lcdTone: Record<SayacDurum, string> = {
-    gecerli: "text-blue-light-300",
-    okunmadi: "text-error-300",
-    eksik: "text-warning-300",
-    hatali: "text-error-400",
-  };
-
-  const dialGlow: Record<SayacDurum, string> = {
-    gecerli: "shadow-[0_0_14px_rgba(11,165,236,0.35)]",
-    okunmadi: "shadow-[0_0_14px_rgba(240,68,56,0.35)]",
-    eksik: "shadow-[0_0_14px_rgba(247,144,9,0.35)]",
-    hatali: "shadow-[0_0_14px_rgba(217,45,32,0.35)]",
-  };
-
   const showAlarm = highlighted;
 
   return (
     <article
-      className={`sayac-tag group relative flex overflow-hidden rounded-2xl border border-blue-light-200/80 bg-gradient-to-br from-blue-light-25 to-white shadow-sm transition-all duration-300 hover:shadow-md dark:border-blue-light-900/50 dark:from-blue-light-950/25 dark:to-gray-900`}
+      className="sayac-tag group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:border-gray-300 hover:shadow-md dark:border-gray-700 dark:bg-gray-900"
       data-highlight-birim={highlighted ? row.birim_no : undefined}
       data-sayac-row={row.sayac_id.trim() || undefined}
     >
       {showAlarm && <div className="sayac-highlight-bg pointer-events-none absolute inset-0 z-0" />}
       <div
-        className="pointer-events-none absolute inset-0 z-[1] opacity-[0.08] dark:opacity-[0.14]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`,
-          backgroundSize: "120px 40px",
-        }}
+        className="absolute inset-x-0 top-0 z-[1] h-1"
+        style={{ backgroundColor: meta.color }}
       />
 
-      {/* Sol gösterge */}
-      <div
-        className={`relative z-10 flex w-10 shrink-0 flex-col items-center justify-center gap-px bg-gradient-to-b from-blue-light-800 to-blue-light-950 px-0.5 py-2 text-white ${dialGlow[durum]}`}
-      >
-        <div
-          className="absolute inset-1.5 rounded-full border border-white/20"
-          style={{ boxShadow: `inset 0 0 0 1.5px ${meta.color}44` }}
-        />
-        <span className="relative text-[6px] font-bold uppercase tracking-[0.15em] text-blue-light-200/70">No</span>
-        <span className="relative text-xs font-black leading-none tabular-nums">{doorLabel}</span>
-        <span
-          className="relative mt-0.5 rounded px-0.5 py-px text-[6px] font-bold text-white"
-          style={{ backgroundColor: meta.color }}
-        >
-          {meta.icon}
-        </span>
-      </div>
-
       {/* İçerik */}
-      <div className="relative z-10 flex min-w-0 flex-1 flex-col gap-1 p-1.5">
+      <div className="relative z-10 flex min-w-0 flex-col gap-2 p-3 pt-3.5">
         <div className="flex items-start justify-between gap-1">
           <div className="min-w-0">
-            <p className="truncate text-[9px] font-bold text-gray-800 dark:text-white">{row.kullanilis_sekli}</p>
+            <p className="truncate text-xs font-semibold text-gray-900 dark:text-white">No {doorLabel} · {row.kullanilis_sekli}</p>
             {subLabel ? (
-              <p className="truncate text-[7px] font-medium text-gray-500 dark:text-gray-400">{subLabel}</p>
+              <p className="mt-0.5 truncate text-[10px] text-gray-500 dark:text-gray-400">{subLabel}</p>
             ) : null}
           </div>
           <span
@@ -147,10 +110,10 @@ function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: bool
           </span>
         </div>
 
-        <div className="relative overflow-hidden rounded-lg border border-blue-light-800/80 bg-gradient-to-b from-blue-light-950 to-[#041e2e] px-1.5 py-1 shadow-inner">
-          <p className="text-[6px] font-bold uppercase tracking-[0.2em] text-blue-light-600/80">Sayaç</p>
+        <div className="rounded-lg border border-gray-200 bg-gray-50 px-2 py-1.5 dark:border-gray-700 dark:bg-gray-800/60">
+          <p className="text-[8px] font-medium text-gray-500 dark:text-gray-400">Sayaç</p>
           <p
-            className={`truncate font-mono text-[9px] font-bold leading-tight tabular-nums ${lcdTone[durum]}`}
+            className="truncate font-mono text-[11px] font-semibold leading-tight tabular-nums text-gray-900 dark:text-white"
             title={hasSayac ? row.sayac_id : undefined}
           >
             {hasSayac ? row.sayac_id : "— — —"}
@@ -158,17 +121,17 @@ function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: bool
         </div>
 
         <div
-          className={`flex items-center justify-between gap-1 rounded-lg border border-dashed px-1.5 py-0.5 ${
+          className={`flex items-center justify-between gap-1 rounded-lg border px-2 py-1.5 ${
             hasAbone
               ? "border-blue-light-300/70 bg-blue-light-50/90 dark:border-blue-light-700/50 dark:bg-blue-light-950/35"
               : "border-gray-200 bg-gray-50/80 dark:border-gray-700 dark:bg-gray-800/50"
           }`}
         >
-          <span className="text-[6px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
+          <span className="text-[8px] font-medium text-gray-500 dark:text-gray-400">
             Abone
           </span>
           <span
-            className={`truncate font-mono text-[8px] font-bold tabular-nums ${
+            className={`truncate font-mono text-[10px] font-semibold tabular-nums ${
               hasAbone ? "text-blue-light-800 dark:text-blue-light-300" : "text-gray-400"
             }`}
             title={hasAbone ? row.abone_no : undefined}
@@ -178,12 +141,6 @@ function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: bool
         </div>
       </div>
 
-      <div
-        className="pointer-events-none absolute -right-6 top-2.5 z-20 w-20 rotate-45 py-px text-center text-[6px] font-bold uppercase tracking-wider text-white shadow-sm"
-        style={{ backgroundColor: MASKI_RIBBON }}
-      >
-        MASKİ
-      </div>
     </article>
   );
 }
@@ -333,8 +290,8 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
         sayac_kayit: data.sayac_kayit ?? 0,
       });
       notifySayacGuncellendi();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Kayıt sırasında hata oluştu.");
     } finally {
       setSaving(false);
     }
@@ -378,22 +335,12 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
       onClose={onClose}
       className="max-w-6xl m-4 flex flex-col overflow-hidden bg-white dark:bg-gray-900 rounded-3xl"
     >
-      {/* Header — sayaç etiketi stili */}
-      <div className="relative overflow-hidden border-b border-blue-light-200/60 pr-12 dark:border-blue-light-900/40">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.08] dark:opacity-[0.14]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`,
-            backgroundSize: "120px 40px",
-          }}
-        />
-        <div className="relative flex">
-          <div className="relative z-10 flex w-14 shrink-0 flex-col items-center justify-center gap-0.5 bg-gradient-to-b from-blue-light-800 to-blue-light-950 px-1 py-3 text-white shadow-[0_0_14px_rgba(11,165,236,0.3)]">
-            <div className="absolute inset-2 rounded-full border border-white/20" style={{ boxShadow: "inset 0 0 0 2px #0ba5ec44" }} />
-            <span className="relative text-[7px] font-bold uppercase tracking-[0.15em] text-blue-light-200/70">Oda</span>
-            <span className="relative text-sm font-black leading-none tabular-nums">{building?.oda_id ?? "—"}</span>
+      <div className="border-b border-gray-200 dark:border-gray-800">
+        <div className="flex items-center gap-3 px-5 py-4">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-light-50 text-sm font-semibold text-blue-light-700 dark:bg-blue-light-950/40 dark:text-blue-light-300">
+            {building?.oda_id ?? "—"}
           </div>
-          <div className="relative z-10 flex min-w-0 flex-1 flex-wrap items-center justify-between gap-3 px-4 py-3">
+          <div className="flex min-w-0 flex-1 flex-wrap items-center justify-between gap-3">
             <div className="min-w-0">
               <h2 className="text-sm font-bold text-gray-900 dark:text-white">Sayaç Listesi</h2>
               <p className="mt-0.5 truncate text-[10px] font-medium text-gray-600 dark:text-gray-300">
@@ -419,12 +366,6 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
                 </span>
               </div>
             )}
-          </div>
-          <div
-            className="pointer-events-none absolute -right-6 top-3 z-20 w-20 rotate-45 py-px text-center text-[6px] font-bold uppercase tracking-wider text-white shadow-sm"
-            style={{ backgroundColor: MASKI_RIBBON }}
-          >
-            MASKİ
           </div>
         </div>
       </div>
@@ -504,7 +445,7 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
             <div className="text-4xl mb-4">🏢</div>
             <h3 className="font-bold text-gray-700 dark:text-gray-200 text-base mb-2">Bina bilgileri henüz eklenmemiş</h3>
             <p className="text-gray-500 dark:text-gray-400 text-sm">
-              Sayaç ekleyebilmek için önce <strong>"Bina Bilgileri Düzenle"</strong> butonuna tıklayarak kat ve toplam daire sayısını girin.
+              Sayaç ekleyebilmek için önce <strong>&quot;Bina Bilgileri Düzenle&quot;</strong> butonuna tıklayarak kat ve toplam daire sayısını girin.
             </p>
           </div>
         )}

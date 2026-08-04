@@ -37,16 +37,13 @@ interface TarifeOzet {
   detay?: { tarife_turu: string; tarife_sinif: string; adet: number }[];
 }
 
-const MASKI_RIBBON = "#026aa2";
-const WAVE_BG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`;
-
 const INPUT_CLASS =
-  "w-full rounded-md border border-blue-light-200/80 bg-white px-2 py-1.5 text-xs text-gray-800 placeholder:text-gray-400 focus:border-blue-light-400 focus:outline-none focus:ring-2 focus:ring-blue-light-500/25 dark:border-blue-light-900/50 dark:bg-gray-900 dark:text-white";
+  "w-full rounded-lg border border-gray-200 bg-white px-2.5 py-2 text-xs text-gray-800 placeholder:text-gray-400 focus:border-blue-light-400 focus:outline-none focus:ring-2 focus:ring-blue-light-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white";
 
-function InfoLcd({ label, children }: { label: string; children: React.ReactNode }) {
+function InfoCard({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="relative overflow-hidden rounded-lg border border-blue-light-800/80 bg-gradient-to-b from-blue-light-950 to-[#041e2e] px-2 py-1.5 shadow-inner">
-      <p className="text-[7px] font-bold uppercase tracking-[0.2em] text-blue-light-600/80">{label}</p>
+    <div className="rounded-lg border border-gray-200 bg-gray-50 px-2.5 py-2 dark:border-gray-700 dark:bg-gray-800/60">
+      <p className="text-[9px] font-medium text-gray-500 dark:text-gray-400">{label}</p>
       <div className="mt-0.5">{children}</div>
     </div>
   );
@@ -54,8 +51,8 @@ function InfoLcd({ label, children }: { label: string; children: React.ReactNode
 
 function InfoStrip({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-lg border border-dashed border-blue-light-300/70 bg-blue-light-50/90 px-2 py-1.5 dark:border-blue-light-700/50 dark:bg-blue-light-950/35">
-      <label className="mb-1 block text-[8px] font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400">
+    <div className="rounded-lg border border-gray-200 bg-gray-50 px-2.5 py-2 dark:border-gray-700 dark:bg-gray-800/50">
+      <label className="mb-1 block text-[9px] font-medium text-gray-500 dark:text-gray-400">
         {label}
       </label>
       {children}
@@ -174,20 +171,12 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
       onClose={onClose}
       className="m-4 flex max-w-lg flex-col overflow-hidden rounded-3xl bg-white dark:bg-gray-900"
     >
-      {/* Üst etiket — sayaç kutusu stili */}
-      <div className="relative overflow-hidden border-b border-blue-light-200/60 dark:border-blue-light-900/40">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.08] dark:opacity-[0.14]"
-          style={{ backgroundImage: WAVE_BG, backgroundSize: "120px 40px" }}
-        />
-        <div className="relative flex overflow-hidden pr-10">
-          <div className="relative z-10 flex w-14 shrink-0 flex-col items-center justify-center gap-0.5 bg-gradient-to-b from-blue-light-800 to-blue-light-950 px-1 py-4 text-white shadow-[0_0_14px_rgba(11,165,236,0.3)]">
-            <div className="absolute inset-2 rounded-full border border-white/20" style={{ boxShadow: "inset 0 0 0 2px #0ba5ec44" }} />
-            <span className="relative text-[7px] font-bold uppercase tracking-[0.15em] text-blue-light-200/70">Oda</span>
-            <span className="relative text-sm font-black leading-none tabular-nums">{building?.oda_id ?? "—"}</span>
-            <span className="relative mt-1 rounded bg-blue-light-500 px-1 py-px text-[7px] font-bold text-white">BİNA</span>
+      <div className="border-b border-gray-200 dark:border-gray-800">
+        <div className="flex items-center gap-3 px-4 py-4">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-light-50 text-sm font-semibold text-blue-light-700 dark:bg-blue-light-950/40 dark:text-blue-light-300">
+            {building?.oda_id ?? "—"}
           </div>
-          <div className="relative z-10 flex min-w-0 flex-1 flex-col justify-center gap-1 px-4 py-3">
+          <div className="flex min-w-0 flex-1 flex-col justify-center gap-1">
             <h2 className="truncate text-sm font-bold text-gray-900 dark:text-white">
               {building?.value || "Bilinmeyen Bina"}
             </h2>
@@ -199,12 +188,6 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
                 {building.layer}
               </span>
             )}
-          </div>
-          <div
-            className="pointer-events-none absolute -right-7 top-4 z-20 w-24 rotate-45 py-0.5 text-center text-[7px] font-bold uppercase tracking-wider text-white shadow-sm"
-            style={{ backgroundColor: MASKI_RIBBON }}
-          >
-            MASKİ
           </div>
         </div>
       </div>
@@ -244,13 +227,13 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
                     <p className="text-[10px] leading-relaxed text-gray-600 dark:text-gray-300">{tarife.tarife_turu}</p>
                   )}
                   <div className="grid grid-cols-2 gap-2">
-                    <InfoLcd label="Rezerv Abone">
-                      <p className="font-mono text-[11px] font-bold tabular-nums text-blue-light-300">{tarife.abone_sayisi}</p>
-                    </InfoLcd>
+                    <InfoCard label="Rezerv Abone">
+                      <p className="font-mono text-[11px] font-semibold tabular-nums text-gray-900 dark:text-white">{tarife.abone_sayisi}</p>
+                    </InfoCard>
                     {tarife.building_uavt ? (
-                      <InfoLcd label="UAVT">
-                        <p className="truncate font-mono text-[10px] font-bold tabular-nums text-blue-light-300">{tarife.building_uavt}</p>
-                      </InfoLcd>
+                      <InfoCard label="UAVT">
+                        <p className="truncate font-mono text-[10px] font-semibold tabular-nums text-gray-900 dark:text-white">{tarife.building_uavt}</p>
+                      </InfoCard>
                     ) : null}
                   </div>
                   {tarife.detay && tarife.detay.length > 1 && (
@@ -268,9 +251,9 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
             )}
 
             {/* Adres bölümü */}
-            <section className="overflow-hidden rounded-2xl border border-blue-light-200/60 bg-blue-light-25/30 dark:border-blue-light-900/40 dark:bg-blue-light-950/15">
-              <div className="border-b border-blue-light-200/50 bg-gradient-to-r from-blue-light-900/90 to-blue-light-950 px-3 py-1.5 dark:border-blue-light-900/50">
-                <h3 className="text-[10px] font-bold uppercase tracking-wider text-blue-light-100">Adres Bilgisi</h3>
+            <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+              <div className="border-b border-gray-200 bg-gray-50 px-3 py-2 dark:border-gray-800 dark:bg-gray-800/50">
+                <h3 className="text-xs font-semibold text-gray-800 dark:text-gray-100">Adres Bilgisi</h3>
               </div>
               <div className="grid grid-cols-2 gap-2 p-2.5">
                 <InfoStrip label="Ada / Parsel">
@@ -306,9 +289,9 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
             </section>
 
             {/* Yapı bölümü */}
-            <section className="overflow-hidden rounded-2xl border border-blue-light-200/60 bg-blue-light-25/30 dark:border-blue-light-900/40 dark:bg-blue-light-950/15">
-              <div className="border-b border-blue-light-200/50 bg-gradient-to-r from-blue-light-900/90 to-blue-light-950 px-3 py-1.5 dark:border-blue-light-900/50">
-                <h3 className="text-[10px] font-bold uppercase tracking-wider text-blue-light-100">Yapı Bilgisi</h3>
+            <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+              <div className="border-b border-gray-200 bg-gray-50 px-3 py-2 dark:border-gray-800 dark:bg-gray-800/50">
+                <h3 className="text-xs font-semibold text-gray-800 dark:text-gray-100">Yapı Bilgisi</h3>
               </div>
               <div className="space-y-2 p-2.5">
                 <div className="grid grid-cols-3 gap-2">
@@ -354,12 +337,10 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
                   <span className="text-[10px] font-medium text-gray-700 dark:text-gray-200">Zemin kat var</span>
                 </label>
 
-                <div className="relative flex overflow-hidden rounded-2xl border border-blue-light-200/80 bg-gradient-to-br from-blue-light-25 to-white shadow-sm dark:border-blue-light-900/50 dark:from-blue-light-950/25 dark:to-gray-900">
-                  <div className="flex w-12 shrink-0 items-center justify-center bg-gradient-to-b from-blue-light-800 to-blue-light-950 text-white">
-                    <span className="text-lg font-black tabular-nums">{toplam}</span>
-                  </div>
-                  <div className="flex min-w-0 flex-1 flex-col justify-center gap-0.5 px-3 py-2">
-                    <p className="text-[9px] font-bold uppercase tracking-wider text-gray-500">Toplam Bağımsız Bölüm</p>
+                <div className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 dark:border-gray-700 dark:bg-gray-800/50">
+                  <div className="flex min-w-0 items-center justify-between gap-3">
+                    <div>
+                    <p className="text-[9px] font-medium text-gray-500">Toplam Bağımsız Bölüm</p>
                     <p className="text-[10px] text-gray-600 dark:text-gray-300">
                       {daire} daire + {ortak} ortak
                       {kat > 0 && (
@@ -369,6 +350,8 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
                         </span>
                       )}
                     </p>
+                    </div>
+                    <span className="text-lg font-semibold tabular-nums text-gray-900 dark:text-white">{toplam}</span>
                   </div>
                 </div>
               </div>

@@ -13,6 +13,7 @@ import { getTarifeColor } from "@/lib/tarife";
 import { getSorunMarkerColor, type SayacSorunSeverity } from "@/lib/sayac-durum";
 import MapNotificationBell from "./MapNotificationBell";
 import { useNotifications } from "@/context/NotificationContext";
+import { useAuthUser } from "@/hooks/useAuthUser";
 import { SAYAC_GUNCELLENDI } from "@/lib/sayac-events";
 import {
   buildSayacMapUrl,
@@ -245,10 +246,6 @@ function resolveBuildingVisual(building: Building): BuildingVisual {
   };
 }
 
-const MASKI_RIBBON = "#026aa2";
-const MAP_WAVE_BG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`;
-const POPUP_WAVE_BG = MAP_WAVE_BG;
-
 const POPUP_BTN_ATTRS = (cls: string, building: Building, escValue: string, escLayer: string) =>
   `class="${cls} bina-map-popup-btn" data-bina-id="${building.id}" data-value="${escValue}" data-layer="${escLayer}" data-oda-id="${building.oda_id ?? ""}"`;
 
@@ -277,35 +274,30 @@ function buildPopupContent(building: Building, visual: BuildingVisual): string {
 
   return `
     <div class="bina-map-popup" style="font-family:Outfit,sans-serif;font-size:13px;color:#101828;min-width:260px;">
-      <div style="position:relative;overflow:hidden;border-bottom:1px solid #b9e6fe99;">
-        <div style="position:absolute;inset:0;opacity:0.08;background-image:${POPUP_WAVE_BG};background-size:120px 40px;pointer-events:none;"></div>
-        <div style="position:relative;display:flex;overflow:hidden;padding-right:36px;">
-          <div style="position:relative;z-index:1;display:flex;width:52px;flex-shrink:0;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:linear-gradient(to bottom,#065986,#062c41);padding:12px 4px;color:#fff;box-shadow:0 0 14px rgba(11,165,236,0.3);">
-            <div style="position:absolute;inset:6px;border-radius:9999px;border:1px solid rgba(255,255,255,0.2);box-shadow:inset 0 0 0 2px #0ba5ec44;"></div>
-            <span style="position:relative;font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:0.15em;color:#b9e6feb3;">Oda</span>
-            <span style="position:relative;font-size:13px;font-weight:900;line-height:1;font-variant-numeric:tabular-nums;">${building.oda_id ?? "—"}</span>
-            <span style="position:relative;margin-top:2px;border-radius:3px;background:#0ba5ec;padding:1px 4px;font-size:7px;font-weight:700;">BİNA</span>
+      <div style="border-top:4px solid ${visual.headerColor};border-bottom:1px solid #e4e7ec;padding:10px 12px;">
+        <div style="display:flex;align-items:flex-start;gap:10px;">
+          <div style="display:flex;width:38px;height:38px;flex-shrink:0;align-items:center;justify-content:center;border-radius:10px;background:#f0f9ff;color:#026aa2;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;">
+            ${building.oda_id ?? "—"}
           </div>
-          <div style="position:relative;z-index:1;display:flex;min-width:0;flex:1;flex-direction:column;justify-content:center;gap:4px;padding:10px 12px;">
+          <div style="display:flex;min-width:0;flex:1;flex-direction:column;gap:4px;">
             <div style="font-size:13px;font-weight:700;color:#101828;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:180px;" title="${escValue}">
               ${building.value || "Bilinmeyen Bina"}
             </div>
             ${building.layer ? `<span style="display:inline-flex;width:fit-content;border-radius:9999px;border:1px solid #7cd4fd99;background:#f0f9ff;padding:2px 8px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#026aa2;">${building.layer}</span>` : ""}
             <span style="display:inline-flex;width:fit-content;border-radius:9999px;border:1px solid ${statusBorder};background:${statusBg};padding:2px 8px;font-size:8px;font-weight:700;color:${statusColor};">${statusLabel}</span>
           </div>
-          <div style="position:absolute;right:-28px;top:14px;z-index:2;width:96px;transform:rotate(45deg);background:${MASKI_RIBBON};padding:2px 0;text-align:center;font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.12);">MASKİ</div>
         </div>
       </div>
 
       <div style="padding:10px 12px 12px;">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-          <div style="overflow:hidden;border-radius:8px;border:1px solid #065986cc;background:linear-gradient(to bottom,#065986,#041e2e);padding:6px 8px;box-shadow:inset 0 1px 3px rgba(0,0,0,0.3);">
-            <div style="font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;color:#7cd4fdcc;">Kayıtlı Sayaç</div>
-            <div style="margin-top:2px;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;color:#7cd4fd;">${sayacCount}</div>
+          <div style="border-radius:8px;border:1px solid #e4e7ec;background:#f9fafb;padding:7px 8px;">
+            <div style="font-size:9px;font-weight:500;color:#667085;">Kayıtlı Sayaç</div>
+            <div style="margin-top:2px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;color:#101828;">${sayacCount}</div>
           </div>
-          <div style="overflow:hidden;border-radius:8px;border:1px solid #065986cc;background:linear-gradient(to bottom,#065986,#041e2e);padding:6px 8px;box-shadow:inset 0 1px 3px rgba(0,0,0,0.3);">
-            <div style="font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:0.2em;color:#7cd4fdcc;">Aktif Abone</div>
-            <div style="margin-top:2px;font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;color:#7cd4fd;">${building.aktif_abone_sayisi}</div>
+          <div style="border-radius:8px;border:1px solid #e4e7ec;background:#f9fafb;padding:7px 8px;">
+            <div style="font-size:9px;font-weight:500;color:#667085;">Aktif Abone</div>
+            <div style="margin-top:2px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;color:#101828;">${building.aktif_abone_sayisi}</div>
           </div>
         </div>
 
@@ -428,6 +420,8 @@ export default function MapComponent() {
   const [shareFeedback, setShareFeedback] = useState<string | null>(null);
   const [sharePanelOpen, setSharePanelOpen] = useState(false);
   const [sharePanelUrl, setSharePanelUrl] = useState<string | null>(null);
+  const [jsonExporting, setJsonExporting] = useState(false);
+  const [jsonExportError, setJsonExportError] = useState<string | null>(null);
 
   // Modals state
   const [selectedBuilding, setSelectedBuilding] = useState<SelectedBuilding | null>(null);
@@ -437,6 +431,7 @@ export default function MapComponent() {
   const [sorunPanelFilter, setSorunPanelFilter] = useState<SorunListeFilter>("all");
 
   const { setPanelOpen: setNotifPanelOpen, refresh: refreshNotifications } = useNotifications();
+  const { isAdmin } = useAuthUser();
 
   const { theme } = useTheme();
 
@@ -1123,6 +1118,36 @@ export default function MapComponent() {
     showShareFeedback(ok ? "Link kopyalandı" : "Kopyalanamadı");
   }, [sharePanelUrl, showShareFeedback]);
 
+  const handleJsonExport = useCallback(async () => {
+    setJsonExporting(true);
+    setJsonExportError(null);
+    try {
+      const response = await fetch("/api/harita-export");
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as { error?: string } | null;
+        throw new Error(data?.error || "JSON dışa aktarımı başarısız");
+      }
+
+      const blob = await response.blob();
+      const disposition = response.headers.get("content-disposition") ?? "";
+      const filename =
+        disposition.match(/filename="?([^";]+)"?/i)?.[1] ??
+        `harita-verileri-${new Date().toISOString().slice(0, 10)}.json`;
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = filename;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+    } catch (error: unknown) {
+      setJsonExportError(error instanceof Error ? error.message : "JSON dışa aktarımı başarısız");
+    } finally {
+      setJsonExporting(false);
+    }
+  }, []);
+
   const applySayacDeepLink = useCallback(
     (binaId: number, sayacParam: string) => {
       if (!mapRef.current) return false;
@@ -1338,25 +1363,15 @@ export default function MapComponent() {
         <div className="pointer-events-none absolute left-4 top-4 z-999 flex h-[calc(100dvh-2rem)] max-h-[calc(100dvh-2rem)] items-stretch">
           <div className="pointer-events-auto flex flex-col gap-2.5 w-56 shrink-0 overflow-y-auto max-h-full pr-1">
             {/* Bina Verileri */}
-            <div className="relative overflow-hidden rounded-2xl border border-blue-light-200/70 bg-white/95 shadow-theme-lg backdrop-blur-sm dark:border-blue-light-900/40 dark:bg-gray-900/95">
-              <div
-                className="pointer-events-none absolute inset-0 opacity-[0.06] dark:opacity-[0.1]"
-                style={{ backgroundImage: MAP_WAVE_BG, backgroundSize: "120px 40px" }}
-              />
-              <div className="relative border-b border-blue-light-100/80 px-3.5 py-2.5 dark:border-blue-light-900/30">
-                <div className="flex items-center gap-2 pr-6">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-light-600 to-blue-light-800 text-[11px] text-white shadow-sm">
+            <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white/95 shadow-sm backdrop-blur-sm dark:border-gray-800 dark:bg-gray-900/95">
+              <div className="border-b border-gray-200 px-3.5 py-2.5 dark:border-gray-800">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-light-50 text-[11px] text-blue-light-700 dark:bg-blue-light-950/40 dark:text-blue-light-300">
                     🏢
                   </div>
                   <h3 className="text-[11px] font-bold leading-tight text-gray-900 dark:text-white">
                     Malatya Bina Verileri
                   </h3>
-                </div>
-                <div
-                  className="pointer-events-none absolute -right-5 top-2.5 w-14 rotate-45 py-px text-center text-[6px] font-bold uppercase tracking-wider text-white shadow-sm"
-                  style={{ backgroundColor: MASKI_RIBBON }}
-                >
-                  MASKİ
                 </div>
               </div>
 
@@ -1484,12 +1499,8 @@ export default function MapComponent() {
         <div className="absolute top-4 right-4 z-[1000] flex w-80 flex-col items-end gap-2 overflow-visible pointer-events-none">
           {/* Sayaç arama */}
           <div className="relative w-full pointer-events-auto">
-            <div className={`relative ${MAP_TOOLBAR_CARD}`}>
-              <div
-                className="pointer-events-none absolute inset-0 opacity-[0.05] dark:opacity-[0.1]"
-                style={{ backgroundImage: MAP_WAVE_BG, backgroundSize: "120px 40px" }}
-              />
-              <div className="relative flex items-center gap-2 px-3 py-2.5">
+            <div className={MAP_TOOLBAR_CARD}>
+              <div className="flex items-center gap-2 px-3 py-2.5">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-blue-light-500">
                   <circle cx="11" cy="11" r="8" />
                   <path d="m21 21-4.3-4.3" />
@@ -1662,17 +1673,30 @@ export default function MapComponent() {
                             {result.abone_no && <span>Abone: {result.abone_no}</span>}
                           </div>
                         </button>
-                        <button
-                          type="button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleCopySayacLink(result.bina_id, result.sayac_id);
-                          }}
-                          className="mr-2 shrink-0 self-center rounded-lg border border-blue-light-200 px-2 py-1 text-[10px] font-semibold text-blue-light-700 transition hover:bg-blue-light-50 dark:border-blue-light-800 dark:text-blue-light-300 dark:hover:bg-blue-light-950/40"
-                          title="Harita linkini kopyala"
-                        >
-                          Link
-                        </button>
+                        <div className="mr-2 flex shrink-0 items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCopySayacLink(result.bina_id, result.sayac_id);
+                            }}
+                            className="rounded-lg border border-blue-light-200 px-2 py-1 text-[10px] font-semibold text-blue-light-700 transition hover:bg-blue-light-50 dark:border-blue-light-800 dark:text-blue-light-300 dark:hover:bg-blue-light-950/40"
+                            title="Harita linkini kopyala"
+                          >
+                            Link
+                          </button>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleShareSayacLink(result.bina_id, result.sayac_id, result.building_name);
+                            }}
+                            className="rounded-lg border border-blue-light-200 px-2 py-1 text-[10px] font-semibold text-blue-light-700 transition hover:bg-blue-light-50 dark:border-blue-light-800 dark:text-blue-light-300 dark:hover:bg-blue-light-950/40"
+                            title="Sayaç konumunu paylaş"
+                          >
+                            Paylaş
+                          </button>
+                        </div>
                       </div>
                     ))
                   )}
@@ -1683,6 +1707,22 @@ export default function MapComponent() {
 
           {/* Araç çubuğu */}
           <div className={`pointer-events-auto flex w-full items-center gap-1.5 overflow-visible p-1.5 ${MAP_TOOLBAR_SURFACE}`}>
+            {isAdmin && (
+              <button
+                type="button"
+                onClick={handleJsonExport}
+                disabled={jsonExporting}
+                className={`${MAP_TOOLBAR_BTN} shrink-0 disabled:cursor-wait disabled:opacity-60`}
+                title="Harita, bina ve sayaç verilerini JSON olarak indir"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 3v12" strokeLinecap="round" />
+                  <path d="m7 10 5 5 5-5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M5 20h14" strokeLinecap="round" />
+                </svg>
+                {jsonExporting ? "Hazırlanıyor" : "Export"}
+              </button>
+            )}
             <Link
               href="/sayac-aktarim"
               className={`${MAP_TOOLBAR_BTN} shrink-0`}
@@ -1826,6 +1866,11 @@ export default function MapComponent() {
             )}
             </div>
           </div>
+          {jsonExportError && (
+            <div className="pointer-events-auto w-full rounded-xl border border-error-200 bg-error-50 px-3 py-2 text-xs font-medium text-error-600 shadow-sm dark:border-error-500/30 dark:bg-error-500/10 dark:text-error-300">
+              {jsonExportError}
+            </div>
+          )}
         </div>
       )}
 

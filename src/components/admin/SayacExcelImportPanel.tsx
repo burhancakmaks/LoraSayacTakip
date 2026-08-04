@@ -50,10 +50,8 @@ const DURUM_LABEL: Record<string, string> = {
   hatali: "Hatalı",
 };
 
-const MASKI_RIBBON = "#026aa2";
-const WAVE_BG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`;
-const MASKI_CARD =
-  "overflow-hidden rounded-2xl border border-blue-light-200/70 bg-white shadow-theme-lg dark:border-blue-light-900/40 dark:bg-gray-900/95";
+const PANEL_CARD =
+  "overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900";
 
 function formatBytes(bytes: number) {
   if (bytes < 1024) return `${bytes} B`;
@@ -78,11 +76,11 @@ function Spinner({ className = "h-5 w-5" }: { className?: string }) {
   );
 }
 
-function StatLcd({ label, value, tone = "text-blue-light-300" }: { label: string; value?: number; tone?: string }) {
+function StatCard({ label, value, tone = "text-gray-900 dark:text-white" }: { label: string; value?: number; tone?: string }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-blue-light-800/70 bg-gradient-to-b from-blue-light-950 to-[#041e2e] px-3 py-2.5 text-center shadow-inner">
-      <p className="text-[8px] font-bold uppercase tracking-[0.15em] text-blue-light-600/80">{label}</p>
-      <p className={`mt-1 text-2xl font-black tabular-nums ${tone}`}>{value ?? 0}</p>
+    <div className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-center dark:border-gray-700 dark:bg-gray-800/60">
+      <p className="text-[10px] font-medium text-gray-500 dark:text-gray-400">{label}</p>
+      <p className={`mt-1 text-2xl font-semibold tabular-nums ${tone}`}>{value ?? 0}</p>
     </div>
   );
 }
@@ -221,7 +219,6 @@ export default function SayacExcelImportPanel() {
   const onDrop = useCallback((accepted: File[]) => {
     const f = accepted[0];
     if (f) validateFile(f);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
@@ -301,26 +298,21 @@ export default function SayacExcelImportPanel() {
 
   return (
     <div className="space-y-5">
-      {/* Üst başlık — MASKİ etiket stili */}
-      <div className={MASKI_CARD}>
-        <div className="relative overflow-hidden border-b border-blue-light-200/60 dark:border-blue-light-900/40">
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.08] dark:opacity-[0.14]"
-            style={{ backgroundImage: WAVE_BG, backgroundSize: "120px 40px" }}
-          />
-          <div className="relative flex flex-col gap-4 overflow-hidden pr-10 lg:flex-row lg:items-center lg:justify-between lg:pr-14">
+      <div className={PANEL_CARD}>
+        <div className="border-b border-gray-200 dark:border-gray-800">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex items-start gap-3 px-4 py-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-light-700 to-blue-light-950 text-white shadow-[0_6px_16px_rgba(11,165,236,0.25)] ring-1 ring-blue-light-400/30">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-light-50 text-blue-light-600 dark:bg-blue-light-950/40 dark:text-blue-light-400">
                 <svg
                   aria-hidden="true"
-                  className="h-9 w-9"
+                  className="h-6 w-6"
                   viewBox="0 0 40 40"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M9 4.5H23L31 12.5V34.5H9V4.5Z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-                  <path d="M23 4.5V12.5H31" stroke="#7DD3FC" strokeWidth="2.2" strokeLinejoin="round" />
-                  <path d="M14 17.5L19 24.5M19 17.5L14 24.5" stroke="#7DD3FC" strokeWidth="2.2" strokeLinecap="round" />
+                  <path d="M23 4.5V12.5H31" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+                  <path d="M14 17.5L19 24.5M19 17.5L14 24.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
                   <path d="M25 30V19M25 19L21.5 22.5M25 19L28.5 22.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
@@ -353,12 +345,6 @@ export default function SayacExcelImportPanel() {
                   {rollingBack ? "Geri Alınıyor..." : "Son Aktarımı Geri Al"}
                 </MaskiBtn>
               )}
-            </div>
-            <div
-              className="pointer-events-none absolute -right-6 top-4 w-20 rotate-45 py-0.5 text-center text-[7px] font-bold uppercase tracking-wider text-white shadow-sm"
-              style={{ backgroundColor: MASKI_RIBBON }}
-            >
-              MASKİ
             </div>
           </div>
         </div>
@@ -444,7 +430,7 @@ export default function SayacExcelImportPanel() {
       )}
 
       {/* Yükleme alanı */}
-      <div className={`${MASKI_CARD} p-5`}>
+      <div className={`${PANEL_CARD} p-5`}>
         <div
           {...getRootProps()}
           className={`group relative cursor-pointer overflow-hidden rounded-2xl border-2 border-dashed transition-all duration-200 ${
@@ -458,11 +444,6 @@ export default function SayacExcelImportPanel() {
           } ${step === "validating" || step === "applying" ? "pointer-events-none" : ""}`}
         >
           <input {...getInputProps()} />
-          <div
-            className="pointer-events-none absolute inset-x-0 bottom-0 h-9 opacity-[0.1] dark:opacity-[0.14]"
-            style={{ backgroundImage: WAVE_BG, backgroundSize: "120px 36px", backgroundPosition: "bottom center" }}
-          />
-
           <div className="relative px-6 py-12 text-center sm:py-14">
             {(step === "validating" || step === "applying") && (
               <div className="mb-4 flex justify-center">
@@ -553,11 +534,11 @@ export default function SayacExcelImportPanel() {
         {step === "validated" && stats && (
           <div className="mt-6 space-y-4">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
-              <StatLcd label="Aktarılacak" value={stats.importable} tone="text-blue-light-300" />
-              <StatLcd label="Atlanacak" value={stats.skipped} tone="text-warning-300" />
-              <StatLcd label="Geçerli" value={stats.gecerli} />
-              <StatLcd label="Okunmadı" value={stats.okunmadi} tone="text-warning-300" />
-              <StatLcd label="Eksik" value={stats.eksik} tone="text-gray-400" />
+              <StatCard label="Aktarılacak" value={stats.importable} tone="text-blue-light-700 dark:text-blue-light-400" />
+              <StatCard label="Atlanacak" value={stats.skipped} tone="text-warning-600 dark:text-warning-400" />
+              <StatCard label="Geçerli" value={stats.gecerli} />
+              <StatCard label="Okunmadı" value={stats.okunmadi} tone="text-warning-600 dark:text-warning-400" />
+              <StatCard label="Eksik" value={stats.eksik} tone="text-gray-500 dark:text-gray-400" />
             </div>
             <div className="flex flex-wrap justify-end gap-2 border-t border-blue-light-100 pt-4 dark:border-blue-light-900/30">
               <MaskiBtn variant="outline" onClick={resetSelection}>
@@ -584,7 +565,7 @@ export default function SayacExcelImportPanel() {
 
       {/* Kritik hata tablosu */}
       {errors.length > 0 && step === "error" && (
-        <div className={`${MASKI_CARD} border-error-200 dark:border-error-900/40`}>
+        <div className={`${PANEL_CARD} border-error-200 dark:border-error-900/40`}>
           <div className="flex items-center gap-3 border-b border-error-100 bg-error-50/80 px-6 py-4 dark:border-error-900/30 dark:bg-error-500/5">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-error-100 text-error-600 dark:bg-error-500/20 dark:text-error-400">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -621,7 +602,7 @@ export default function SayacExcelImportPanel() {
 
       {/* Atlanan satırlar */}
       {skipped.length > 0 && (
-        <div className={`${MASKI_CARD} border-warning-200 dark:border-warning-900/40`}>
+        <div className={`${PANEL_CARD} border-warning-200 dark:border-warning-900/40`}>
           <div className="flex items-center gap-3 border-b border-warning-100 bg-warning-50/80 px-6 py-4 dark:border-warning-900/30 dark:bg-warning-500/5">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-warning-100 text-warning-700 dark:bg-warning-500/20 dark:text-warning-400">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -660,7 +641,7 @@ export default function SayacExcelImportPanel() {
 
       {/* Önizleme */}
       {preview.length > 0 && step !== "error" && (
-        <div className={MASKI_CARD}>
+        <div className={PANEL_CARD}>
           <div className="border-b border-blue-light-100 px-6 py-4 dark:border-blue-light-900/30">
             <h4 className="font-semibold text-gray-900 dark:text-white">Veri Önizlemesi</h4>
             <p className="mt-0.5 text-sm text-gray-500">İlk {preview.length} satır gösteriliyor</p>
@@ -707,7 +688,7 @@ export default function SayacExcelImportPanel() {
       )}
 
       {/* Şablon rehberi */}
-      <div className={`${MASKI_CARD} p-6`}>
+      <div className={`${PANEL_CARD} p-6`}>
         <h4 className="font-semibold text-gray-900 dark:text-white">Şablon Kuralları</h4>
         <p className="mt-1 text-sm text-gray-500">Aktarımın sorunsuz çalışması için aşağıdaki kurallara uyun.</p>
         <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -738,12 +719,8 @@ export default function SayacExcelImportPanel() {
       {showRollbackConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
           <div className="w-full max-w-md overflow-hidden rounded-2xl border border-blue-light-200 bg-white shadow-2xl dark:border-blue-light-900 dark:bg-gray-900">
-            <div className="relative overflow-hidden border-b border-blue-light-100 px-6 py-4 dark:border-blue-light-900/30">
-              <div
-                className="pointer-events-none absolute inset-0 opacity-[0.06]"
-                style={{ backgroundImage: WAVE_BG, backgroundSize: "120px 40px" }}
-              />
-              <div className="relative flex items-center gap-3">
+            <div className="border-b border-blue-light-100 px-6 py-4 dark:border-blue-light-900/30">
+              <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-warning-100 text-warning-600 dark:bg-warning-500/20">
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

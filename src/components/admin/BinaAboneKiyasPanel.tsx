@@ -44,10 +44,8 @@ const FILTERS: { key: FilterKey; label: string }[] = [
   { key: "uyumlu", label: "Uyumlu" },
 ];
 
-const MASKI_RIBBON = "#026aa2";
-const WAVE_BG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`;
-const MASKI_CARD =
-  "overflow-hidden rounded-2xl border border-blue-light-200/70 bg-white shadow-theme-lg dark:border-blue-light-900/40 dark:bg-gray-900/95";
+const PANEL_CARD =
+  "overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900";
 
 function farkLabel(n: number) {
   if (n === 0) return "0";
@@ -81,11 +79,11 @@ function durumLabel(durum: string) {
   return "Çoklu sorun";
 }
 
-function StatLcd({ label, value, tone = "text-blue-light-300" }: { label: string; value: string | number; tone?: string }) {
+function StatCard({ label, value, tone = "text-gray-900 dark:text-white" }: { label: string; value: string | number; tone?: string }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-blue-light-800/70 bg-gradient-to-b from-blue-light-950 to-[#041e2e] px-3 py-2.5 text-center shadow-inner">
-      <p className="text-[8px] font-bold uppercase tracking-[0.15em] text-blue-light-600/80">{label}</p>
-      <p className={`mt-1 break-words text-sm font-black tabular-nums ${tone}`}>
+    <div className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-center dark:border-gray-700 dark:bg-gray-800/60">
+      <p className="text-[10px] font-medium text-gray-500 dark:text-gray-400">{label}</p>
+      <p className={`mt-1 break-words text-sm font-semibold tabular-nums ${tone}`}>
         {typeof value === "number" ? value.toLocaleString("tr-TR") : value}
       </p>
     </div>
@@ -122,6 +120,8 @@ export default function BinaAboneKiyasPanel() {
 
   useEffect(() => {
     const controller = new AbortController();
+    // Loading state intentionally resets whenever the server-side filter changes.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
     setError(null);
     const params = new URLSearchParams();
@@ -146,27 +146,23 @@ export default function BinaAboneKiyasPanel() {
   return (
     <div className="space-y-5">
       {/* Üst başlık */}
-      <div className={MASKI_CARD}>
-        <div className="relative overflow-hidden border-b border-blue-light-200/60 dark:border-blue-light-900/40">
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.08] dark:opacity-[0.14]"
-            style={{ backgroundImage: WAVE_BG, backgroundSize: "120px 40px" }}
-          />
-          <div className="relative flex flex-col gap-4 overflow-hidden pr-10 sm:flex-row sm:items-start sm:pr-14">
+      <div className={PANEL_CARD}>
+        <div className="border-b border-gray-200 dark:border-gray-800">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
             <div className="flex items-start gap-3 px-5 py-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-light-700 to-blue-light-950 text-white shadow-[0_6px_16px_rgba(11,165,236,0.25)] ring-1 ring-blue-light-400/30">
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-light-50 text-blue-light-600 dark:bg-blue-light-950/40 dark:text-blue-light-400">
                 <svg
                   aria-hidden="true"
-                  className="h-9 w-9"
+                  className="h-6 w-6"
                   viewBox="0 0 40 40"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M5.5 30.5V12.5L14 8L22.5 12.5V30.5" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
-                  <path d="M10 16H13M17 16H20M10 21H13M17 21H20M10 26H13M17 26H20" stroke="#7DD3FC" strokeWidth="2" strokeLinecap="round" />
+                  <path d="M10 16H13M17 16H20M10 21H13M17 21H20M10 26H13M17 26H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                   <circle cx="30" cy="15" r="4" stroke="currentColor" strokeWidth="2.2" />
                   <path d="M24.5 30C24.5 26.7 27 24 30 24C33 24 35.5 26.7 35.5 30" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
-                  <path d="M5 34H35" stroke="#38BDF8" strokeWidth="2.2" strokeLinecap="round" />
+                  <path d="M5 34H35" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
                 </svg>
               </div>
               <div className="min-w-0 pt-0.5">
@@ -176,29 +172,23 @@ export default function BinaAboneKiyasPanel() {
                 </p>
               </div>
             </div>
-            <div
-              className="pointer-events-none absolute -right-6 top-4 w-20 rotate-45 py-0.5 text-center text-[7px] font-bold uppercase tracking-wider text-white shadow-sm"
-              style={{ backgroundColor: MASKI_RIBBON }}
-            >
-              MASKİ
-            </div>
           </div>
         </div>
 
         {ozet && (
           <div className="grid grid-cols-2 gap-3 px-5 py-4 sm:grid-cols-3 lg:grid-cols-6">
-            <StatLcd label="Toplam Bina" value={ozet.toplam_bina} />
-            <StatLcd label="Yapılandırılmış" value={ozet.yapilandirilmis_bina} />
-            <StatLcd label="Beklenen Birim" value={ozet.beklenen_birim} />
-            <StatLcd label="Kayıtlı Sayaç" value={ozet.toplam_sayac} />
-            <StatLcd label="Abone Nolu" value={ozet.abone_nolu} />
-            <StatLcd label="Uyumsuz Bina" value={ozet.uyumsuz} tone="text-amber-300" />
+            <StatCard label="Toplam Bina" value={ozet.toplam_bina} />
+            <StatCard label="Yapılandırılmış" value={ozet.yapilandirilmis_bina} />
+            <StatCard label="Beklenen Birim" value={ozet.beklenen_birim} />
+            <StatCard label="Kayıtlı Sayaç" value={ozet.toplam_sayac} />
+            <StatCard label="Abone Nolu" value={ozet.abone_nolu} />
+            <StatCard label="Uyumsuz Bina" value={ozet.uyumsuz} tone="text-amber-600 dark:text-amber-400" />
           </div>
         )}
       </div>
 
       {/* Filtre + tablo */}
-      <div className={`${MASKI_CARD} flex max-h-[calc(100dvh-22rem)] flex-col`}>
+      <div className={`${PANEL_CARD} flex max-h-[calc(100dvh-22rem)] flex-col`}>
         <div className="shrink-0 space-y-3 border-b border-blue-light-100 p-4 dark:border-blue-light-900/30">
           <div className="flex flex-wrap gap-1.5">
             {FILTERS.map((f) => {

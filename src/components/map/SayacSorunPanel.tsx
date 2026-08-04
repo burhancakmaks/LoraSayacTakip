@@ -34,13 +34,11 @@ const FILTERS: { key: SorunListeFilter; label: string }[] = [
   { key: "eksik", label: "Eksik" },
 ];
 
-const WAVE_BG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`;
-
-function StatLcd({ label, value, tone }: { label: string; value: number; tone: string }) {
+function StatCard({ label, value, tone }: { label: string; value: number; tone: string }) {
   return (
-    <div className="flex-1 overflow-hidden rounded-lg border border-blue-light-800/70 bg-gradient-to-b from-blue-light-950 to-[#041e2e] px-2 py-1.5 text-center shadow-inner">
-      <p className="text-[7px] font-bold uppercase tracking-[0.15em] text-blue-light-600/80">{label}</p>
-      <p className={`mt-0.5 text-sm font-black tabular-nums ${tone}`}>{value}</p>
+    <div className="flex-1 rounded-lg border border-gray-200 bg-gray-50 px-2 py-2 text-center dark:border-gray-700 dark:bg-gray-800/60">
+      <p className="text-[9px] font-medium text-gray-500 dark:text-gray-400">{label}</p>
+      <p className={`mt-0.5 text-sm font-semibold tabular-nums ${tone}`}>{value}</p>
     </div>
   );
 }
@@ -130,19 +128,14 @@ export default function SayacSorunPanel({
 
   return (
     <div className="pointer-events-auto flex h-full max-h-full min-h-0 w-full min-w-0 flex-col overflow-hidden rounded-2xl border border-blue-light-200/80 bg-white shadow-[0_20px_60px_rgba(2,32,54,0.3)] dark:border-blue-light-900/50 dark:bg-gray-900">
-      {/* Üst başlık — MASKİ stili */}
-      <div className="relative shrink-0 overflow-hidden border-b border-blue-light-200/60 dark:border-blue-light-900/40">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.08] dark:opacity-[0.14]"
-          style={{ backgroundImage: WAVE_BG, backgroundSize: "120px 40px" }}
-        />
-        <div className="relative flex items-center justify-between gap-3 px-4 py-3.5">
+      <div className="shrink-0 border-b border-gray-200 dark:border-gray-800">
+        <div className="flex items-center justify-between gap-3 px-4 py-3.5">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-light-600 to-blue-light-900 text-white shadow-md shadow-blue-light-900/20">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-error-50 text-error-600 dark:bg-error-500/10 dark:text-error-400">
               <svg aria-hidden="true" className="h-6 w-6" viewBox="0 0 24 24" fill="none">
                 <path d="M12 3L21 19H3L12 3Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-                <path d="M12 9V13.5" stroke="#7DD3FC" strokeWidth="2" strokeLinecap="round" />
-                <circle cx="12" cy="17" r="1" fill="#7DD3FC" />
+                <path d="M12 9V13.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="12" cy="17" r="1" fill="currentColor" />
               </svg>
             </div>
             <div className="min-w-0">
@@ -166,9 +159,9 @@ export default function SayacSorunPanel({
 
       <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-hidden px-4 py-3">
         <div className="flex shrink-0 gap-1.5">
-          <StatLcd label="Hatalı" value={ozet.okunmadi + ozet.hatali} tone="text-error-300" />
-          <StatLcd label="Eksik" value={ozet.eksik} tone="text-warning-300" />
-          <StatLcd label="Toplam" value={ozet.toplam} tone="text-blue-light-300" />
+          <StatCard label="Hatalı" value={ozet.okunmadi + ozet.hatali} tone="text-error-600 dark:text-error-400" />
+          <StatCard label="Eksik" value={ozet.eksik} tone="text-warning-600 dark:text-warning-400" />
+          <StatCard label="Toplam" value={ozet.toplam} tone="text-gray-900 dark:text-white" />
         </div>
 
         <div className="grid shrink-0 grid-cols-3 gap-1.5">

@@ -36,10 +36,8 @@ interface MetaResponse {
   error?: string;
 }
 
-const MASKI_RIBBON = "#026aa2";
-const WAVE_BG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`;
-const MASKI_CARD =
-  "overflow-hidden rounded-2xl border border-blue-light-200/70 bg-white shadow-theme-lg dark:border-blue-light-900/40 dark:bg-gray-900/95";
+const PANEL_CARD =
+  "overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900";
 
 function formatDate(iso?: string) {
   if (!iso) return "—";
@@ -50,11 +48,11 @@ function formatDate(iso?: string) {
   }
 }
 
-function StatLcd({ label, value }: { label: string; value: string | number }) {
+function StatCard({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="overflow-hidden rounded-xl border border-blue-light-800/70 bg-gradient-to-b from-blue-light-950 to-[#041e2e] px-3 py-2.5 text-center shadow-inner">
-      <p className="text-[8px] font-bold uppercase tracking-[0.15em] text-blue-light-600/80">{label}</p>
-      <p className="mt-1 break-words text-sm font-black tabular-nums text-blue-light-300">{value}</p>
+    <div className="rounded-xl border border-gray-200 bg-gray-50 px-3 py-2.5 text-center dark:border-gray-700 dark:bg-gray-800/60">
+      <p className="text-[10px] font-medium text-gray-500 dark:text-gray-400">{label}</p>
+      <p className="mt-1 break-words text-sm font-semibold tabular-nums text-gray-900 dark:text-white">{value}</p>
     </div>
   );
 }
@@ -216,19 +214,15 @@ export default function MaskiAramaPanel() {
   return (
     <div className="space-y-5">
       {/* Üst başlık */}
-      <div className={MASKI_CARD}>
-        <div className="relative overflow-hidden border-b border-blue-light-200/60 dark:border-blue-light-900/40">
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.08] dark:opacity-[0.14]"
-            style={{ backgroundImage: WAVE_BG, backgroundSize: "120px 40px" }}
-          />
-          <div className="relative flex flex-col gap-4 overflow-hidden pr-10 sm:flex-row sm:items-start sm:pr-14">
+      <div className={PANEL_CARD}>
+        <div className="border-b border-gray-200 dark:border-gray-800">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
             <div className="flex items-start gap-3 px-5 py-4">
-              <div className="relative flex w-14 shrink-0 flex-col items-center justify-center gap-0.5 bg-gradient-to-b from-blue-light-800 to-blue-light-950 px-1 py-3 text-white shadow-[0_0_14px_rgba(11,165,236,0.3)]">
-                <div className="absolute inset-2 rounded-full border border-white/20" style={{ boxShadow: "inset 0 0 0 2px #0ba5ec44" }} />
-                <span className="relative text-[7px] font-bold uppercase tracking-[0.15em] text-blue-light-200/70">Arama</span>
-                <span className="relative text-xs font-black leading-none">ARA</span>
-                <span className="relative mt-1 rounded bg-blue-light-500 px-1 py-px text-[7px] font-bold text-white">XLS</span>
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-light-50 text-blue-light-600 dark:bg-blue-light-950/40 dark:text-blue-light-400">
+                <svg aria-hidden="true" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m20 20-4-4" />
+                </svg>
               </div>
               <div className="min-w-0 pt-0.5">
                 <h3 className="text-base font-bold text-gray-900 dark:text-white">MASKİ Excel Arama</h3>
@@ -236,12 +230,6 @@ export default function MaskiAramaPanel() {
                   Tüm Excel dosyalarındaki sayaç numarası, abone numarası ve adres bilgilerinde arama yapın.
                 </p>
               </div>
-            </div>
-            <div
-              className="pointer-events-none absolute -right-6 top-4 w-20 rotate-45 py-0.5 text-center text-[7px] font-bold uppercase tracking-wider text-white shadow-sm"
-              style={{ backgroundColor: MASKI_RIBBON }}
-            >
-              MASKİ
             </div>
           </div>
         </div>
@@ -254,16 +242,16 @@ export default function MaskiAramaPanel() {
 
         {meta && (
           <div className="grid grid-cols-2 gap-3 px-5 py-4 sm:grid-cols-4">
-            <StatLcd label="Toplam Kayıt" value={(meta.total ?? 0).toLocaleString("tr-TR")} />
-            <StatLcd label="Kaynak Dosya" value={Object.keys(meta.stats ?? {}).length} />
-            <StatLcd label="Son Güncelleme" value={formatDate(meta.built_at).split(" ")[0]} />
-            <StatLcd label="Kaynaklar" value={kaynaklar.length} />
+            <StatCard label="Toplam Kayıt" value={(meta.total ?? 0).toLocaleString("tr-TR")} />
+            <StatCard label="Kaynak Dosya" value={Object.keys(meta.stats ?? {}).length} />
+            <StatCard label="Son Güncelleme" value={formatDate(meta.built_at).split(" ")[0]} />
+            <StatCard label="Kaynaklar" value={kaynaklar.length} />
           </div>
         )}
       </div>
 
       {/* Arama formu + sonuçlar */}
-      <div className={MASKI_CARD}>
+      <div className={PANEL_CARD}>
         <form onSubmit={handleSubmit} className="space-y-3 border-b border-blue-light-100 p-4 dark:border-blue-light-900/30">
           <div className="flex flex-col gap-2 sm:flex-row">
             <div className="relative flex flex-1 items-center gap-2 overflow-hidden rounded-xl border border-blue-light-200 bg-blue-light-50/50 px-3 py-2 dark:border-blue-light-900/50 dark:bg-blue-light-950/25">
