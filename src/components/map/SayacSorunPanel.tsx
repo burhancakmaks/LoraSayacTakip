@@ -34,7 +34,6 @@ const FILTERS: { key: SorunListeFilter; label: string }[] = [
   { key: "eksik", label: "Eksik" },
 ];
 
-const MASKI_RIBBON = "#026aa2";
 const WAVE_BG = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40' viewBox='0 0 120 40'%3E%3Cpath fill='%230086c9' d='M0 20 Q15 8 30 20 T60 20 T90 20 T120 20 V40 H0Z'/%3E%3C/svg%3E")`;
 
 function StatLcd({ label, value, tone }: { label: string; value: number; tone: string }) {
@@ -60,30 +59,39 @@ export default function SayacSorunPanel({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (isOpen) setFilter(initialFilter);
-  }, [isOpen, initialFilter]);
-
-  useEffect(() => {
     if (!isOpen) return;
     const controller = new AbortController();
-    setLoading(true);
-    setError(null);
 
-    const params = new URLSearchParams();
-    if (filter !== "all") params.set("durum", filter);
-    if (search.trim()) params.set("q", search.trim());
+    const loadReport = async () => {
+      setLoading(true);
+      setError(null);
 
-    fetch(`/api/sayac/sorunlar/liste?${params}`, { signal: controller.signal })
-      .then((r) => r.json())
-      .then((data: { items?: SayacSorunListeItem[]; ozet?: typeof ozet; error?: string }) => {
-        if (data.error) throw new Error(data.error);
+      const params = new URLSearchParams();
+      if (filter !== "all") params.set("durum", filter);
+      if (search.trim()) params.set("q", search.trim());
+
+      try {
+        const response = await fetch(`/api/sayac/sorunlar/liste?${params}`, {
+          signal: controller.signal,
+        });
+        const data = (await response.json()) as {
+          items?: SayacSorunListeItem[];
+          ozet?: typeof ozet;
+          error?: string;
+        };
+        if (!response.ok || data.error) throw new Error(data.error || "Rapor yüklenemedi");
         setItems(data.items ?? []);
         if (data.ozet) setOzet(data.ozet);
-      })
-      .catch((e) => {
-        if (e.name !== "AbortError") setError(e.message || "Yüklenemedi");
-      })
-      .finally(() => setLoading(false));
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name !== "AbortError") {
+          setError(error.message || "Yüklenemedi");
+        }
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    };
+
+    void loadReport();
 
     return () => controller.abort();
   }, [isOpen, filter, search]);
@@ -121,33 +129,38 @@ export default function SayacSorunPanel({
   if (!isOpen) return null;
 
   return (
-    <div className="pointer-events-auto flex h-[calc(100dvh-2rem)] max-h-[calc(100dvh-2rem)] min-h-0 w-full min-w-0 flex-col overflow-hidden rounded-2xl border border-blue-light-200/70 bg-white/98 shadow-2xl backdrop-blur-md dark:border-blue-light-900/40 dark:bg-gray-900/98">
+    <div className="pointer-events-auto flex h-full max-h-full min-h-0 w-full min-w-0 flex-col overflow-hidden rounded-2xl border border-blue-light-200/80 bg-white shadow-[0_20px_60px_rgba(2,32,54,0.3)] dark:border-blue-light-900/50 dark:bg-gray-900">
       {/* Üst başlık — MASKİ stili */}
       <div className="relative shrink-0 overflow-hidden border-b border-blue-light-200/60 dark:border-blue-light-900/40">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.08] dark:opacity-[0.14]"
           style={{ backgroundImage: WAVE_BG, backgroundSize: "120px 40px" }}
         />
-        <div className="relative flex items-start justify-between gap-2 px-4 py-3 pr-10">
-          <div className="min-w-0">
-            <h2 className="text-sm font-bold text-gray-900 dark:text-white">{panelTitle}</h2>
-            <p className="mt-0.5 text-[10px] text-gray-500 dark:text-gray-400">
-              Okunmayan, hatalı veya eksik sayaç kayıtları
-            </p>
+        <div className="relative flex items-center justify-between gap-3 px-4 py-3.5">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-light-600 to-blue-light-900 text-white shadow-md shadow-blue-light-900/20">
+              <svg aria-hidden="true" className="h-6 w-6" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3L21 19H3L12 3Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+                <path d="M12 9V13.5" stroke="#7DD3FC" strokeWidth="2" strokeLinecap="round" />
+                <circle cx="12" cy="17" r="1" fill="#7DD3FC" />
+              </svg>
+            </div>
+            <div className="min-w-0">
+              <h2 className="truncate text-sm font-bold text-gray-900 dark:text-white">{panelTitle}</h2>
+              <p className="mt-0.5 truncate text-[10px] text-gray-500 dark:text-gray-400">
+                Okunmayan, hatalı veya eksik sayaç kayıtları
+              </p>
+            </div>
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="absolute right-3 top-3 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-gray-200 text-gray-400 transition hover:border-blue-light-300 hover:bg-blue-light-50 hover:text-gray-700 dark:border-gray-700 dark:hover:border-blue-light-700 dark:hover:bg-blue-light-950/40 dark:hover:text-white"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-gray-200 bg-white/80 text-gray-500 transition hover:border-blue-light-300 hover:bg-blue-light-50 hover:text-blue-light-800 dark:border-gray-700 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:border-blue-light-700 dark:hover:bg-blue-light-950/40 dark:hover:text-white"
             title="Kapat (Esc)"
           >
-            ✕
+            <span aria-hidden="true" className="text-lg leading-none">×</span>
+            <span className="sr-only">Kapat</span>
           </button>
-          <div
-            className="pointer-events-none absolute -right-6 top-3 w-16 rotate-45 py-px text-center text-[6px] font-bold uppercase tracking-wider text-white shadow-sm"
-            style={{ backgroundColor: MASKI_RIBBON }}
-          >
-            MASKİ
-          </div>
         </div>
       </div>
 
@@ -158,12 +171,13 @@ export default function SayacSorunPanel({
           <StatLcd label="Toplam" value={ozet.toplam} tone="text-blue-light-300" />
         </div>
 
-        <div className="flex shrink-0 flex-wrap gap-1.5">
+        <div className="grid shrink-0 grid-cols-3 gap-1.5">
           {FILTERS.map((f) => (
             <button
+              type="button"
               key={f.key}
               onClick={() => setFilter(f.key)}
-              className={`rounded-lg border px-2.5 py-1 text-[10px] font-semibold transition ${
+              className={`min-w-0 rounded-lg border px-2 py-1.5 text-[10px] font-semibold transition ${
                 filter === f.key
                   ? "border-blue-light-600 bg-blue-light-600 text-white shadow-sm"
                   : "border-blue-light-200 bg-blue-light-50/60 text-blue-light-800 hover:border-blue-light-400 dark:border-blue-light-800 dark:bg-blue-light-950/30 dark:text-blue-light-300 dark:hover:border-blue-light-600"
@@ -175,15 +189,31 @@ export default function SayacSorunPanel({
           ))}
         </div>
 
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Bina, blok, daire ara..."
-          className="w-full shrink-0 rounded-xl border border-blue-light-200 bg-blue-light-50/50 px-3 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-light-400 focus:outline-none focus:ring-2 focus:ring-blue-light-500/20 dark:border-blue-light-900/50 dark:bg-blue-light-950/25 dark:text-white"
-        />
+        <div className="relative shrink-0">
+          <svg aria-hidden="true" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+            <path d="M16.5 16.5L21 21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Bina, blok, daire veya sayaç ara..."
+            className="w-full rounded-xl border border-blue-light-200 bg-blue-light-50/50 py-2.5 pl-9 pr-9 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-light-400 focus:outline-none focus:ring-2 focus:ring-blue-light-500/20 dark:border-blue-light-900/50 dark:bg-blue-light-950/25 dark:text-white"
+          />
+          {search && (
+            <button
+              type="button"
+              aria-label="Aramayı temizle"
+              onClick={() => setSearch("")}
+              className="absolute right-2 top-1/2 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg text-gray-400 hover:bg-white hover:text-gray-700 dark:hover:bg-gray-800 dark:hover:text-white"
+            >
+              ×
+            </button>
+          )}
+        </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-xl border border-blue-light-100 dark:border-blue-light-900/40">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain rounded-xl border border-blue-light-100 bg-gray-50/60 p-2 dark:border-blue-light-900/40 dark:bg-gray-950/20">
           {loading && (
             <div className="flex items-center justify-center py-12 text-sm text-gray-500">
               <div className="mr-2 h-5 w-5 animate-spin rounded-full border-2 border-blue-light-500 border-t-transparent" />
@@ -192,64 +222,66 @@ export default function SayacSorunPanel({
           )}
           {error && <div className="p-4 text-center text-sm text-error-500">{error}</div>}
           {!loading && !error && items.length === 0 && (
-            <div className="p-8 text-center text-sm text-gray-500">Kayıt bulunamadı.</div>
+            <div className="flex h-full min-h-40 flex-col items-center justify-center p-8 text-center">
+              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-blue-light-50 text-xl text-blue-light-500 dark:bg-blue-light-950/40">✓</div>
+              <p className="text-sm font-semibold text-gray-700 dark:text-gray-200">Kayıt bulunamadı</p>
+              <p className="mt-1 text-xs text-gray-500">Filtreyi veya arama ifadesini değiştirebilirsiniz.</p>
+            </div>
           )}
           {!loading && !error && items.length > 0 && (
-            <table className="w-full text-xs">
-              <thead className="sticky top-0 z-10 bg-blue-light-50/95 backdrop-blur-sm dark:bg-blue-light-950/80">
-                <tr className="text-left text-gray-500 dark:text-gray-400">
-                  <th className="px-2.5 py-2 text-[10px] font-bold uppercase tracking-wide">Durum</th>
-                  <th className="px-2.5 py-2 text-[10px] font-bold uppercase tracking-wide">Bina / Konum</th>
-                  <th className="px-2.5 py-2 text-[10px] font-bold uppercase tracking-wide">Değer</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-blue-light-100/80 dark:divide-blue-light-900/30">
-                {items.map((item) => {
-                  const meta = SAYAC_DURUM[item.sayac_durum];
-                  return (
-                    <tr
-                      key={item.id}
-                      onClick={() => onSelect(item)}
-                      className="cursor-pointer transition-colors hover:bg-blue-light-50/80 dark:hover:bg-blue-light-950/30"
+            <div className="space-y-2">
+              {items.map((item) => {
+                const meta = SAYAC_DURUM[item.sayac_durum];
+                return (
+                  <button
+                    type="button"
+                    key={item.id}
+                    onClick={() => onSelect(item)}
+                    className="group flex w-full items-center gap-3 rounded-xl border border-gray-200/80 bg-white p-3 text-left shadow-sm transition hover:-translate-y-px hover:border-blue-light-300 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-light-500/30 dark:border-gray-700/80 dark:bg-gray-800/80 dark:hover:border-blue-light-700"
+                  >
+                    <span
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-xs font-black text-white shadow-sm"
+                      style={{ backgroundColor: meta.color }}
                     >
-                      <td className="px-2.5 py-2">
+                      !
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="flex items-center gap-2">
+                        <span className="truncate text-xs font-bold text-gray-800 dark:text-gray-100">
+                          {item.building_name}
+                        </span>
                         <span
-                          className="inline-flex rounded px-1.5 py-0.5 text-[9px] font-bold text-white"
+                          className="shrink-0 rounded px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wide text-white"
                           style={{ backgroundColor: meta.color }}
                         >
                           {meta.etiket}
                         </span>
-                      </td>
-                      <td className="px-2.5 py-2">
-                        <div className="max-w-[130px] truncate font-medium text-gray-800 dark:text-gray-200">
-                          {item.building_name}
-                        </div>
-                        <div className="text-[10px] text-gray-500">
-                          {[item.blok_no, item.kapi_no && `D.${item.kapi_no}`, item.kullanilis_sekli]
-                            .filter(Boolean)
-                            .join(" · ") || "—"}
-                        </div>
-                      </td>
-                      <td className="px-2.5 py-2">
-                        <span
-                          className={`text-[11px] font-mono font-semibold ${
-                            item.sayac_durum === "okunmadi"
-                              ? "text-error-600 dark:text-error-400"
-                              : item.sayac_durum === "hatali"
-                                ? "text-error-700 dark:text-error-300"
-                                : item.sayac_durum === "eksik"
-                                  ? "italic text-warning-600 dark:text-warning-400"
-                                  : "text-gray-600"
-                          }`}
-                        >
-                          {displayValue(item)}
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                      </span>
+                      <span className="mt-1 block truncate text-[10px] text-gray-500 dark:text-gray-400">
+                        {[item.blok_no, item.kapi_no && `Daire ${item.kapi_no}`, item.kat, item.kullanilis_sekli]
+                          .filter(Boolean)
+                          .join(" · ") || "Konum bilgisi yok"}
+                      </span>
+                    </span>
+                    <span className="max-w-[7rem] shrink-0 text-right">
+                      <span
+                        className={`block truncate font-mono text-[11px] font-bold ${
+                          item.sayac_durum === "eksik"
+                            ? "italic text-warning-600 dark:text-warning-400"
+                            : "text-error-600 dark:text-error-400"
+                        }`}
+                        title={displayValue(item)}
+                      >
+                        {displayValue(item)}
+                      </span>
+                      <span className="mt-1 block text-[9px] font-medium text-blue-light-600 opacity-0 transition group-hover:opacity-100 dark:text-blue-light-400">
+                        Haritada göster →
+                      </span>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
           )}
         </div>
 

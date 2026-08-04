@@ -196,7 +196,7 @@ function getBuildingCenter(coordinates?: [number, number][][]) {
 
 function buildingHasSayacKaydi(building: Building | undefined): boolean {
   if (!building) return false;
-  return resolveBuildingVisual(building).isConfigured;
+  return resolveBuildingVisual(building).hasSayac;
 }
 
 function createSayacPinIcon(sayacId: string) {
@@ -225,23 +225,22 @@ interface BuildingPolygonStyle {
 
 interface BuildingVisual extends BuildingPolygonStyle {
   headerColor: string;
-  isConfigured: boolean;
+  hasSayac: boolean;
   hasTarife: boolean;
 }
 
 function resolveBuildingVisual(building: Building): BuildingVisual {
   const hasSayac = (building.sayac_count ?? 0) > 0;
-  const isConfigured = !!building.is_configured || hasSayac;
   const hasTarife = !!building.has_tarife && !!building.tarife_sinif;
-  const polyColor = isConfigured ? "#10b981" : "#465fff";
+  const polyColor = hasSayac ? "#10b981" : "#465fff";
 
   return {
     color: polyColor,
     fillColor: polyColor,
-    fillOpacity: isConfigured ? 0.38 : 0.25,
-    weight: isConfigured ? 2.5 : 1.5,
+    fillOpacity: hasSayac ? 0.38 : 0.25,
+    weight: hasSayac ? 2.5 : 1.5,
     headerColor: polyColor,
-    isConfigured,
+    hasSayac,
     hasTarife,
   };
 }
@@ -258,10 +257,10 @@ function buildPopupContent(building: Building, visual: BuildingVisual): string {
   const escLayer = (building.layer || "").replace(/"/g, "&quot;");
   const tarifeAccent = getTarifeColor(building.tarife_sinif);
   const sayacCount = building.sayac_count ?? building.aktif_abone_sayisi ?? 0;
-  const statusLabel = visual.isConfigured ? "Kayıtlı" : "Yapılandırılmamış";
-  const statusBg = visual.isConfigured ? "#ecfdf3" : "#f0f9ff";
-  const statusColor = visual.isConfigured ? "#027a48" : "#026aa2";
-  const statusBorder = visual.isConfigured ? "#a6f4c5" : "#b9e6fe";
+  const statusLabel = visual.hasSayac ? `${sayacCount} Sayaç Kayıtlı` : "Sayaç Kaydı Yok";
+  const statusBg = visual.hasSayac ? "#ecfdf3" : "#f0f9ff";
+  const statusColor = visual.hasSayac ? "#027a48" : "#026aa2";
+  const statusBorder = visual.hasSayac ? "#a6f4c5" : "#b9e6fe";
 
   const tarifeBlock = visual.hasTarife
     ? `<div style="margin-top:8px;overflow:hidden;border-radius:10px;border:1px solid ${tarifeAccent}55;background:linear-gradient(135deg,${tarifeAccent}12,transparent);">
@@ -663,8 +662,8 @@ export default function MapComponent() {
   const highlightBuildingForSayacSearch = useCallback(
     (binaId: number) => {
       const building = buildingsDataRef.current.get(binaId);
-      const configured = building ? resolveBuildingVisual(building).isConfigured : false;
-      if (configured) {
+      const hasSayac = building ? resolveBuildingVisual(building).hasSayac : false;
+      if (hasSayac) {
         clearBuildingAlarm();
         return highlightBuilding(binaId);
       }
@@ -704,7 +703,7 @@ export default function MapComponent() {
     highlightedBinaIdRef.current = binaId;
     const building = buildingsDataRef.current.get(binaId);
     const visual = building ? resolveBuildingVisual(building) : null;
-    const highlightStyle: BuildingPolygonStyle = visual?.isConfigured
+    const highlightStyle: BuildingPolygonStyle = visual?.hasSayac
       ? {
           color: "#10b981",
           fillColor: "#10b981",
@@ -858,7 +857,7 @@ export default function MapComponent() {
             polygon.on("mouseover", () => {
               if (highlightedBinaIdRef.current === building.id) return;
               polygon.setStyle({
-                fillColor: visual.isConfigured ? "#059669" : "#3c50e0",
+                fillColor: visual.hasSayac ? "#059669" : "#3c50e0",
                 fillOpacity: 0.45,
                 weight: visual.weight + 0.5,
               });
@@ -880,9 +879,9 @@ export default function MapComponent() {
           }
         });
 
-        // Üst üste binen mavi (yapılandırılmamış) poligonlar yeşil binaları kapatmasın
+        // Üst üste binen sayaçsız mavi poligonlar, sayaçlı yeşil binaları kapatmasın.
         for (const building of data) {
-          if (!resolveBuildingVisual(building).isConfigured) continue;
+          if (!resolveBuildingVisual(building).hasSayac) continue;
           const polygons = buildingPolygonsRef.current.get(building.id);
           polygons?.forEach((polygon) => polygon.bringToFront());
         }
@@ -1336,11 +1335,7 @@ export default function MapComponent() {
 
       {/* Sol Panel: İstatistik + Sayaç Sorunları */}
       {!loading && !error && (
-        <div
-          className={`absolute top-4 left-4 z-999 flex items-stretch pointer-events-none h-[calc(100dvh-2rem)] max-h-[calc(100dvh-2rem)] gap-3 ${
-            sorunPanelOpen ? "right-4 flex-col sm:right-[21rem] sm:flex-row" : ""
-          }`}
-        >
+        <div className="pointer-events-none absolute left-4 top-4 z-999 flex h-[calc(100dvh-2rem)] max-h-[calc(100dvh-2rem)] items-stretch">
           <div className="pointer-events-auto flex flex-col gap-2.5 w-56 shrink-0 overflow-y-auto max-h-full pr-1">
             {/* Bina Verileri */}
             <div className="relative overflow-hidden rounded-2xl border border-blue-light-200/70 bg-white/95 shadow-theme-lg backdrop-blur-sm dark:border-blue-light-900/40 dark:bg-gray-900/95">
@@ -1461,24 +1456,27 @@ export default function MapComponent() {
             )}
           </div>
 
-          {/* Sorun Raporu — yan çekmece */}
-          {sorunPanelOpen && (
-            <>
-              <div
-                className="fixed inset-0 z-998 bg-black/15 pointer-events-auto sm:hidden"
-                onClick={() => setSorunPanelOpen(false)}
-              />
-              <div className="pointer-events-auto flex h-full min-h-[280px] min-w-0 flex-1 sm:max-w-md">
-                <SayacSorunPanel
-                  isOpen={sorunPanelOpen}
-                  onClose={() => setSorunPanelOpen(false)}
-                  initialFilter={sorunPanelFilter}
-                  onSelect={handleSorunListeSelect}
-                />
-              </div>
-            </>
-          )}
         </div>
+      )}
+
+      {/* Sorun raporu: küçük ekranlarda kaplama, geniş ekranda harita çekmecesi */}
+      {!loading && !error && sorunPanelOpen && (
+        <>
+          <button
+            type="button"
+            aria-label="Sayaç sorun raporunu kapat"
+            className="pointer-events-auto absolute inset-0 z-[1090] cursor-default bg-slate-950/30 backdrop-blur-[1px] xl:bg-black/10 xl:backdrop-blur-none"
+            onClick={() => setSorunPanelOpen(false)}
+          />
+          <aside className="pointer-events-auto absolute inset-3 z-[1100] flex min-h-0 min-w-0 xl:bottom-4 xl:left-64 xl:right-auto xl:top-4 xl:w-[28rem]">
+            <SayacSorunPanel
+              isOpen={sorunPanelOpen}
+              onClose={() => setSorunPanelOpen(false)}
+              initialFilter={sorunPanelFilter}
+              onSelect={handleSorunListeSelect}
+            />
+          </aside>
+        </>
       )}
 
       {/* Controls Container — MASKİ araç çubuğu */}
