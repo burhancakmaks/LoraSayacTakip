@@ -187,7 +187,7 @@ export default function UserManagementPanel() {
                             : "border-blue-light-200 text-blue-light-700 hover:bg-blue-light-50"
                         }`}
                       >
-                        {user.active ? "Pasifleştir" : "Etkinleştir"}
+                        {user.active ? "Devre Dışı Bırak" : "Etkinleştir"}
                       </button>
                     </td>
                   </tr>
