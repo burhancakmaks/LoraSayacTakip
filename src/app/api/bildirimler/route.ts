@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getBildirimDb, seedBildirimlerIfEmpty } from "@/lib/bildirim";
+import { requireRole, writeAudit } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
   try {
@@ -42,6 +43,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function PATCH(request: NextRequest) {
+  const auth = await requireRole(request, "viewer");
+  if (auth.response) return auth.response;
   try {
     const body = await request.json();
     const db = getBildirimDb();
@@ -54,6 +57,12 @@ export async function PATCH(request: NextRequest) {
     }
 
     const unread = (db.prepare(`SELECT COUNT(*) AS c FROM bildirim WHERE okundu = 0`).get() as { c: number }).c;
+    writeAudit(request, auth.user, {
+      action: "read",
+      entity: "bildirim",
+      summary: body.all ? "Tüm bildirimler okundu olarak işaretlendi" : `${body.ids?.length || 0} bildirim okundu`,
+      metadata: body.all ? { all: true } : { ids: body.ids },
+    });
     return NextResponse.json({ success: true, unread });
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Güncelleme hatası";

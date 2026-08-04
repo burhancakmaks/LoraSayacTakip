@@ -196,7 +196,7 @@ export default function MaskiAramaPanel() {
     try {
       const res = await fetch(`/api/maski-arama?${params}`);
       const data: MetaResponse = await res.json();
-      if (!res.ok) throw new Error(data.error || `Sunucu hatası (${r.status})`);
+      if (!res.ok) throw new Error(data.error || `Sunucu hatası (${res.status})`);
       if (data.error) throw new Error(data.error);
       setResults(data.results ?? []);
       setMeta((prev) => ({ ...prev, total: data.total, built_at: data.built_at }));

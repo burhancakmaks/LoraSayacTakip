@@ -310,14 +310,19 @@ export default function SayacExcelImportPanel() {
           />
           <div className="relative flex flex-col gap-4 overflow-hidden pr-10 lg:flex-row lg:items-center lg:justify-between lg:pr-14">
             <div className="flex items-start gap-3 px-4 py-4">
-              <div className="relative flex w-14 shrink-0 flex-col items-center justify-center gap-0.5 bg-gradient-to-b from-blue-light-800 to-blue-light-950 px-1 py-3 text-white shadow-[0_0_14px_rgba(11,165,236,0.3)]">
-                <div
-                  className="absolute inset-2 rounded-full border border-white/20"
-                  style={{ boxShadow: "inset 0 0 0 2px #0ba5ec44" }}
-                />
-                <span className="relative text-[7px] font-bold uppercase tracking-[0.15em] text-blue-light-200/70">Dosya</span>
-                <span className="relative text-xs font-black leading-none">XLS</span>
-                <span className="relative mt-1 rounded bg-blue-light-500 px-1 py-px text-[7px] font-bold text-white">AKT</span>
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-light-700 to-blue-light-950 text-white shadow-[0_6px_16px_rgba(11,165,236,0.25)] ring-1 ring-blue-light-400/30">
+                <svg
+                  aria-hidden="true"
+                  className="h-9 w-9"
+                  viewBox="0 0 40 40"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M9 4.5H23L31 12.5V34.5H9V4.5Z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+                  <path d="M23 4.5V12.5H31" stroke="#7DD3FC" strokeWidth="2.2" strokeLinejoin="round" />
+                  <path d="M14 17.5L19 24.5M19 17.5L14 24.5" stroke="#7DD3FC" strokeWidth="2.2" strokeLinecap="round" />
+                  <path d="M25 30V19M25 19L21.5 22.5M25 19L28.5 22.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </div>
               <div className="min-w-0 pt-0.5">
                 <h3 className="text-base font-bold text-gray-900 dark:text-white">Excel Sayaç Aktarımı</h3>
@@ -454,8 +459,8 @@ export default function SayacExcelImportPanel() {
         >
           <input {...getInputProps()} />
           <div
-            className="pointer-events-none absolute inset-0 opacity-40"
-            style={{ backgroundImage: WAVE_BG, backgroundSize: "120px 40px" }}
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-9 opacity-[0.1] dark:opacity-[0.14]"
+            style={{ backgroundImage: WAVE_BG, backgroundSize: "120px 36px", backgroundPosition: "bottom center" }}
           />
 
           <div className="relative px-6 py-12 text-center sm:py-14">

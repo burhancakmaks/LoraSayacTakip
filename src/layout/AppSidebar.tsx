@@ -13,6 +13,7 @@ type NavItem = {
   name: string;
   icon: React.ReactNode;
   path?: string;
+  adminOnly?: boolean;
   subItems?: { name: string; path: string; pro?: boolean; new?: boolean }[];
 };
 
@@ -62,6 +63,12 @@ const SearchIcon = () => (
   </svg>
 );
 
+const AccessIcon = () => (
+  <svg className="fill-current" width="18" height="18" viewBox="0 0 24 24">
+    <path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H5z" fill="currentColor" />
+  </svg>
+);
+
 const navItems: NavItem[] = [
   {
     icon: <MapIcon />,
@@ -72,6 +79,7 @@ const navItems: NavItem[] = [
     icon: <DataIcon />,
     name: "Sayaç Aktarım",
     path: "/sayac-aktarim",
+    adminOnly: true,
   },
   {
     icon: <CompareIcon />,
@@ -83,6 +91,18 @@ const navItems: NavItem[] = [
     name: "MASKİ Arama",
     path: "/maski-arama",
   },
+  {
+    icon: <AccessIcon />,
+    name: "Kullanıcı Yönetimi",
+    path: "/kullanicilar",
+    adminOnly: true,
+  },
+  {
+    icon: <AccessIcon />,
+    name: "İşlem Geçmişi",
+    path: "/islem-gecmisi",
+    adminOnly: true,
+  },
 ];
 
 const othersItems: NavItem[] = [];
@@ -90,13 +110,21 @@ const othersItems: NavItem[] = [];
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((response) => response.json())
+      .then((data) => setIsAdmin(data.user?.role === "admin"))
+      .catch(() => {});
+  }, []);
 
   const renderMenuItems = (
     navItems: NavItem[],
     menuType: "main" | "others"
   ) => (
     <ul className="flex flex-col gap-4">
-      {navItems.map((nav, index) => (
+      {navItems.filter((nav) => !nav.adminOnly || isAdmin).map((nav, index) => (
         <li key={nav.name}>
           {nav.subItems ? (
             <button

@@ -3,6 +3,7 @@ import { readFileSync, existsSync } from "node:fs";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
+import { requireRole, writeAudit } from "@/lib/auth";
 
 const execFileAsync = promisify(execFile);
 const STATE_PATH = path.join(process.cwd(), "data", "sync-state.json");
@@ -33,6 +34,8 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = await requireRole(request, "admin");
+  if (auth.response) return auth.response;
   try {
     const body = await request.json().catch(() => ({}));
     const force = body?.force === true;
@@ -43,6 +46,12 @@ export async function POST(request: NextRequest) {
     });
 
     const result = JSON.parse(stdout.trim());
+    writeAudit(request, auth.user, {
+      action: "sync",
+      entity: "sayac_sync",
+      summary: force ? "Zorunlu MASKİ sayaç senkronu çalıştırıldı" : "MASKİ sayaç senkronu çalıştırıldı",
+      metadata: result,
+    });
     return NextResponse.json(result);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "Senkron hatası";

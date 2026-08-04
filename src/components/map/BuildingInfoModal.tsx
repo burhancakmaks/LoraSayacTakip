@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { getTarifeColor } from "@/lib/tarife";
+import { useAuthUser } from "@/hooks/useAuthUser";
 
 interface SelectedBuilding {
   id: number;
@@ -63,6 +64,7 @@ function InfoStrip({ label, children }: { label: string; children: React.ReactNo
 }
 
 export default function BuildingInfoModal({ building, onClose }: BuildingInfoModalProps) {
+  const { canEdit } = useAuthUser();
   const [form, setForm] = useState<FormData>({
     kat_sayisi: "",
     daire_sayisi: "",
@@ -388,23 +390,28 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
       </div>
 
       {!loading && (
-        <div className="flex justify-end gap-2 border-t border-blue-light-200/60 px-4 py-3 dark:border-blue-light-900/40">
+        <div className="flex items-center justify-between gap-2 border-t border-blue-light-200/60 px-4 py-3 dark:border-blue-light-900/40">
+          {!canEdit && <span className="text-[11px] text-gray-400">Salt görüntüleme yetkisi</span>}
+          <div className="ml-auto flex gap-2">
           <button
             onClick={onClose}
             className="rounded-xl border border-gray-200 px-4 py-2 text-xs font-semibold text-gray-600 transition hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
           >
             Kapat
           </button>
-          <button
-            onClick={handleSave}
-            disabled={saving || (kat === 0 && daire === 0 && ortak === 0)}
-            className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-light-600 to-blue-light-700 px-5 py-2 text-xs font-semibold text-white shadow-sm transition hover:from-blue-light-700 hover:to-blue-light-800 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {saving && (
-              <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-            )}
-            Kaydet
-          </button>
+          {canEdit && (
+            <button
+              onClick={handleSave}
+              disabled={saving || (kat === 0 && daire === 0 && ortak === 0)}
+              className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-light-600 to-blue-light-700 px-5 py-2 text-xs font-semibold text-white shadow-sm transition hover:from-blue-light-700 hover:to-blue-light-800 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {saving && (
+                <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              )}
+              Kaydet
+            </button>
+          )}
+          </div>
         </div>
       )}
     </Modal>

@@ -3,6 +3,7 @@ import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
 import { classifySayacDurum } from "@/lib/sayac-durum";
 import { createBildirim, getBildirimDb } from "@/lib/bildirim";
+import { requireRole, writeAudit } from "@/lib/auth";
 
 function getDb() {
   const dbPath = path.join(process.cwd(), "data", "binalar.db");
@@ -75,6 +76,8 @@ export async function GET(request: NextRequest) {
 
 // POST /api/sayac
 export async function POST(request: NextRequest) {
+  const auth = await requireRole(request, "editor");
+  if (auth.response) return auth.response;
   try {
     const body = await request.json();
     const { bina_id, rows } = body;
@@ -180,6 +183,21 @@ export async function POST(request: NextRequest) {
     `
       )
       .get(bina_id) as { sayac_kayit: number; sayac_count: number };
+
+    writeAudit(request, auth.user, {
+      action: "update",
+      entity: "sayac",
+      entityId: bina_id,
+      summary: `${building?.value || "Bina"} için ${rows.length} sayaç satırı kaydedildi`,
+      before: oldRows,
+      after: rows.map((row: Record<string, unknown>) => ({
+        birim_no: row.birim_no,
+        sayac_id: row.sayac_id,
+        abone_no: row.abone_no,
+        kapi_no: row.kapi_no,
+      })),
+      metadata: { saved: rows.length, ...sayacStats },
+    });
 
     return NextResponse.json({
       success: true,

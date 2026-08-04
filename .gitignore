@@ -29,6 +29,11 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# local authentication database (contains password hashes and audit data)
+/data/auth.db
+/data/auth.db-shm
+/data/auth.db-wal
+
 # vercel
 .vercel
 

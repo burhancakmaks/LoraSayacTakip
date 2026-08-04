@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { validateSayacImport } from "@/lib/sayac-excel-import";
 import { openDb, savePendingUpload } from "@/lib/sayac-import-store";
+import { requireRole, writeAudit } from "@/lib/auth";
 
 const MAX_BYTES = 15 * 1024 * 1024;
 const ALLOWED_EXT = /\.(xlsx|xls)$/i;
 
 export async function POST(request: NextRequest) {
+  const auth = await requireRole(request, "admin");
+  if (auth.response) return auth.response;
   try {
     const form = await request.formData();
     const file = form.get("file");
@@ -36,6 +39,14 @@ export async function POST(request: NextRequest) {
         const pending = savePendingUpload(buffer, file.name);
         pendingId = pending.id;
       }
+
+      writeAudit(request, auth.user, {
+        action: "validate",
+        entity: "sayac_import",
+        entityId: pendingId,
+        summary: `${file.name} dosyası doğrulandı`,
+        metadata: { valid: result.valid, format: result.format, stats: result.stats },
+      });
 
       return NextResponse.json({
         valid: result.valid,

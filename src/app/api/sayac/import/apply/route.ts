@@ -10,11 +10,14 @@ import {
   getPendingUpload,
   removePendingUpload,
 } from "@/lib/sayac-import-store";
+import { requireRole, writeAudit } from "@/lib/auth";
 
 const MAX_BYTES = 15 * 1024 * 1024;
 const ALLOWED_EXT = /\.(xlsx|xls)$/i;
 
 export async function POST(request: NextRequest) {
+  const auth = await requireRole(request, "admin");
+  if (auth.response) return auth.response;
   try {
     const form = await request.formData();
     const pendingId = String(form.get("pendingId") ?? "").trim();
@@ -79,6 +82,20 @@ export async function POST(request: NextRequest) {
         rowCount: validation.importableRows.length,
       };
       saveHistory({ last: entry });
+
+      writeAudit(request, auth.user, {
+        action: "import",
+        entity: "sayac_import",
+        entityId: entry.id,
+        summary: `${filename} dosyasından sayaç aktarımı yapıldı`,
+        metadata: {
+          filename,
+          backupPath,
+          rowCount: validation.importableRows.length,
+          skipped: validation.stats.skipped,
+          stats,
+        },
+      });
 
       return NextResponse.json({
         ok: true,

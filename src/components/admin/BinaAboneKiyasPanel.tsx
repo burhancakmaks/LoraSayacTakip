@@ -154,14 +154,20 @@ export default function BinaAboneKiyasPanel() {
           />
           <div className="relative flex flex-col gap-4 overflow-hidden pr-10 sm:flex-row sm:items-start sm:pr-14">
             <div className="flex items-start gap-3 px-5 py-4">
-              <div className="relative flex w-14 shrink-0 flex-col items-center justify-center gap-0.5 bg-gradient-to-b from-blue-light-800 to-blue-light-950 px-1 py-3 text-white shadow-[0_0_14px_rgba(11,165,236,0.3)]">
-                <div
-                  className="absolute inset-2 rounded-full border border-white/20"
-                  style={{ boxShadow: "inset 0 0 0 2px #0ba5ec44" }}
-                />
-                <span className="relative text-[7px] font-bold uppercase tracking-[0.15em] text-blue-light-200/70">Kıyas</span>
-                <span className="relative text-xs font-black leading-none">BIN</span>
-                <span className="relative mt-1 rounded bg-blue-light-500 px-1 py-px text-[7px] font-bold text-white">ABN</span>
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-light-700 to-blue-light-950 text-white shadow-[0_6px_16px_rgba(11,165,236,0.25)] ring-1 ring-blue-light-400/30">
+                <svg
+                  aria-hidden="true"
+                  className="h-9 w-9"
+                  viewBox="0 0 40 40"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M5.5 30.5V12.5L14 8L22.5 12.5V30.5" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" />
+                  <path d="M10 16H13M17 16H20M10 21H13M17 21H20M10 26H13M17 26H20" stroke="#7DD3FC" strokeWidth="2" strokeLinecap="round" />
+                  <circle cx="30" cy="15" r="4" stroke="currentColor" strokeWidth="2.2" />
+                  <path d="M24.5 30C24.5 26.7 27 24 30 24C33 24 35.5 26.7 35.5 30" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                  <path d="M5 34H35" stroke="#38BDF8" strokeWidth="2.2" strokeLinecap="round" />
+                </svg>
               </div>
               <div className="min-w-0 pt-0.5">
                 <h3 className="text-base font-bold text-gray-900 dark:text-white">Bina-Abone Kıyası</h3>

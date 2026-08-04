@@ -5,6 +5,7 @@ import { Modal } from "@/components/ui/modal";
 import { classifySayacDurum, SAYAC_DURUM, type SayacDurum } from "@/lib/sayac-durum";
 import { useNotifications } from "@/context/NotificationContext";
 import { notifySayacGuncellendi } from "@/lib/sayac-events";
+import { useAuthUser } from "@/hooks/useAuthUser";
 
 interface SelectedBuilding {
   id: number;
@@ -209,6 +210,7 @@ function matchesHighlightSayac(row: SayacRow, highlightSayacId?: string | null) 
 
 export default function SayacModal({ building, highlightSayacId, onClose, onSaved }: SayacModalProps) {
   const { refresh } = useNotifications();
+  const { canEdit } = useAuthUser();
   const [rows, setRows] = useState<SayacRow[]>([]);
   const [floorOptions, setFloorOptions] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -441,16 +443,18 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
             >
               Kart
             </button>
-            <button
-              onClick={() => setViewMode("edit")}
-              className={`px-3 py-1.5 rounded-md text-[11px] font-semibold transition-all ${
-                viewMode === "edit"
-                  ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Tablo
-            </button>
+            {canEdit && (
+              <button
+                onClick={() => setViewMode("edit")}
+                className={`px-3 py-1.5 rounded-md text-[11px] font-semibold transition-all ${
+                  viewMode === "edit"
+                    ? "bg-white dark:bg-gray-900 text-gray-900 dark:text-white shadow-sm"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                Tablo
+              </button>
+            )}
           </div>
 
           {viewMode === "grid" && (
@@ -726,7 +730,9 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
       {/* Footer */}
       {!loading && !noBinaInfo && rows.length > 0 && (
         <div className="px-5 py-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between shrink-0 bg-white dark:bg-gray-900">
-          <span className="text-[11px] text-gray-400">Kaydetmek için Kaydet&apos;e basın.</span>
+          <span className="text-[11px] text-gray-400">
+            {canEdit ? "Kaydetmek için Kaydet'e basın." : "Salt görüntüleme yetkisi"}
+          </span>
           <div className="flex gap-2">
             <button
               onClick={onClose}
@@ -734,16 +740,18 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
             >
               Kapat
             </button>
-            <button
-              onClick={handleSave}
-              disabled={saving}
-              className="px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-1.5"
-            >
-              {saving && (
-                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent inline-block" />
-              )}
-              {saving ? "Kaydediliyor..." : "Kaydet"}
-            </button>
+            {canEdit && (
+              <button
+                onClick={handleSave}
+                disabled={saving}
+                className="px-4 py-1.5 rounded-lg text-xs font-semibold text-white bg-blue-light-600 hover:bg-blue-light-700 disabled:opacity-50 disabled:cursor-not-allowed transition flex items-center gap-1.5"
+              >
+                {saving && (
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent inline-block" />
+                )}
+                {saving ? "Kaydediliyor..." : "Kaydet"}
+              </button>
+            )}
           </div>
         </div>
       )}

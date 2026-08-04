@@ -113,19 +113,85 @@ function escHtml(value: string) {
   return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/"/g, "&quot;");
 }
 
+function ringArea(ring: [number, number][]) {
+  let area = 0;
+  for (let i = 0; i < ring.length; i++) {
+    const [lat1, lng1] = ring[i];
+    const [lat2, lng2] = ring[(i + 1) % ring.length];
+    area += lng1 * lat2 - lng2 * lat1;
+  }
+  return Math.abs(area / 2);
+}
+
+function pointInRing(lat: number, lng: number, ring: [number, number][]) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [latI, lngI] = ring[i];
+    const [latJ, lngJ] = ring[j];
+    const intersects =
+      lngI > lng !== lngJ > lng &&
+      lat < ((latJ - latI) * (lng - lngI)) / (lngJ - lngI || Number.EPSILON) + latI;
+    if (intersects) inside = !inside;
+  }
+  return inside;
+}
+
+function pointSegmentDistanceSquared(
+  lat: number,
+  lng: number,
+  [latA, lngA]: [number, number],
+  [latB, lngB]: [number, number]
+) {
+  const dx = lngB - lngA;
+  const dy = latB - latA;
+  if (dx === 0 && dy === 0) return (lng - lngA) ** 2 + (lat - latA) ** 2;
+  const t = Math.max(0, Math.min(1, ((lng - lngA) * dx + (lat - latA) * dy) / (dx * dx + dy * dy)));
+  const nearestLng = lngA + t * dx;
+  const nearestLat = latA + t * dy;
+  return (lng - nearestLng) ** 2 + (lat - nearestLat) ** 2;
+}
+
+function distanceFromRingSquared(lat: number, lng: number, ring: [number, number][]) {
+  let minimum = Number.POSITIVE_INFINITY;
+  for (let i = 0; i < ring.length; i++) {
+    minimum = Math.min(
+      minimum,
+      pointSegmentDistanceSquared(lat, lng, ring[i], ring[(i + 1) % ring.length])
+    );
+  }
+  return minimum;
+}
+
 function getBuildingCenter(coordinates?: [number, number][][]) {
-  if (!coordinates?.length) return null;
-  let lat = 0;
-  let lng = 0;
-  let count = 0;
-  for (const ring of coordinates) {
-    for (const [ringLat, ringLng] of ring) {
-      lat += ringLat;
-      lng += ringLng;
-      count++;
+  const validRings = coordinates?.filter((ring) => ring.length >= 3) ?? [];
+  if (validRings.length === 0) return null;
+
+  // Multi-poligonda sayaç etiketi en büyük bina parçasına yerleşir.
+  const ring = [...validRings].sort((a, b) => ringArea(b) - ringArea(a))[0];
+  const lats = ring.map(([lat]) => lat);
+  const lngs = ring.map(([, lng]) => lng);
+  const minLat = Math.min(...lats);
+  const maxLat = Math.max(...lats);
+  const minLng = Math.min(...lngs);
+  const maxLng = Math.max(...lngs);
+
+  // İçeride kalan adaylar arasından kenarlara en uzak olanı seçerek pinin
+  // girintili/uzun binalarda komşu poligona taşmasını engeller.
+  let best: { lat: number; lng: number; distance: number } | null = null;
+  const gridSize = 24;
+  for (let y = 0; y <= gridSize; y++) {
+    const lat = minLat + ((maxLat - minLat) * y) / gridSize;
+    for (let x = 0; x <= gridSize; x++) {
+      const lng = minLng + ((maxLng - minLng) * x) / gridSize;
+      if (!pointInRing(lat, lng, ring)) continue;
+      const distance = distanceFromRingSquared(lat, lng, ring);
+      if (!best || distance > best.distance) best = { lat, lng, distance };
     }
   }
-  return count ? L.latLng(lat / count, lng / count) : null;
+
+  if (best) return L.latLng(best.lat, best.lng);
+  const [fallbackLat, fallbackLng] = ring[0];
+  return L.latLng(fallbackLat, fallbackLng);
 }
 
 function buildingHasSayacKaydi(building: Building | undefined): boolean {

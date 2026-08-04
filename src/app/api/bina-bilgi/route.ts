@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
+import { requireRole, writeAudit } from "@/lib/auth";
 
 function getDb() {
   const dbPath = path.join(process.cwd(), "data", "binalar.db");
@@ -48,6 +49,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const auth = await requireRole(request, "editor");
+  if (auth.response) return auth.response;
   try {
     const body = await request.json();
     const { 
@@ -65,6 +68,7 @@ export async function POST(request: NextRequest) {
 
     const toplam = (daire_sayisi || 0) + (ortak_alan_sayisi || 0);
     const db = getDb();
+    const before = db.prepare("SELECT * FROM bina_bilgi WHERE bina_id = ?").get(bina_id);
 
     db.prepare(`
       INSERT INTO bina_bilgi (
@@ -101,6 +105,16 @@ export async function POST(request: NextRequest) {
       sokak || "",
       dis_kapi_no || ""
     );
+
+    const after = db.prepare("SELECT * FROM bina_bilgi WHERE bina_id = ?").get(bina_id);
+    writeAudit(request, auth.user, {
+      action: before ? "update" : "create",
+      entity: "bina_bilgi",
+      entityId: bina_id,
+      summary: `Bina bilgileri ${before ? "güncellendi" : "oluşturuldu"}`,
+      before,
+      after,
+    });
 
     return NextResponse.json({ success: true, toplam_bagımsız_bolum: toplam });
   } catch (error: any) {
