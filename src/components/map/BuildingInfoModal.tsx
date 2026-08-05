@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Modal } from "@/components/ui/modal";
 import { getTarifeColor } from "@/lib/tarife";
 import { useAuthUser } from "@/hooks/useAuthUser";
+import SahaKartiExportButtons from "@/components/map/SahaKartiExportButtons";
 
 interface SelectedBuilding {
   id: number;
@@ -15,6 +16,7 @@ interface SelectedBuilding {
 interface BuildingInfoModalProps {
   building: SelectedBuilding | null;
   onClose: () => void;
+  onOpenSayac?: () => void;
 }
 
 interface FormData {
@@ -60,7 +62,7 @@ function InfoStrip({ label, children }: { label: string; children: React.ReactNo
   );
 }
 
-export default function BuildingInfoModal({ building, onClose }: BuildingInfoModalProps) {
+export default function BuildingInfoModal({ building, onClose, onOpenSayac }: BuildingInfoModalProps) {
   const { canEdit } = useAuthUser();
   const [form, setForm] = useState<FormData>({
     kat_sayisi: "",
@@ -171,6 +173,23 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
       onClose={onClose}
       className="m-4 flex max-w-lg flex-col overflow-hidden rounded-3xl bg-white dark:bg-gray-900"
     >
+      {onOpenSayac && (
+        <div className="border-b border-blue-light-200/80 bg-gradient-to-r from-blue-light-50 to-white px-4 py-3 dark:border-blue-light-900/50 dark:from-blue-light-950/50 dark:to-gray-900">
+          <button
+            type="button"
+            onClick={onOpenSayac}
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-blue-light-600 to-blue-light-700 px-4 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-light-500/25 transition hover:from-blue-light-700 hover:to-blue-light-800 hover:shadow-lg"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+            </svg>
+            Sayaç Bilgileri
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </button>
+        </div>
+      )}
       <div className="border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center gap-3 px-4 py-4">
           <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-light-50 text-sm font-semibold text-blue-light-700 dark:bg-blue-light-950/40 dark:text-blue-light-300">
@@ -373,8 +392,11 @@ export default function BuildingInfoModal({ building, onClose }: BuildingInfoMod
       </div>
 
       {!loading && (
-        <div className="flex items-center justify-between gap-2 border-t border-blue-light-200/60 px-4 py-3 dark:border-blue-light-900/40">
-          {!canEdit && <span className="text-[11px] text-gray-400">Salt görüntüleme yetkisi</span>}
+        <div className="flex flex-wrap items-center justify-between gap-2 border-t border-blue-light-200/60 px-4 py-3 dark:border-blue-light-900/40">
+          <div className="flex flex-col gap-1">
+            {!canEdit && <span className="text-[11px] text-gray-400">Salt görüntüleme yetkisi</span>}
+            {building && <SahaKartiExportButtons binaId={building.id} />}
+          </div>
           <div className="ml-auto flex gap-2">
           <button
             onClick={onClose}

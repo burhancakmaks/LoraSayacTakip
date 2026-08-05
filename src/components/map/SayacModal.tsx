@@ -1,11 +1,14 @@
 "use client";
 
 import React, { useEffect, useState, useCallback } from "react";
+import QRCode from "qrcode";
 import { Modal } from "@/components/ui/modal";
 import { classifySayacDurum, SAYAC_DURUM, type SayacDurum } from "@/lib/sayac-durum";
 import { useNotifications } from "@/context/NotificationContext";
 import { notifySayacGuncellendi } from "@/lib/sayac-events";
 import { useAuthUser } from "@/hooks/useAuthUser";
+import { buildSayacMapUrl, copyTextToClipboard } from "@/lib/sayac-link";
+import SahaKartiExportButtons from "@/components/map/SahaKartiExportButtons";
 
 interface SelectedBuilding {
   id: number;
@@ -32,6 +35,8 @@ interface SayacModalProps {
   highlightSayacId?: string | null;
   onClose: () => void;
   onSaved?: (stats: { sayac_count: number; sayac_kayit: number }) => void;
+  onOpenLocation?: (sayacId: string) => void;
+  onOpenBuildingInfo?: () => void;
 }
 
 const KULLANILIS_SEKILLERI = [
@@ -64,7 +69,19 @@ const SAYAC_MARKALARI = [
 const NUM_INPUT_CLASS =
   "w-full min-w-[5.5rem] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 rounded-md px-2 py-1 text-xs font-mono tabular-nums text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition outline-none";
 
-function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: boolean }) {
+function SayacUnitCard({
+  row,
+  highlighted,
+  binaId,
+  onQr,
+  onOpenLocation,
+}: {
+  row: SayacRow;
+  highlighted?: boolean;
+  binaId: number;
+  onQr: (row: SayacRow) => void;
+  onOpenLocation?: (row: SayacRow) => void;
+}) {
   const durum: SayacDurum =
     row.sayac_durum && row.sayac_durum in SAYAC_DURUM
       ? (row.sayac_durum as SayacDurum)
@@ -139,6 +156,44 @@ function SayacUnitCard({ row, highlighted }: { row: SayacRow; highlighted?: bool
             {hasAbone ? row.abone_no : "—"}
           </span>
         </div>
+
+        {hasSayac && (
+          <div className="space-y-1">
+            <div className="grid grid-cols-2 gap-1">
+              <button
+                type="button"
+                onClick={() => onOpenLocation?.(row)}
+                className="flex items-center justify-center gap-1 rounded-md border border-emerald-300 bg-emerald-50 px-1.5 py-1 text-[9px] font-bold text-emerald-800 transition hover:bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-950/60"
+                title="Konumu Google Maps'te aç"
+              >
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                Konum
+              </button>
+              <button
+                type="button"
+                onClick={() => onQr(row)}
+                className="flex items-center justify-center gap-1 rounded-md border border-blue-light-300 bg-blue-light-50 px-1.5 py-1 text-[9px] font-bold text-blue-light-800 transition hover:bg-blue-light-100 dark:border-blue-light-700 dark:bg-blue-light-950/40 dark:text-blue-light-300 dark:hover:bg-blue-light-950/60"
+                title="Sayaç QR kodunu göster"
+              >
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                  <path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6z" />
+                  <path d="M14 14h2v2h-2v-2zm4 0h2v2h-2v-2zm-4 4h2v2h-2v-2zm4 0h2v2h-2v-2z" />
+                </svg>
+                QR
+              </button>
+            </div>
+            <SahaKartiExportButtons
+              binaId={binaId}
+              sayacId={row.sayac_id}
+              aboneNo={row.abone_no || undefined}
+              compact
+              className="w-full"
+            />
+          </div>
+        )}
       </div>
 
     </article>
@@ -165,7 +220,14 @@ function matchesHighlightSayac(row: SayacRow, highlightSayacId?: string | null) 
   return normSayacDigits(row.sayac_id) === normSayacDigits(highlightSayacId);
 }
 
-export default function SayacModal({ building, highlightSayacId, onClose, onSaved }: SayacModalProps) {
+export default function SayacModal({
+  building,
+  highlightSayacId,
+  onClose,
+  onSaved,
+  onOpenLocation,
+  onOpenBuildingInfo,
+}: SayacModalProps) {
   const { refresh } = useNotifications();
   const { canEdit } = useAuthUser();
   const [rows, setRows] = useState<SayacRow[]>([]);
@@ -177,6 +239,42 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
   const [noBinaInfo, setNoBinaInfo] = useState(false);
   const [viewMode, setViewMode] = useState<"edit" | "grid">("grid");
   const [selectedFloorFilter, setSelectedFloorFilter] = useState<string>("HEPSİ");
+  const [qrPreview, setQrPreview] = useState<{
+    sayacId: string;
+    url: string;
+    dataUrl: string | null;
+  } | null>(null);
+  const [qrError, setQrError] = useState<string | null>(null);
+
+  const handleShowQr = useCallback(
+    async (row: SayacRow) => {
+      if (!building || !row.sayac_id.trim()) return;
+      const sayacId = row.sayac_id.trim();
+      const url = buildSayacMapUrl(building.id, sayacId);
+      setQrError(null);
+      setQrPreview({ sayacId, url, dataUrl: null });
+      try {
+        const dataUrl = await QRCode.toDataURL(url, {
+          width: 320,
+          margin: 2,
+          errorCorrectionLevel: "M",
+          color: { dark: "#101828", light: "#ffffff" },
+        });
+        setQrPreview((current) =>
+          current?.sayacId === sayacId ? { ...current, dataUrl } : current
+        );
+      } catch {
+        setQrError("QR kod oluşturulamadı.");
+      }
+    },
+    [building]
+  );
+
+  const handleCopyQrLink = useCallback(async () => {
+    if (!qrPreview) return;
+    const copied = await copyTextToClipboard(qrPreview.url);
+    if (!copied) setQrError("Link kopyalanamadı.");
+  }, [qrPreview]);
 
   useEffect(() => {
     if (!building) return;
@@ -185,6 +283,8 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
     setError(null);
     setNoBinaInfo(false);
     setSelectedFloorFilter("HEPSİ");
+    setQrPreview(null);
+    setQrError(null);
 
     // Fetch bina_bilgi
     fetch(`/api/bina-bilgi?bina_id=${building.id}`)
@@ -335,6 +435,25 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
       onClose={onClose}
       className="max-w-6xl m-4 flex flex-col overflow-hidden bg-white dark:bg-gray-900 rounded-3xl"
     >
+      {onOpenBuildingInfo && (
+        <div className="border-b border-blue-light-200/80 bg-gradient-to-r from-blue-light-50 to-white px-5 py-3 dark:border-blue-light-900/50 dark:from-blue-light-950/50 dark:to-gray-900">
+          <button
+            type="button"
+            onClick={onOpenBuildingInfo}
+            className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-blue-light-500 bg-white px-4 py-2.5 text-sm font-bold text-blue-light-800 shadow-md shadow-blue-light-500/15 transition hover:bg-blue-light-50 hover:shadow-lg dark:border-blue-light-600 dark:bg-gray-900 dark:text-blue-light-300 dark:hover:bg-blue-light-950/40"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+              <path d="M19 12H5M11 6l-6 6 6 6" />
+            </svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+              <path d="M3 21h18" />
+              <path d="M5 21V7l8-4v18" />
+              <path d="M19 21V11l-6-4" />
+            </svg>
+            Bina Bilgileri
+          </button>
+        </div>
+      )}
       <div className="border-b border-gray-200 dark:border-gray-800">
         <div className="flex items-center gap-3 px-5 py-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-light-50 text-sm font-semibold text-blue-light-700 dark:bg-blue-light-950/40 dark:text-blue-light-300">
@@ -655,7 +774,14 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
                           <SayacUnitCard
                             key={row.birim_no}
                             row={row}
+                            binaId={building?.id ?? 0}
                             highlighted={matchesHighlightSayac(row, highlightSayacId)}
+                            onQr={handleShowQr}
+                            onOpenLocation={
+                              onOpenLocation
+                                ? (item) => onOpenLocation(item.sayac_id.trim())
+                                : undefined
+                            }
                           />
                         ))}
                       </div>
@@ -670,10 +796,15 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
 
       {/* Footer */}
       {!loading && !noBinaInfo && rows.length > 0 && (
-        <div className="px-5 py-3 border-t border-gray-100 dark:border-gray-800 flex items-center justify-between shrink-0 bg-white dark:bg-gray-900">
-          <span className="text-[11px] text-gray-400">
-            {canEdit ? "Kaydetmek için Kaydet'e basın." : "Salt görüntüleme yetkisi"}
-          </span>
+        <div className="px-5 py-3 border-t border-gray-100 dark:border-gray-800 flex flex-wrap items-center justify-between gap-3 shrink-0 bg-white dark:bg-gray-900">
+          <div className="flex flex-col gap-1">
+            <span className="text-[11px] text-gray-400">
+              {canEdit ? "Kaydetmek için Kaydet'e basın." : "Salt görüntüleme yetkisi"}
+            </span>
+            {building && (
+              <SahaKartiExportButtons binaId={building.id} />
+            )}
+          </div>
           <div className="flex gap-2">
             <button
               onClick={onClose}
@@ -693,6 +824,84 @@ export default function SayacModal({ building, highlightSayacId, onClose, onSave
                 {saving ? "Kaydediliyor..." : "Kaydet"}
               </button>
             )}
+          </div>
+        </div>
+      )}
+
+      {qrPreview && (
+        <div
+          className="fixed inset-0 z-[100000] flex items-center justify-center bg-gray-950/55 p-4 backdrop-blur-sm"
+          onClick={() => setQrPreview(null)}
+          role="presentation"
+        >
+          <div
+            className="w-full max-w-sm rounded-2xl border border-gray-200 bg-white p-5 shadow-2xl dark:border-gray-700 dark:bg-gray-900"
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Sayaç ${qrPreview.sayacId} QR kodu`}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h3 className="text-base font-bold text-gray-900 dark:text-white">Sayaç QR Kodu</h3>
+                <p className="mt-1 font-mono text-xs font-semibold text-blue-light-700 dark:text-blue-light-400">
+                  {qrPreview.sayacId}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setQrPreview(null)}
+                className="flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800"
+                aria-label="QR penceresini kapat"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="mt-4 flex min-h-72 items-center justify-center rounded-xl border border-gray-200 bg-white p-3 dark:border-gray-700">
+              {qrPreview.dataUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={qrPreview.dataUrl}
+                  alt={`Sayaç ${qrPreview.sayacId} QR kodu`}
+                  width={280}
+                  height={280}
+                  className="h-auto w-full max-w-[280px]"
+                />
+              ) : qrError ? (
+                <p className="text-sm font-medium text-error-500">{qrError}</p>
+              ) : (
+                <div className="h-8 w-8 animate-spin rounded-full border-3 border-blue-light-500 border-t-transparent" />
+              )}
+            </div>
+
+            <p className="mt-3 break-all rounded-lg bg-gray-50 px-3 py-2 text-[10px] text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+              {qrPreview.url}
+            </p>
+            {qrPreview.url.startsWith("http://localhost") && (
+              <p className="mt-2 text-[10px] font-medium text-warning-600 dark:text-warning-400">
+                Bu QR yalnızca yerel bilgisayarda çalışır. Saha kullanımı için uygulamayı erişilebilir bir adreste yayınlayın.
+              </p>
+            )}
+
+            <div className="mt-4 flex gap-2">
+              <button
+                type="button"
+                onClick={handleCopyQrLink}
+                className="flex-1 rounded-lg border border-gray-200 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-200 dark:hover:bg-gray-800"
+              >
+                Linki Kopyala
+              </button>
+              {qrPreview.dataUrl && (
+                <a
+                  href={qrPreview.dataUrl}
+                  download={`sayac-${qrPreview.sayacId.replace(/[^a-zA-Z0-9_-]/g, "-")}-qr.png`}
+                  className="flex-1 rounded-lg bg-blue-light-600 px-3 py-2 text-center text-xs font-semibold text-white hover:bg-blue-light-700"
+                >
+                  QR İndir
+                </a>
+              )}
+            </div>
           </div>
         </div>
       )}

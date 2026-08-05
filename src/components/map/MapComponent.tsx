@@ -1033,6 +1033,27 @@ export default function MapComponent() {
     [placeSayacMarker, triggerSayacAlarm]
   );
 
+  const handleOpenSayacLocation = useCallback(
+    (sayacId: string) => {
+      if (!selectedBuilding || !sayacId.trim()) return;
+
+      const building = buildingsDataRef.current.get(selectedBuilding.id);
+      const buildingName = selectedBuilding.value || building?.value || "Bina";
+      const center = getBuildingCenter(building?.coordinates);
+
+      if (!center) {
+        setShareFeedback("Bu bina için konum bulunamadı");
+        window.setTimeout(() => setShareFeedback(null), 4000);
+        return;
+      }
+
+      const label = encodeURIComponent(`Sayaç ${sayacId} · ${buildingName}`);
+      const mapsUrl = `https://www.google.com/maps?q=${center.lat},${center.lng}(${label})&z=19`;
+      window.open(mapsUrl, "_blank", "noopener,noreferrer");
+    },
+    [selectedBuilding]
+  );
+
   const submitSayacSearch = useCallback(() => {
     const q = sayacSearch.trim();
     if (q.length < 3) return;
@@ -1886,6 +1907,10 @@ export default function MapComponent() {
         <BuildingInfoModal
           building={selectedBuilding}
           onClose={() => { setInfoModalOpen(false); setSelectedBuilding(null); }}
+          onOpenSayac={() => {
+            setInfoModalOpen(false);
+            setSayacModalOpen(true);
+          }}
         />
       )}
 
@@ -1900,7 +1925,14 @@ export default function MapComponent() {
             setFocusSayacId(null);
             stopSayacAlarm();
           }}
+          onOpenBuildingInfo={() => {
+            setSayacModalOpen(false);
+            setFocusSayacId(null);
+            stopSayacAlarm();
+            setInfoModalOpen(true);
+          }}
           onSaved={handleSayacSaved}
+          onOpenLocation={handleOpenSayacLocation}
         />
       )}
 
