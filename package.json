@@ -27,6 +27,7 @@
     "apexcharts": "^4.7.0",
     "autoprefixer": "^10.4.22",
     "bcryptjs": "^3.0.3",
+    "dejavu-fonts-ttf": "^2.37.3",
     "flatpickr": "^4.6.13",
     "jose": "^6.2.8",
     "jspdf": "^4.2.1",
