@@ -253,7 +253,6 @@ export default function BinaAboneKiyasPanel() {
                   <th className="px-3 py-2 text-center">Beklenen</th>
                   <th className="px-3 py-2 text-center">Sayaç</th>
                   <th className="px-3 py-2 text-center">Abone</th>
-                  <th className="px-3 py-2 text-center">Fark (S)</th>
                   <th className="px-3 py-2 text-center">Fark (A)</th>
                   <th className="px-3 py-2">Durum</th>
                   <th className="px-3 py-2 text-right">Harita</th>
@@ -274,9 +273,6 @@ export default function BinaAboneKiyasPanel() {
                     </td>
                     <td className="px-3 py-2.5 text-center font-mono tabular-nums text-blue-light-700 dark:text-blue-light-300">
                       {item.abone_sayisi}
-                    </td>
-                    <td className={`px-3 py-2.5 text-center font-mono tabular-nums ${farkClass(item.fark_sayac)}`}>
-                      {farkLabel(item.fark_sayac)}
                     </td>
                     <td className={`px-3 py-2.5 text-center font-mono tabular-nums ${farkClass(item.fark_abone)}`}>
                       {farkLabel(item.fark_abone)}
