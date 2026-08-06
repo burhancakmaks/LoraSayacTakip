@@ -1175,6 +1175,7 @@ export default function MapComponent() {
 
       const building = buildingsDataRef.current.get(binaId);
       const buildingName = building?.value ?? "Bina";
+      const hasSayac = sayacParam.trim().length > 0;
 
       if (activeHighlightRef.current) {
         mapRef.current.removeLayer(activeHighlightRef.current);
@@ -1185,9 +1186,16 @@ export default function MapComponent() {
       setMahallePickerOpen(false);
       setSayacSearchOpen(false);
 
-      zoomToBuilding(binaId, building?.coordinates, { alarm: !!sayacParam });
+      zoomToBuilding(binaId, building?.coordinates, { alarm: hasSayac });
 
-      if (sayacParam) {
+      setSelectedBuilding({
+        id: binaId,
+        value: building?.value ?? null,
+        layer: building?.layer ?? null,
+        oda_id: building?.oda_id ?? null,
+      });
+
+      if (hasSayac) {
         setSayacSearch(sayacParam);
         setSelectedSayacLabel(`${sayacParam} → ${buildingName}`);
         setSelectedSayacTarget({
@@ -1198,24 +1206,22 @@ export default function MapComponent() {
         setFocusSayacId(sayacParam);
         triggerSayacAlarm();
         placeSayacMarker(binaId, sayacParam, building?.coordinates);
+        setInfoModalOpen(false);
+        setSayacModalOpen(true);
       } else {
         setSayacSearch("");
         setSelectedSayacLabel(null);
         setSelectedSayacTarget(null);
         setFocusSayacId(null);
         clearSayacMarker();
+        stopSayacAlarm();
+        setSayacModalOpen(false);
+        setInfoModalOpen(false);
       }
 
-      setSelectedBuilding({
-        id: binaId,
-        value: building?.value ?? null,
-        layer: building?.layer ?? null,
-        oda_id: building?.oda_id ?? null,
-      });
-      setSayacModalOpen(true);
       return true;
     },
-    [clearSayacMarker, placeSayacMarker, triggerSayacAlarm]
+    [clearSayacMarker, placeSayacMarker, stopSayacAlarm, triggerSayacAlarm]
   );
 
   applySayacDeepLinkRef.current = applySayacDeepLink;
@@ -1906,7 +1912,11 @@ export default function MapComponent() {
       {infoModalOpen && (
         <BuildingInfoModal
           building={selectedBuilding}
-          onClose={() => { setInfoModalOpen(false); setSelectedBuilding(null); }}
+          onClose={() => {
+            setInfoModalOpen(false);
+            setSelectedBuilding(null);
+            clearSayacUrlInBrowser();
+          }}
           onOpenSayac={() => {
             setInfoModalOpen(false);
             setSayacModalOpen(true);
@@ -1924,6 +1934,7 @@ export default function MapComponent() {
             setSelectedBuilding(null);
             setFocusSayacId(null);
             stopSayacAlarm();
+            clearSayacUrlInBrowser();
           }}
           onOpenBuildingInfo={() => {
             setSayacModalOpen(false);
