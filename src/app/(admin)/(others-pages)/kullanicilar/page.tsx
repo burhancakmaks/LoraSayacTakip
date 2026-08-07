@@ -13,7 +13,9 @@ export default function UsersPage() {
       <PageBreadcrumb pageTitle="Kullanıcı Yönetimi" />
       <div className="mb-6 rounded-xl border border-dashed border-blue-light-300/60 bg-blue-light-50/50 px-4 py-3 dark:border-blue-light-800/50 dark:bg-blue-light-950/20">
         <p className="text-sm text-gray-600 dark:text-gray-400">
-          Kullanıcı hesaplarını oluşturun; görüntüleme, veri girişi veya yönetici yetkisi atayın.
+          Roller: <strong>Görüntüleyici</strong> (sadece bakma), <strong>Görevli</strong> (haritada veri girişi),
+          <strong> Yönetici</strong> (tüm yönetim sayfaları). Kendinizi görevli yapmak için önce başka bir
+          yöneticiyi atayın, sonra <strong>Kendimi Görevli Yap</strong> düğmesini kullanın.
         </p>
       </div>
       <UserManagementPanel />

@@ -77,11 +77,39 @@ export async function PATCH(request: NextRequest) {
     if (!name || !USER_ROLES.includes(role)) {
       return NextResponse.json({ error: "Kullanıcı bilgileri geçersiz" }, { status: 400 });
     }
-    if (id === auth.user.id && (!active || role !== "admin")) {
+
+    const activeAdminCount = (
+      db.prepare("SELECT COUNT(*) AS count FROM users WHERE role = 'admin' AND active = 1").get() as {
+        count: number;
+      }
+    ).count;
+
+    const removesAdminRole = before.role === "admin" && role !== "admin";
+    const deactivatesAdmin = before.role === "admin" && !active;
+    if ((removesAdminRole || deactivatesAdmin) && activeAdminCount <= 1) {
       return NextResponse.json(
-        { error: "Kendi yönetici yetkinizi kaldıramazsınız" },
+        { error: "Sistemde en az bir aktif yönetici olmalı. Önce başka bir kullanıcıyı yönetici yapın." },
         { status: 400 }
       );
+    }
+
+    if (id === auth.user.id && (!active || role !== "admin")) {
+      const otherActiveAdmins = (
+        db
+          .prepare(
+            "SELECT COUNT(*) AS count FROM users WHERE role = 'admin' AND active = 1 AND id != ?"
+          )
+          .get(auth.user.id) as { count: number }
+      ).count;
+      if (otherActiveAdmins === 0) {
+        return NextResponse.json(
+          {
+            error:
+              "Kendi yönetici yetkinizi kaldırmadan önce başka bir kullanıcıyı yönetici yapın.",
+          },
+          { status: 400 }
+        );
+      }
     }
 
     const password = String(body.password || "");
