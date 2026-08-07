@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "build:maski-index": "node scripts/build-maski-arama-index.mjs",
+    "build:uzaktan-index": "node scripts/build-uzaktan-sozlesme-index.mjs",
     "generate:import-template": "node scripts/generate-sayac-import-template.mjs",
     "sync:sayac": "node scripts/sayac-otomatik-sync.mjs --force",
     "integrate:harita": "node scripts/integrate-excel-harita.mjs --apply",

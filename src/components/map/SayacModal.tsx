@@ -8,7 +8,16 @@ import { useNotifications } from "@/context/NotificationContext";
 import { notifySayacGuncellendi } from "@/lib/sayac-events";
 import { useAuthUser } from "@/hooks/useAuthUser";
 import { buildSayacMapUrl, copyTextToClipboard } from "@/lib/sayac-link";
+import {
+  type UzaktanListFilter,
+  type UzaktanSayacMatch,
+  buildUzaktanLookup,
+  getUzaktanTypeColor,
+  getUzaktanTypeLabel,
+  lookupUzaktanMatch,
+} from "@/lib/uzaktan-sozlesme";
 import SahaKartiExportButtons from "@/components/map/SahaKartiExportButtons";
+import { applyInferredKatToRows } from "@/lib/sayac-kat-infer";
 
 interface SelectedBuilding {
   id: number;
@@ -69,16 +78,70 @@ const SAYAC_MARKALARI = [
 const NUM_INPUT_CLASS =
   "w-full min-w-[5.5rem] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 rounded-md px-2 py-1 text-xs font-mono tabular-nums text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition outline-none";
 
+function UzaktanBadge({
+  match,
+  hasSayac,
+}: {
+  match: UzaktanSayacMatch | null;
+  hasSayac: boolean;
+}) {
+  if (!hasSayac) return null;
+
+  if (!match) {
+    return (
+      <div className="rounded-md border border-gray-200 bg-gray-50/90 px-2 py-1 dark:border-gray-700 dark:bg-gray-800/50">
+        <p className="text-[7px] font-medium text-gray-500 dark:text-gray-400">Uzaktan Okuma</p>
+        <p className="text-[9px] font-semibold text-gray-400 dark:text-gray-500">Sözleşmede yok</p>
+      </div>
+    );
+  }
+
+  const color = getUzaktanTypeColor(match.type);
+  const label = getUzaktanTypeLabel(match.type);
+
+  return (
+    <div
+      className="rounded-md border px-2 py-1"
+      style={{
+        borderColor: `${color}55`,
+        backgroundColor: `${color}12`,
+      }}
+    >
+      <p className="text-[7px] font-medium text-gray-500 dark:text-gray-400">Uzaktan Okuma</p>
+      <p className="truncate text-[9px] font-bold" style={{ color }} title={label}>
+        {label}
+      </p>
+      {match.agreement_number ? (
+        <p className="truncate font-mono text-[8px] font-semibold text-gray-700 dark:text-gray-300" title={match.agreement_number}>
+          Sözleşme: {match.agreement_number}
+        </p>
+      ) : null}
+      {match.installation_number ? (
+        <p className="truncate font-mono text-[8px] text-gray-500 dark:text-gray-400" title={match.installation_number}>
+          Tesisat: {match.installation_number}
+        </p>
+      ) : null}
+      {match.excel_meter !== match.sayac_id && (
+        <p className="truncate font-mono text-[8px] text-gray-500 dark:text-gray-400" title={match.excel_meter}>
+          Excel: {match.excel_meter}
+        </p>
+      )}
+    </div>
+  );
+}
+
 function SayacUnitCard({
   row,
   highlighted,
   binaId,
+  uzaktanMatch,
   onQr,
   onOpenLocation,
 }: {
   row: SayacRow;
   highlighted?: boolean;
   binaId: number;
+  uzaktanMatch?: UzaktanSayacMatch | null;
   onQr: (row: SayacRow) => void;
   onOpenLocation?: (row: SayacRow) => void;
 }) {
@@ -93,6 +156,7 @@ function SayacUnitCard({
   const subLabel = [row.kat, row.blok_no].filter(Boolean).join(" · ");
 
   const showAlarm = highlighted;
+  const uzaktanColor = uzaktanMatch ? getUzaktanTypeColor(uzaktanMatch.type) : null;
 
   return (
     <article
@@ -101,6 +165,9 @@ function SayacUnitCard({
       data-sayac-row={row.sayac_id.trim() || undefined}
     >
       {showAlarm && <div className="sayac-highlight-bg pointer-events-none absolute inset-0 z-0" />}
+      {uzaktanColor && (
+        <div className="absolute inset-y-0 left-0 z-[1] w-1" style={{ backgroundColor: uzaktanColor }} />
+      )}
       <div
         className="absolute inset-x-0 top-0 z-[1] h-1"
         style={{ backgroundColor: meta.color }}
@@ -156,6 +223,8 @@ function SayacUnitCard({
             {hasAbone ? row.abone_no : "—"}
           </span>
         </div>
+
+        <UzaktanBadge match={uzaktanMatch ?? null} hasSayac={hasSayac} />
 
         {hasSayac && (
           <div className="space-y-1">
@@ -245,6 +314,9 @@ export default function SayacModal({
     dataUrl: string | null;
   } | null>(null);
   const [qrError, setQrError] = useState<string | null>(null);
+  const [uzaktanLookup, setUzaktanLookup] = useState<Map<string, UzaktanSayacMatch>>(new Map());
+  const [uzaktanBinaMatched, setUzaktanBinaMatched] = useState(false);
+  const [uzaktanListFilter, setUzaktanListFilter] = useState<UzaktanListFilter>("all");
 
   const handleShowQr = useCallback(
     async (row: SayacRow) => {
@@ -285,6 +357,25 @@ export default function SayacModal({
     setSelectedFloorFilter("HEPSİ");
     setQrPreview(null);
     setQrError(null);
+    setUzaktanLookup(new Map());
+    setUzaktanBinaMatched(false);
+    setUzaktanListFilter("all");
+
+    fetch(`/api/uzaktan-sozlesme?bina_id=${building.id}`)
+      .then((r) => r.json())
+      .then((data: { matched?: boolean; sayaclar?: UzaktanSayacMatch[] }) => {
+        if (!data.matched || !data.sayaclar?.length) {
+          setUzaktanLookup(new Map());
+          setUzaktanBinaMatched(false);
+          return;
+        }
+        setUzaktanBinaMatched(true);
+        setUzaktanLookup(buildUzaktanLookup(data.sayaclar));
+      })
+      .catch(() => {
+        setUzaktanLookup(new Map());
+        setUzaktanBinaMatched(false);
+      });
 
     // Fetch bina_bilgi
     fetch(`/api/bina-bilgi?bina_id=${building.id}`)
@@ -341,7 +432,7 @@ export default function SayacModal({
           };
         });
 
-        setRows(fullRows);
+        setRows(applyInferredKatToRows(fullRows, bilgi));
         setLoading(false);
       })
       .catch(() => {
@@ -409,15 +500,33 @@ export default function SayacModal({
     return numA - numB;
   });
 
+  const girilenSayac = rows.filter((r) => r.sayac_id.trim() !== "").length;
+  const dolulukYuzde = rows.length > 0 ? Math.round((girilenSayac / rows.length) * 100) : 0;
+  const uzaktanEslesenSayac = rows.filter(
+    (r) => r.sayac_id.trim() && lookupUzaktanMatch(uzaktanLookup, r.sayac_id)
+  ).length;
+
+  const matchesUzaktanListFilter = (row: SayacRow) => {
+    if (uzaktanListFilter === "all") return true;
+    const hasSayac = row.sayac_id.trim() !== "";
+    const matched = hasSayac && lookupUzaktanMatch(uzaktanLookup, row.sayac_id);
+    if (uzaktanListFilter === "matched") return Boolean(matched);
+    if (uzaktanListFilter === "missing") return hasSayac && !matched;
+    return true;
+  };
+
+  const uzaktanFilteredRows = sortedRows.filter(matchesUzaktanListFilter);
+
   // Filter rows based on floor filter dropdown selection
-  const filteredRows = selectedFloorFilter === "HEPSİ"
-    ? sortedRows
-    : sortedRows.filter((r) => r.kat === selectedFloorFilter);
+  const filteredRows =
+    selectedFloorFilter === "HEPSİ"
+      ? uzaktanFilteredRows
+      : uzaktanFilteredRows.filter((r) => r.kat === selectedFloorFilter);
 
   // Group sorted units by floor for rendering card sections
   const groupedByFloor: { [key: string]: SayacRow[] } = {};
   filteredRows.forEach((row) => {
-    const floorName = row.kat || "KAT BELİRSİZ";
+    const floorName = row.kat.trim() || "1. KAT";
     if (!groupedByFloor[floorName]) {
       groupedByFloor[floorName] = [];
     }
@@ -425,9 +534,6 @@ export default function SayacModal({
   });
 
   const sortedFloorKeys = Object.keys(groupedByFloor).sort((a, b) => getFloorWeight(a) - getFloorWeight(b));
-
-  const girilenSayac = rows.filter((r) => r.sayac_id.trim() !== "").length;
-  const dolulukYuzde = rows.length > 0 ? Math.round((girilenSayac / rows.length) * 100) : 0;
 
   return (
     <Modal
@@ -466,6 +572,26 @@ export default function SayacModal({
                 {building?.value || "Bilinmeyen Bina"}
               </p>
             </div>
+            {!loading && !noBinaInfo && rows.length > 0 && (
+              <div className="flex min-w-[120px] items-center gap-2 rounded-xl border border-dashed border-violet-300/60 bg-violet-50/80 px-2.5 py-1.5 dark:border-violet-700/40 dark:bg-violet-950/30">
+                <div className="flex-1">
+                  <div className="mb-0.5 flex justify-between text-[8px] font-bold uppercase tracking-wide text-gray-500">
+                    <span>Sözleşme</span>
+                    <span className="tabular-nums text-violet-700 dark:text-violet-300">
+                      {uzaktanEslesenSayac}/{girilenSayac || rows.length}
+                    </span>
+                  </div>
+                  <div className="h-1 overflow-hidden rounded-full bg-violet-100 dark:bg-violet-950">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-violet-600 to-violet-400"
+                      style={{
+                        width: `${girilenSayac > 0 ? Math.round((uzaktanEslesenSayac / girilenSayac) * 100) : 0}%`,
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
             {!loading && !noBinaInfo && rows.length > 0 && (
               <div className="flex min-w-[120px] items-center gap-2 rounded-xl border border-dashed border-blue-light-300/60 bg-blue-light-50/80 px-2.5 py-1.5 dark:border-blue-light-700/40 dark:bg-blue-light-950/30">
                 <div className="flex-1">
@@ -516,6 +642,21 @@ export default function SayacModal({
               </button>
             )}
           </div>
+
+          {uzaktanBinaMatched && (
+            <div className="flex items-center gap-1.5 sm:ml-2">
+              <label className="text-[10px] font-medium text-gray-500">Sözleşme</label>
+              <select
+                value={uzaktanListFilter}
+                onChange={(e) => setUzaktanListFilter(e.target.value as UzaktanListFilter)}
+                className="rounded-md border border-violet-200 dark:border-violet-800 bg-white dark:bg-gray-800 px-2 py-1 text-[11px] font-medium text-violet-800 dark:text-violet-300 focus:outline-none focus:ring-1 focus:ring-violet-500/30 cursor-pointer"
+              >
+                <option value="all">Tümü</option>
+                <option value="matched">Sözleşmede var</option>
+                <option value="missing">Sözleşmede yok</option>
+              </select>
+            </div>
+          )}
 
           {viewMode === "grid" && (
             <div className="flex flex-wrap items-center gap-2">
@@ -606,12 +747,14 @@ export default function SayacModal({
                         <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide w-32">Sayaç No</th>
                         <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide w-28">Sicil No</th>
                         <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide w-28">Abone No</th>
+                        <th className="px-3 py-2.5 text-left text-[11px] font-semibold text-violet-600 dark:text-violet-400 uppercase tracking-wide w-32">Uzaktan Okuma</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {sortedRows.map((row, idx) => {
+                      {uzaktanFilteredRows.map((row, idx) => {
                         const highlighted = matchesHighlightSayac(row, highlightSayacId);
                         const showAlarm = highlighted;
+                        const uzaktanMatch = lookupUzaktanMatch(uzaktanLookup, row.sayac_id);
                         return (
                         <tr
                           key={row.birim_no}
@@ -741,6 +884,39 @@ export default function SayacModal({
                               className={NUM_INPUT_CLASS}
                             />
                           </td>
+
+                          <td className="px-3 py-2">
+                            {row.sayac_id.trim() ? (
+                              uzaktanMatch ? (
+                                <div className="flex flex-col gap-0.5">
+                                  <span
+                                    className="inline-flex rounded-full border px-2 py-0.5 text-[10px] font-bold"
+                                    style={{
+                                      color: getUzaktanTypeColor(uzaktanMatch.type),
+                                      borderColor: `${getUzaktanTypeColor(uzaktanMatch.type)}44`,
+                                      backgroundColor: `${getUzaktanTypeColor(uzaktanMatch.type)}12`,
+                                    }}
+                                  >
+                                    {getUzaktanTypeLabel(uzaktanMatch.type)}
+                                  </span>
+                                  {uzaktanMatch.agreement_number ? (
+                                    <span className="font-mono text-[10px] font-semibold text-gray-700 dark:text-gray-200">
+                                      {uzaktanMatch.agreement_number}
+                                    </span>
+                                  ) : null}
+                                  {uzaktanMatch.installation_number ? (
+                                    <span className="font-mono text-[9px] text-gray-500 dark:text-gray-400">
+                                      Tesisat {uzaktanMatch.installation_number}
+                                    </span>
+                                  ) : null}
+                                </div>
+                              ) : (
+                                <span className="text-[10px] font-medium text-gray-400">Sözleşmede yok</span>
+                              )
+                            ) : (
+                              <span className="text-[10px] text-gray-300">—</span>
+                            )}
+                          </td>
                         </tr>
                         );
                       })}
@@ -775,6 +951,7 @@ export default function SayacModal({
                             key={row.birim_no}
                             row={row}
                             binaId={building?.id ?? 0}
+                            uzaktanMatch={lookupUzaktanMatch(uzaktanLookup, row.sayac_id)}
                             highlighted={matchesHighlightSayac(row, highlightSayacId)}
                             onQr={handleShowQr}
                             onOpenLocation={

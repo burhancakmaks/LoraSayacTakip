@@ -15,6 +15,7 @@ import MapNotificationBell from "./MapNotificationBell";
 import { useNotifications } from "@/context/NotificationContext";
 import { useAuthUser } from "@/hooks/useAuthUser";
 import { SAYAC_GUNCELLENDI, MAP_NAV_RESET } from "@/lib/sayac-events";
+import { readSavedMapView, saveMapView } from "@/lib/map-view-storage";
 import {
   buildSayacMapUrl,
   clearSayacUrlInBrowser,
@@ -26,6 +27,14 @@ import {
   shareSayacMapLink,
   syncSayacUrlInBrowser,
 } from "@/lib/sayac-link";
+import {
+  type UzaktanBinaEntry,
+  type UzaktanTypeFilter,
+  type UzaktanSozlesmeIndex,
+  UZAKTAN_DIM_STYLE,
+  binaMatchesUzaktanFilter,
+  resolveUzaktanBuildingStyle,
+} from "@/lib/uzaktan-sozlesme";
 
 interface Building {
   id: number;
@@ -384,6 +393,7 @@ export default function MapComponent() {
   const highlightedBinaIdRef = useRef<number | null>(null);
   const buildingAlarmIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const sorunMarkersRef = useRef<L.Marker[]>([]);
+  const uzaktanBinalarRef = useRef<Map<number, UzaktanBinaEntry>>(new Map());
   const lastDeepLinkKeyRef = useRef<string | null>(null);
   const lastBinaFocusIdRef = useRef<number | null>(null);
   const applySayacDeepLinkRef = useRef<(binaId: number, sayacParam: string) => boolean>(() => false);
@@ -396,6 +406,13 @@ export default function MapComponent() {
   const [toplamSayac, setToplamSayac] = useState(0);
   const [sorunOzet, setSorunOzet] = useState<SayacSorunOzet | null>(null);
   const [sorunLayerEnabled, setSorunLayerEnabled] = useState(true);
+  const [uzaktanLayerEnabled, setUzaktanLayerEnabled] = useState(false);
+  const [uzaktanTypeFilter, setUzaktanTypeFilter] = useState<UzaktanTypeFilter>("all");
+  const [uzaktanStats, setUzaktanStats] = useState<UzaktanSozlesmeIndex["stats"] | null>(null);
+  const [uzaktanTypeOptions, setUzaktanTypeOptions] = useState<
+    Array<{ id: string; label: string; color: string; matched_count: number }>
+  >([]);
+  const [uzaktanDataReady, setUzaktanDataReady] = useState(false);
 
   // Layer switcher UI state
   const [activeLayer, setActiveLayer] = useState<TileKey>("standard");
@@ -450,6 +467,56 @@ export default function MapComponent() {
     setSelectedBuilding(b);
     setSayacModalOpen(true);
   };
+
+  const applyBuildingStylesForLayer = useCallback(
+    (uzaktanEnabled: boolean, filter: UzaktanTypeFilter) => {
+      buildingPolygonsRef.current.forEach((polygons, binaId) => {
+        const building = buildingsDataRef.current.get(binaId);
+        if (!building) return;
+
+        let style: BuildingPolygonStyle;
+        if (uzaktanEnabled) {
+          const entry = uzaktanBinalarRef.current.get(binaId);
+          const uzaktanStyle = resolveUzaktanBuildingStyle(entry, filter, true);
+          style = uzaktanStyle.visible
+            ? {
+                color: uzaktanStyle.color,
+                fillColor: uzaktanStyle.fillColor,
+                fillOpacity: uzaktanStyle.fillOpacity,
+                weight: uzaktanStyle.weight,
+              }
+            : { ...UZAKTAN_DIM_STYLE };
+        } else {
+          const visual = resolveBuildingVisual(building);
+          style = {
+            color: visual.color,
+            fillColor: visual.fillColor,
+            fillOpacity: visual.fillOpacity,
+            weight: visual.weight,
+          };
+        }
+
+        buildingStylesRef.current.set(binaId, style);
+        if (highlightedBinaIdRef.current === binaId) return;
+        polygons.forEach((polygon) => polygon.setStyle(style));
+      });
+
+      if (uzaktanEnabled) {
+        uzaktanBinalarRef.current.forEach((entry, binaId) => {
+          if (!binaMatchesUzaktanFilter(entry, filter)) return;
+          const polygons = buildingPolygonsRef.current.get(binaId);
+          polygons?.forEach((polygon) => polygon.bringToFront());
+        });
+      } else {
+        for (const building of buildingsDataRef.current.values()) {
+          if (!resolveBuildingVisual(building).hasSayac) continue;
+          const polygons = buildingPolygonsRef.current.get(building.id);
+          polygons?.forEach((polygon) => polygon.bringToFront());
+        }
+      }
+    },
+    []
+  );
 
   // Sync theme changes
   useEffect(() => {
@@ -529,17 +596,30 @@ export default function MapComponent() {
       const popupHtml = buildPopupContent(building, visual);
       polygons.forEach((polygon) => {
         polygon.setPopupContent(popupHtml);
-        polygon.setStyle({
+      });
+
+      if (uzaktanLayerEnabled) {
+        applyBuildingStylesForLayer(true, uzaktanTypeFilter);
+      } else {
+        polygons.forEach((polygon) => {
+          polygon.setStyle({
+            color: visual.color,
+            fillColor: visual.fillColor,
+            fillOpacity: visual.fillOpacity,
+            weight: visual.weight,
+          });
+        });
+        buildingStylesRef.current.set(binaId, {
           color: visual.color,
           fillColor: visual.fillColor,
           fillOpacity: visual.fillOpacity,
           weight: visual.weight,
         });
-      });
+      }
 
       refreshSorunData();
     },
-    [selectedBuilding, refreshSorunData]
+    [selectedBuilding, refreshSorunData, uzaktanLayerEnabled, uzaktanTypeFilter, applyBuildingStylesForLayer]
   );
 
   useEffect(() => {
@@ -553,6 +633,44 @@ export default function MapComponent() {
     if (loading || error) return;
     refreshSorunData();
   }, [loading, error, refreshSorunData]);
+
+  useEffect(() => {
+    if (loading || error) return;
+    fetch("/api/uzaktan-sozlesme")
+      .then((r) => r.json())
+      .then((data: {
+        stats: UzaktanSozlesmeIndex["stats"];
+        type_options: Array<{ id: string; label: string; color: string; matched_count: number }>;
+        binalar: Record<string, UzaktanBinaEntry>;
+      }) => {
+        setUzaktanStats(data.stats);
+        setUzaktanTypeOptions(data.type_options ?? []);
+        const binaMap = new Map<number, UzaktanBinaEntry>();
+        for (const [key, entry] of Object.entries(data.binalar ?? {})) {
+          binaMap.set(Number(key), entry);
+        }
+        uzaktanBinalarRef.current = binaMap;
+        setUzaktanDataReady(true);
+      })
+      .catch(() => {
+        setUzaktanStats(null);
+        setUzaktanTypeOptions([]);
+        uzaktanBinalarRef.current = new Map();
+        setUzaktanDataReady(false);
+      });
+  }, [loading, error]);
+
+  useEffect(() => {
+    if (loading || error || !uzaktanDataReady) return;
+    applyBuildingStylesForLayer(uzaktanLayerEnabled, uzaktanTypeFilter);
+  }, [
+    loading,
+    error,
+    uzaktanDataReady,
+    uzaktanLayerEnabled,
+    uzaktanTypeFilter,
+    applyBuildingStylesForLayer,
+  ]);
 
   useEffect(() => {
     if (loading || error || !sorunOzet) return;
@@ -783,6 +901,12 @@ export default function MapComponent() {
 
     L.control.zoom({ position: "bottomright" }).addTo(map);
 
+    map.on("moveend", () => {
+      if (!mapRef.current) return;
+      const center = map.getCenter();
+      saveMapView(center.lat, center.lng, map.getZoom());
+    });
+
     // Listen for popup buttons
     map.on("popupopen", (e) => {
       const el = e.popup.getElement();
@@ -859,18 +983,23 @@ export default function MapComponent() {
 
             polygon.on("mouseover", () => {
               if (highlightedBinaIdRef.current === building.id) return;
+              const style = buildingStylesRef.current.get(building.id);
+              if (!style) return;
               polygon.setStyle({
-                fillColor: visual.hasSayac ? "#059669" : "#3c50e0",
-                fillOpacity: 0.45,
-                weight: visual.weight + 0.5,
+                fillColor: style.fillColor,
+                fillOpacity: Math.min(style.fillOpacity + 0.12, 0.55),
+                weight: style.weight + 0.5,
               });
             });
             polygon.on("mouseout", () => {
               if (highlightedBinaIdRef.current === building.id) return;
+              const style = buildingStylesRef.current.get(building.id);
+              if (!style) return;
               polygon.setStyle({
-                fillColor: visual.fillColor,
-                fillOpacity: visual.fillOpacity,
-                weight: visual.weight,
+                color: style.color,
+                fillColor: style.fillColor,
+                fillOpacity: style.fillOpacity,
+                weight: style.weight,
               });
             });
 
@@ -899,8 +1028,16 @@ export default function MapComponent() {
           typeof window !== "undefined"
             ? parseBinaFocusId(new URLSearchParams(window.location.search))
             : null;
+        const savedMapView =
+          typeof window !== "undefined" && !initialDeepLink && !initialBinaFocus
+            ? readSavedMapView()
+            : null;
 
-        if (!initialDeepLink && !initialBinaFocus && boundsPoints.length > 0) {
+        if (!initialDeepLink && !initialBinaFocus && savedMapView && mapRef.current) {
+          mapRef.current.setView([savedMapView.lat, savedMapView.lng], savedMapView.zoom, {
+            animate: false,
+          });
+        } else if (!initialDeepLink && !initialBinaFocus && boundsPoints.length > 0) {
           const bounds = L.latLngBounds(boundsPoints);
           allBoundsRef.current = bounds;
           if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
@@ -1606,6 +1743,108 @@ export default function MapComponent() {
                     }`}
                   >
                     Rapor
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Uzaktan Okuma Sözleşme */}
+            {uzaktanStats && uzaktanStats.matched_bina > 0 && (
+              <div className="overflow-hidden rounded-2xl border border-violet-200/80 bg-white/95 shadow-theme-lg backdrop-blur-sm dark:border-violet-900/40 dark:bg-gray-900/95">
+                <div className="flex items-center justify-between border-b border-violet-100/80 px-3.5 py-2.5 dark:border-violet-900/30">
+                  <h4 className="text-[11px] font-bold text-gray-900 dark:text-white">Uzaktan Okuma</h4>
+                  <span className="rounded-full border border-violet-200 bg-violet-50 px-2 py-0.5 text-[9px] font-semibold tabular-nums text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-300">
+                    {uzaktanStats.matched_bina} bina
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2 p-3">
+                  <div className="rounded-xl border border-violet-100 bg-violet-50/60 px-2 py-2 text-center dark:border-violet-900/30 dark:bg-violet-950/25">
+                    <div className="text-base font-black tabular-nums text-violet-700 dark:text-violet-400">
+                      {uzaktanStats.matched_sayac.toLocaleString("tr-TR")}
+                    </div>
+                    <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">Haritada eşleşen</div>
+                  </div>
+                  <div className="rounded-xl border border-gray-200 bg-gray-50/80 px-2 py-2 text-center dark:border-gray-700 dark:bg-gray-800/50">
+                    <div className="text-base font-black tabular-nums text-gray-600 dark:text-gray-300">
+                      {uzaktanStats.unmatched_excel_meters.toLocaleString("tr-TR")}
+                    </div>
+                    <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">DB&apos;de yok</div>
+                  </div>
+                </div>
+
+                {uzaktanLayerEnabled && (
+                  <div className="flex flex-wrap gap-1.5 px-3 pb-2">
+                    <button
+                      type="button"
+                      onClick={() => setUzaktanTypeFilter("all")}
+                      className={`rounded-lg border px-2 py-1 text-[9px] font-semibold transition ${
+                        uzaktanTypeFilter === "all"
+                          ? "border-violet-600 bg-violet-600 text-white"
+                          : "border-gray-200 bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                      }`}
+                    >
+                      Tümü
+                    </button>
+                    {uzaktanTypeOptions.map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => setUzaktanTypeFilter(opt.id as UzaktanTypeFilter)}
+                        className={`rounded-lg border px-2 py-1 text-[9px] font-semibold transition ${
+                          uzaktanTypeFilter === opt.id
+                            ? "text-white"
+                            : "border-gray-200 bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                        }`}
+                        style={
+                          uzaktanTypeFilter === opt.id
+                            ? { borderColor: opt.color, backgroundColor: opt.color }
+                            : undefined
+                        }
+                      >
+                        {opt.label} ({opt.matched_count})
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {uzaktanLayerEnabled && (
+                  <div className="space-y-1 border-t border-violet-100/80 px-3 py-2 dark:border-violet-900/30">
+                    <div className="text-[9px] font-semibold text-gray-500 dark:text-gray-400">Renkler</div>
+                    {uzaktanTypeOptions.map((opt) => (
+                      <div key={opt.id} className="flex items-center gap-2 text-[9px] text-gray-600 dark:text-gray-300">
+                        <span
+                          className="h-2.5 w-2.5 shrink-0 rounded-full"
+                          style={{ backgroundColor: opt.color }}
+                        />
+                        {opt.label}
+                      </div>
+                    ))}
+                    <div className="flex items-center gap-2 text-[9px] text-gray-600 dark:text-gray-300">
+                      <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-amber-500" />
+                      Karma (aynı binada çoklu tip)
+                    </div>
+                    <div className="flex items-center gap-2 text-[9px] text-gray-500 dark:text-gray-400">
+                      <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-slate-200 dark:bg-slate-600" />
+                      Eşleşmeyen / filtre dışı (soluk)
+                    </div>
+                  </div>
+                )}
+
+                <div className="border-t border-violet-100/80 p-3 dark:border-violet-900/30">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUzaktanLayerEnabled((v) => !v);
+                      if (!uzaktanLayerEnabled) setUzaktanTypeFilter("all");
+                    }}
+                    className={`w-full rounded-xl border py-2 text-[10px] font-semibold transition ${
+                      uzaktanLayerEnabled
+                        ? "border-violet-600 bg-violet-600 text-white shadow-sm"
+                        : "border-violet-300 bg-violet-50 text-violet-800 hover:bg-violet-100 dark:border-violet-700 dark:bg-violet-950/40 dark:text-violet-300 dark:hover:bg-violet-950/60"
+                    }`}
+                  >
+                    {uzaktanLayerEnabled ? "Renklendirmeyi Kapat" : "Haritada Göster & Renklendir"}
                   </button>
                 </div>
               </div>

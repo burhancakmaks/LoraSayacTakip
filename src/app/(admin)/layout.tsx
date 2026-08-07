@@ -26,6 +26,29 @@ export default function AdminLayout({
     }
   }, [isMapPage]);
 
+  useEffect(() => {
+    if (isMapPage) return;
+
+    const scrollKey = `admin-scroll:${pathname}`;
+    const saved = sessionStorage.getItem(scrollKey);
+    if (saved) {
+      const y = parseInt(saved, 10);
+      if (Number.isFinite(y)) {
+        requestAnimationFrame(() => window.scrollTo(0, y));
+      }
+    }
+
+    const onScroll = () => {
+      sessionStorage.setItem(scrollKey, String(window.scrollY));
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      sessionStorage.setItem(scrollKey, String(window.scrollY));
+    };
+  }, [pathname, isMapPage]);
+
   const mainContentMargin = isMobileOpen
     ? "ml-0"
     : isExpanded || isHovered
