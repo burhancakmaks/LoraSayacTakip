@@ -8,7 +8,18 @@ export function parseSayacDeepLink(
 ): SayacDeepLink | null {
   const binaId = parseInt(params.get("bina_id") || "", 10);
   if (!binaId) return null;
-  return { binaId, sayac: (params.get("sayac") || "").trim() };
+  const sayac = (params.get("sayac") || "").trim();
+  if (!sayac) return null;
+  return { binaId, sayac };
+}
+
+export function parseBinaFocusId(
+  params: URLSearchParams | { get: (key: string) => string | null }
+): number | null {
+  const binaId = parseInt(params.get("bina_id") || "", 10);
+  if (!binaId) return null;
+  if ((params.get("sayac") || "").trim()) return null;
+  return binaId;
 }
 
 export function sayacDeepLinkKey(binaId: number, sayac: string) {

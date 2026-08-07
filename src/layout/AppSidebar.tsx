@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
+import { notifyMapNavReset } from "../lib/sayac-events";
 import {
   HorizontaLDots,
   ChevronDownIcon,
@@ -166,6 +167,12 @@ const AppSidebar: React.FC = () => {
             nav.path && (
               <Link
                 href={nav.path}
+                onClick={() => {
+                  if (nav.path === "/map" && pathname === "/map") {
+                    window.history.replaceState({}, "", "/map");
+                    notifyMapNavReset();
+                  }
+                }}
                 className={`menu-item group ${
                   isActive(nav.path) ? "menu-item-active" : "menu-item-inactive"
                 }`}

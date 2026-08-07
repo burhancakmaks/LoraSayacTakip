@@ -14,13 +14,14 @@ import { getSorunMarkerColor, type SayacSorunSeverity } from "@/lib/sayac-durum"
 import MapNotificationBell from "./MapNotificationBell";
 import { useNotifications } from "@/context/NotificationContext";
 import { useAuthUser } from "@/hooks/useAuthUser";
-import { SAYAC_GUNCELLENDI } from "@/lib/sayac-events";
+import { SAYAC_GUNCELLENDI, MAP_NAV_RESET } from "@/lib/sayac-events";
 import {
   buildSayacMapUrl,
   clearSayacUrlInBrowser,
   copySayacMapLink,
   copyTextToClipboard,
   parseSayacDeepLink,
+  parseBinaFocusId,
   sayacDeepLinkKey,
   shareSayacMapLink,
   syncSayacUrlInBrowser,
@@ -384,7 +385,9 @@ export default function MapComponent() {
   const buildingAlarmIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const sorunMarkersRef = useRef<L.Marker[]>([]);
   const lastDeepLinkKeyRef = useRef<string | null>(null);
+  const lastBinaFocusIdRef = useRef<number | null>(null);
   const applySayacDeepLinkRef = useRef<(binaId: number, sayacParam: string) => boolean>(() => false);
+  const applyBinaFocusRef = useRef<(binaId: number) => boolean>(() => false);
 
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(true);
@@ -723,11 +726,16 @@ export default function MapComponent() {
     sayacResultsRef.current = sayacResults;
   }, [sayacResults]);
 
-  // Debounced sayaç search
+  // Debounced sayaç search (dropdown — not the sayaç modal)
   useEffect(() => {
     const q = sayacSearch.trim();
     if (q.length < 3) {
       setSayacResults([]);
+      setSayacSearching(false);
+      return;
+    }
+
+    if (sayacModalOpen || focusSayacId) {
       setSayacSearching(false);
       return;
     }
@@ -751,7 +759,7 @@ export default function MapComponent() {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [sayacSearch]);
+  }, [sayacSearch, sayacModalOpen, focusSayacId]);
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -887,8 +895,12 @@ export default function MapComponent() {
           typeof window !== "undefined"
             ? parseSayacDeepLink(new URLSearchParams(window.location.search))
             : null;
+        const initialBinaFocus =
+          typeof window !== "undefined"
+            ? parseBinaFocusId(new URLSearchParams(window.location.search))
+            : null;
 
-        if (!initialDeepLink && boundsPoints.length > 0) {
+        if (!initialDeepLink && !initialBinaFocus && boundsPoints.length > 0) {
           const bounds = L.latLngBounds(boundsPoints);
           allBoundsRef.current = bounds;
           if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
@@ -903,6 +915,14 @@ export default function MapComponent() {
             if (cancelled || !mapRef.current) return;
             if (applySayacDeepLinkRef.current(initialDeepLink.binaId, initialDeepLink.sayac)) {
               lastDeepLinkKeyRef.current = key;
+              clearSayacUrlInBrowser();
+            }
+          }, 0);
+        } else if (initialBinaFocus && mapRef.current) {
+          window.setTimeout(() => {
+            if (cancelled || !mapRef.current) return;
+            if (applyBinaFocusRef.current(initialBinaFocus)) {
+              lastBinaFocusIdRef.current = initialBinaFocus;
             }
           }, 0);
         }
@@ -992,7 +1012,7 @@ export default function MapComponent() {
   };
 
   const navigateToSayac = useCallback(
-    (result: SayacSearchResult, openModal = true) => {
+    (result: SayacSearchResult, openModal = false) => {
       if (!mapRef.current) return;
 
       setSayacSearchOpen(false);
@@ -1006,8 +1026,10 @@ export default function MapComponent() {
       setFocusSayacId(result.sayac_id);
       setShareFeedback(null);
       triggerSayacAlarm();
-      syncSayacUrlInBrowser(result.bina_id, result.sayac_id);
-      lastDeepLinkKeyRef.current = sayacDeepLinkKey(result.bina_id, result.sayac_id);
+      if (openModal) {
+        syncSayacUrlInBrowser(result.bina_id, result.sayac_id);
+        lastDeepLinkKeyRef.current = sayacDeepLinkKey(result.bina_id, result.sayac_id);
+      }
       setLayerPickerOpen(false);
       setMahallePickerOpen(false);
 
@@ -1169,13 +1191,69 @@ export default function MapComponent() {
     }
   }, []);
 
+  const resetMapViewState = useCallback(() => {
+    lastDeepLinkKeyRef.current = null;
+    lastBinaFocusIdRef.current = null;
+    setSayacModalOpen(false);
+    setInfoModalOpen(false);
+    setSelectedBuilding(null);
+    setFocusSayacId(null);
+    setSayacSearch("");
+    setSayacResults([]);
+    setSayacSearchOpen(false);
+    setSelectedSayacLabel(null);
+    setSelectedSayacTarget(null);
+    setShareFeedback(null);
+    setSharePanelOpen(false);
+    setSharePanelUrl(null);
+    stopSayacAlarm();
+    clearSayacMarker();
+    clearBuildingHighlight();
+  }, [clearSayacMarker, stopSayacAlarm]);
+
+  const applyBinaFocus = useCallback(
+    (binaId: number) => {
+      if (!mapRef.current) return false;
+
+      const building = buildingsDataRef.current.get(binaId);
+
+      if (activeHighlightRef.current) {
+        mapRef.current.removeLayer(activeHighlightRef.current);
+        activeHighlightRef.current = null;
+      }
+      setSelectedMahalle("Mahalleler");
+      setLayerPickerOpen(false);
+      setMahallePickerOpen(false);
+      setSayacSearchOpen(false);
+      setSayacModalOpen(false);
+      setInfoModalOpen(false);
+      setSelectedBuilding(null);
+      setFocusSayacId(null);
+      setSayacSearch("");
+      setSelectedSayacLabel(null);
+      setSelectedSayacTarget(null);
+      stopSayacAlarm();
+      clearSayacMarker();
+      lastDeepLinkKeyRef.current = null;
+
+      zoomToBuilding(binaId, building?.coordinates);
+      lastBinaFocusIdRef.current = binaId;
+
+      return true;
+    },
+    [clearSayacMarker, stopSayacAlarm]
+  );
+
+  applyBinaFocusRef.current = applyBinaFocus;
+
   const applySayacDeepLink = useCallback(
     (binaId: number, sayacParam: string) => {
       if (!mapRef.current) return false;
 
       const building = buildingsDataRef.current.get(binaId);
       const buildingName = building?.value ?? "Bina";
-      const hasSayac = sayacParam.trim().length > 0;
+      const sayac = sayacParam.trim();
+      if (!sayac) return false;
 
       if (activeHighlightRef.current) {
         mapRef.current.removeLayer(activeHighlightRef.current);
@@ -1186,7 +1264,7 @@ export default function MapComponent() {
       setMahallePickerOpen(false);
       setSayacSearchOpen(false);
 
-      zoomToBuilding(binaId, building?.coordinates, { alarm: hasSayac });
+      zoomToBuilding(binaId, building?.coordinates, { alarm: true });
 
       setSelectedBuilding({
         id: binaId,
@@ -1195,33 +1273,23 @@ export default function MapComponent() {
         oda_id: building?.oda_id ?? null,
       });
 
-      if (hasSayac) {
-        setSayacSearch(sayacParam);
-        setSelectedSayacLabel(`${sayacParam} → ${buildingName}`);
-        setSelectedSayacTarget({
-          bina_id: binaId,
-          sayac_id: sayacParam,
-          building_name: building?.value ?? undefined,
-        });
-        setFocusSayacId(sayacParam);
-        triggerSayacAlarm();
-        placeSayacMarker(binaId, sayacParam, building?.coordinates);
-        setInfoModalOpen(false);
-        setSayacModalOpen(true);
-      } else {
-        setSayacSearch("");
-        setSelectedSayacLabel(null);
-        setSelectedSayacTarget(null);
-        setFocusSayacId(null);
-        clearSayacMarker();
-        stopSayacAlarm();
-        setSayacModalOpen(false);
-        setInfoModalOpen(false);
-      }
+      setSayacSearch(sayac);
+      setSelectedSayacLabel(`${sayac} → ${buildingName}`);
+      setSelectedSayacTarget({
+        bina_id: binaId,
+        sayac_id: sayac,
+        building_name: building?.value ?? undefined,
+      });
+      setFocusSayacId(sayac);
+      triggerSayacAlarm();
+      placeSayacMarker(binaId, sayac, building?.coordinates);
+      setInfoModalOpen(false);
+      setSayacModalOpen(false);
+      lastBinaFocusIdRef.current = null;
 
       return true;
     },
-    [clearSayacMarker, placeSayacMarker, stopSayacAlarm, triggerSayacAlarm]
+    [placeSayacMarker, triggerSayacAlarm]
   );
 
   applySayacDeepLinkRef.current = applySayacDeepLink;
@@ -1229,29 +1297,68 @@ export default function MapComponent() {
   useEffect(() => {
     if (loading || error) return;
 
-    const parsed = parseSayacDeepLink(searchParams);
-    if (!parsed) {
-      lastDeepLinkKeyRef.current = null;
-      return;
+    const sayacLink = parseSayacDeepLink(searchParams);
+    if (sayacLink) {
+      const key = sayacDeepLinkKey(sayacLink.binaId, sayacLink.sayac);
+      if (lastDeepLinkKeyRef.current === key) return;
+
+      let cancelled = false;
+      const timer = window.setTimeout(() => {
+        if (cancelled || !mapRef.current) return;
+
+        if (applySayacDeepLinkRef.current(sayacLink.binaId, sayacLink.sayac)) {
+          lastDeepLinkKeyRef.current = key;
+          clearSayacUrlInBrowser();
+        }
+      }, 100);
+
+      return () => {
+        cancelled = true;
+        window.clearTimeout(timer);
+      };
     }
 
-    const key = sayacDeepLinkKey(parsed.binaId, parsed.sayac);
-    if (lastDeepLinkKeyRef.current === key) return;
+    const binaFocusId = parseBinaFocusId(searchParams);
+    if (binaFocusId) {
+      if (lastBinaFocusIdRef.current === binaFocusId) return;
 
-    let cancelled = false;
-    const timer = window.setTimeout(() => {
-      if (cancelled || !mapRef.current) return;
+      let cancelled = false;
+      const timer = window.setTimeout(() => {
+        if (cancelled || !mapRef.current) return;
 
-      if (applySayacDeepLinkRef.current(parsed.binaId, parsed.sayac)) {
-        lastDeepLinkKeyRef.current = key;
+        if (applyBinaFocusRef.current(binaFocusId)) {
+          lastBinaFocusIdRef.current = binaFocusId;
+        }
+      }, 100);
+
+      return () => {
+        cancelled = true;
+        window.clearTimeout(timer);
+      };
+    }
+
+    const hasMapQuery =
+      (searchParams.get("bina_id") || "").trim().length > 0 ||
+      (searchParams.get("sayac") || "").trim().length > 0;
+
+    if (!hasMapQuery && (lastDeepLinkKeyRef.current !== null || lastBinaFocusIdRef.current !== null)) {
+      resetMapViewState();
+    }
+  }, [loading, error, searchParams, resetMapViewState]);
+
+  useEffect(() => {
+    if (loading || error) return;
+
+    const onMapNavReset = () => {
+      const params = new URLSearchParams(window.location.search);
+      if (!parseSayacDeepLink(params) && !parseBinaFocusId(params)) {
+        resetMapViewState();
       }
-    }, 100);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timer);
     };
-  }, [loading, error, searchParams]);
+
+    window.addEventListener(MAP_NAV_RESET, onMapNavReset);
+    return () => window.removeEventListener(MAP_NAV_RESET, onMapNavReset);
+  }, [loading, error, resetMapViewState]);
 
   const openSorunPanel = (filter: SorunListeFilter = "all") => {
     setSorunPanelFilter(filter);
@@ -1285,8 +1392,14 @@ export default function MapComponent() {
   };
 
   const handleSayacSelect = (result: SayacSearchResult) => {
-    navigateToSayac(result);
+    navigateToSayac(result, true);
   };
+
+  useEffect(() => {
+    return () => {
+      clearSayacUrlInBrowser();
+    };
+  }, []);
 
   const clearSayacSearch = () => {
     setSayacSearch("");
@@ -1299,6 +1412,7 @@ export default function MapComponent() {
     setSharePanelOpen(false);
     setSharePanelUrl(null);
     lastDeepLinkKeyRef.current = null;
+    lastBinaFocusIdRef.current = null;
     stopSayacAlarm();
     clearSayacMarker();
     clearBuildingHighlight();
@@ -1934,6 +2048,8 @@ export default function MapComponent() {
             setSelectedBuilding(null);
             setFocusSayacId(null);
             stopSayacAlarm();
+            lastDeepLinkKeyRef.current = null;
+            lastBinaFocusIdRef.current = null;
             clearSayacUrlInBrowser();
           }}
           onOpenBuildingInfo={() => {
