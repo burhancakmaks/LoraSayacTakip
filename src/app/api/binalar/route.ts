@@ -35,6 +35,7 @@ export async function GET() {
           FROM sayac s
           WHERE s.bina_id = b.id AND TRIM(COALESCE(s.sayac_id, '')) != ''
         ) AS sayac_count,
+        (SELECT bb.dis_kapi_no FROM bina_bilgi bb WHERE bb.bina_id = b.id) AS dis_kapi_no,
         ${tarifeCols}
       FROM binalar b
       ${tarifeJoin}
@@ -56,6 +57,7 @@ export async function GET() {
       is_configured: row.is_configured === 1 || row.sayac_count > 0,
       sayac_count: row.sayac_count || 0,
       sayac_kayit: row.sayac_kayit || 0,
+      dis_kapi_no: row.dis_kapi_no ? String(row.dis_kapi_no).trim() : "",
       tarife_sinif: row.tarife_sinif || null,
       tarife_etiket: row.tarife_etiket || null,
       tarife_turu: row.tarife_turu || null,

@@ -1,0 +1,1160 @@
+{
+  "built_at": "2026-08-09T09:34:46.491Z",
+  "source_kml": "C:/Users/Surface/Desktop/LoraLast/LoraSayacTakip/data/DiskapiRezervAlanlar.kml",
+  "database": "C:/Users/Surface/Desktop/LoraLast/LoraSayacTakip/data/binalar.db",
+  "read_only": true,
+  "total_placemarks_parsed": 5281,
+  "summary": {
+    "total_doors": 5281,
+    "matched_id_2": 2595,
+    "matched_ambiguous": 2682,
+    "no_match": 8,
+    "on_edge": 4972,
+    "near_edge": 216,
+    "far_from_building": 83
+  },
+  "issues": {
+    "no_building_match": [
+      {
+        "diskapi_id": "445485",
+        "building_id": "255980",
+        "value": "25E",
+        "lat": 38.3490204607794,
+        "lng": 38.3107633495879
+      },
+      {
+        "diskapi_id": "445777",
+        "building_id": "256079",
+        "value": "9",
+        "lat": 38.3479117405759,
+        "lng": 38.3437364063913
+      },
+      {
+        "diskapi_id": "445781",
+        "building_id": "256083",
+        "value": "96",
+        "lat": 38.3490747506948,
+        "lng": 38.3473255624988
+      },
+      {
+        "diskapi_id": "445779",
+        "building_id": "256081",
+        "value": "94",
+        "lat": 38.348984915949,
+        "lng": 38.3468209761103
+      }
+    ],
+    "far_from_building": [
+      {
+        "diskapi_id": "274259",
+        "building_id": "111165",
+        "bina_id": 232,
+        "value": "103",
+        "edge_distance_m": 266
+      },
+      {
+        "diskapi_id": "442397",
+        "building_id": "254288",
+        "bina_id": 1069,
+        "value": "10/1",
+        "edge_distance_m": 35
+      },
+      {
+        "diskapi_id": "428460",
+        "building_id": "245653",
+        "bina_id": 1682,
+        "value": "4F",
+        "edge_distance_m": 29
+      },
+      {
+        "diskapi_id": "428459",
+        "building_id": "245653",
+        "bina_id": 1682,
+        "value": "4E",
+        "edge_distance_m": 37
+      },
+      {
+        "diskapi_id": "428035",
+        "building_id": "245653",
+        "bina_id": 1682,
+        "value": "4/1",
+        "edge_distance_m": 44
+      },
+      {
+        "diskapi_id": "428458",
+        "building_id": "245653",
+        "bina_id": 1682,
+        "value": "4D",
+        "edge_distance_m": 48
+      },
+      {
+        "diskapi_id": "428457",
+        "building_id": "245653",
+        "bina_id": 1682,
+        "value": "4C",
+        "edge_distance_m": 53
+      },
+      {
+        "diskapi_id": "428456",
+        "building_id": "245653",
+        "bina_id": 1682,
+        "value": "4B",
+        "edge_distance_m": 58
+      },
+      {
+        "diskapi_id": "428455",
+        "building_id": "245653",
+        "bina_id": 1682,
+        "value": "4A",
+        "edge_distance_m": 62
+      },
+      {
+        "diskapi_id": "428454",
+        "building_id": "245653",
+        "bina_id": 1682,
+        "value": "11D",
+        "edge_distance_m": 64
+      },
+      {
+        "diskapi_id": "428453",
+        "building_id": "245653",
+        "bina_id": 1682,
+        "value": "11C",
+        "edge_distance_m": 64
+      },
+      {
+        "diskapi_id": "428452",
+        "building_id": "245653",
+        "bina_id": 1682,
+        "value": "11B",
+        "edge_distance_m": 64
+      },
+      {
+        "diskapi_id": "401067",
+        "building_id": "229621",
+        "bina_id": 1915,
+        "value": "788",
+        "edge_distance_m": 311
+      },
+      {
+        "diskapi_id": "427374",
+        "building_id": "244462",
+        "bina_id": 1941,
+        "value": "3B",
+        "edge_distance_m": 102
+      },
+      {
+        "diskapi_id": "427372",
+        "building_id": "244462",
+        "bina_id": 1941,
+        "value": "3",
+        "edge_distance_m": 106
+      },
+      {
+        "diskapi_id": "427373",
+        "building_id": "244462",
+        "bina_id": 1941,
+        "value": "3A",
+        "edge_distance_m": 104
+      },
+      {
+        "diskapi_id": "427368",
+        "building_id": "244463",
+        "bina_id": 1942,
+        "value": "1B",
+        "edge_distance_m": 232
+      },
+      {
+        "diskapi_id": "427367",
+        "building_id": "244463",
+        "bina_id": 1942,
+        "value": "1A",
+        "edge_distance_m": 233
+      },
+      {
+        "diskapi_id": "427366",
+        "building_id": "244463",
+        "bina_id": 1942,
+        "value": "1",
+        "edge_distance_m": 234
+      },
+      {
+        "diskapi_id": "428669",
+        "building_id": "244471",
+        "bina_id": 1620,
+        "value": "8A",
+        "edge_distance_m": 31
+      },
+      {
+        "diskapi_id": "428670",
+        "building_id": "244471",
+        "bina_id": 1620,
+        "value": "8B",
+        "edge_distance_m": 28
+      },
+      {
+        "diskapi_id": "428586",
+        "building_id": "244839",
+        "bina_id": 1669,
+        "value": "6B",
+        "edge_distance_m": 31
+      },
+      {
+        "diskapi_id": "428587",
+        "building_id": "244839",
+        "bina_id": 1669,
+        "value": "6C",
+        "edge_distance_m": 26
+      },
+      {
+        "diskapi_id": "428585",
+        "building_id": "244839",
+        "bina_id": 1669,
+        "value": "6A",
+        "edge_distance_m": 36
+      },
+      {
+        "diskapi_id": "428451",
+        "building_id": "245653",
+        "bina_id": 1682,
+        "value": "11A",
+        "edge_distance_m": 64
+      },
+      {
+        "diskapi_id": "432090",
+        "building_id": "246243",
+        "bina_id": 1738,
+        "value": "2A",
+        "edge_distance_m": 26
+      },
+      {
+        "diskapi_id": "432265",
+        "building_id": "246250",
+        "bina_id": 1751,
+        "value": "3C",
+        "edge_distance_m": 29
+      },
+      {
+        "diskapi_id": "432263",
+        "building_id": "246250",
+        "bina_id": 1751,
+        "value": "3B",
+        "edge_distance_m": 25
+      },
+      {
+        "diskapi_id": "432267",
+        "building_id": "246250",
+        "bina_id": 1751,
+        "value": "3D",
+        "edge_distance_m": 32
+      },
+      {
+        "diskapi_id": "432268",
+        "building_id": "246250",
+        "bina_id": 1751,
+        "value": "3E",
+        "edge_distance_m": 35
+      },
+      {
+        "diskapi_id": "432269",
+        "building_id": "246250",
+        "bina_id": 1751,
+        "value": "3F",
+        "edge_distance_m": 39
+      },
+      {
+        "diskapi_id": "432270",
+        "building_id": "246250",
+        "bina_id": 1751,
+        "value": "3G",
+        "edge_distance_m": 44
+      },
+      {
+        "diskapi_id": "432354",
+        "building_id": "246254",
+        "bina_id": 1753,
+        "value": "3C",
+        "edge_distance_m": 111
+      },
+      {
+        "diskapi_id": "432355",
+        "building_id": "246254",
+        "bina_id": 1753,
+        "value": "3D",
+        "edge_distance_m": 114
+      },
+      {
+        "diskapi_id": "432353",
+        "building_id": "246254",
+        "bina_id": 1753,
+        "value": "3B",
+        "edge_distance_m": 108
+      },
+      {
+        "diskapi_id": "432352",
+        "building_id": "246254",
+        "bina_id": 1753,
+        "value": "3A",
+        "edge_distance_m": 105
+      },
+      {
+        "diskapi_id": "432394",
+        "building_id": "246254",
+        "bina_id": 1753,
+        "value": "4A",
+        "edge_distance_m": 108
+      },
+      {
+        "diskapi_id": "432395",
+        "building_id": "246254",
+        "bina_id": 1753,
+        "value": "4B",
+        "edge_distance_m": 111
+      },
+      {
+        "diskapi_id": "432356",
+        "building_id": "246254",
+        "bina_id": 1753,
+        "value": "3E",
+        "edge_distance_m": 117
+      },
+      {
+        "diskapi_id": "432357",
+        "building_id": "246254",
+        "bina_id": 1753,
+        "value": "3F",
+        "edge_distance_m": 120
+      },
+      {
+        "diskapi_id": "432358",
+        "building_id": "246254",
+        "bina_id": 1753,
+        "value": "3G",
+        "edge_distance_m": 125
+      },
+      {
+        "diskapi_id": "432359",
+        "building_id": "246254",
+        "bina_id": 1753,
+        "value": "3H",
+        "edge_distance_m": 128
+      },
+      {
+        "diskapi_id": "432341",
+        "building_id": "246263",
+        "bina_id": 2000,
+        "value": "1A",
+        "edge_distance_m": 244
+      },
+      {
+        "diskapi_id": "431634",
+        "building_id": "246263",
+        "bina_id": 2000,
+        "value": "1",
+        "edge_distance_m": 245
+      },
+      {
+        "diskapi_id": "432342",
+        "building_id": "246263",
+        "bina_id": 2000,
+        "value": "1B",
+        "edge_distance_m": 246
+      },
+      {
+        "diskapi_id": "432343",
+        "building_id": "246263",
+        "bina_id": 2000,
+        "value": "1C",
+        "edge_distance_m": 248
+      },
+      {
+        "diskapi_id": "432345",
+        "building_id": "246263",
+        "bina_id": 2000,
+        "value": "1D",
+        "edge_distance_m": 250
+      },
+      {
+        "diskapi_id": "432346",
+        "building_id": "246263",
+        "bina_id": 2000,
+        "value": "1E",
+        "edge_distance_m": 252
+      },
+      {
+        "diskapi_id": "432347",
+        "building_id": "246263",
+        "bina_id": 2000,
+        "value": "1F",
+        "edge_distance_m": 255
+      },
+      {
+        "diskapi_id": "432351",
+        "building_id": "246263",
+        "bina_id": 2000,
+        "value": "1J",
+        "edge_distance_m": 266
+      }
+    ],
+    "nearest_disagrees_with_id": [
+      {
+        "diskapi_id": "436547",
+        "building_id": "250195",
+        "matched_bina_id": 3,
+        "matched_bina": "BT",
+        "nearest_bina_id": 370,
+        "nearest_bina": "BT",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "436544",
+        "building_id": "250195",
+        "matched_bina_id": 3,
+        "matched_bina": "BT",
+        "nearest_bina_id": 370,
+        "nearest_bina": "BT",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "436545",
+        "building_id": "250195",
+        "matched_bina_id": 3,
+        "matched_bina": "BT",
+        "nearest_bina_id": 370,
+        "nearest_bina": "BT",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "436546",
+        "building_id": "250195",
+        "matched_bina_id": 3,
+        "matched_bina": "BT",
+        "nearest_bina_id": 370,
+        "nearest_bina": "BT",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "435776",
+        "building_id": "250239",
+        "matched_bina_id": 4,
+        "matched_bina": "B2",
+        "nearest_bina_id": 708,
+        "nearest_bina": "B2",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "434883",
+        "building_id": "249569",
+        "matched_bina_id": 98,
+        "matched_bina": "3. BLOK C1B",
+        "nearest_bina_id": 1150,
+        "nearest_bina": "3. BLOK C1B",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "417447",
+        "building_id": "238694",
+        "matched_bina_id": 111,
+        "matched_bina": "B2-6",
+        "nearest_bina_id": 1255,
+        "nearest_bina": "B2-6",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "417449",
+        "building_id": "238771",
+        "matched_bina_id": 116,
+        "matched_bina": "B2-8",
+        "nearest_bina_id": 1257,
+        "nearest_bina": "B2-8",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "417453",
+        "building_id": "238932",
+        "matched_bina_id": 118,
+        "matched_bina": "B2-9",
+        "nearest_bina_id": 681,
+        "nearest_bina": "B2-9",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413574",
+        "building_id": "228841",
+        "matched_bina_id": 138,
+        "matched_bina": "A20",
+        "nearest_bina_id": 633,
+        "nearest_bina": "A20",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "424380",
+        "building_id": "228851",
+        "matched_bina_id": 139,
+        "matched_bina": "CT1",
+        "nearest_bina_id": 367,
+        "nearest_bina": "CT1",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413575",
+        "building_id": "228851",
+        "matched_bina_id": 139,
+        "matched_bina": "CT1",
+        "nearest_bina_id": 367,
+        "nearest_bina": "CT1",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413577",
+        "building_id": "228998",
+        "matched_bina_id": 142,
+        "matched_bina": "TİCARET 2",
+        "nearest_bina_id": 509,
+        "nearest_bina": "TİCARET 2",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "428053",
+        "building_id": "234413",
+        "matched_bina_id": 201,
+        "matched_bina": "A2-2",
+        "nearest_bina_id": 574,
+        "nearest_bina": "A2-2",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "425791",
+        "building_id": "234414",
+        "matched_bina_id": 202,
+        "matched_bina": "A2-3",
+        "nearest_bina_id": 586,
+        "nearest_bina": "A2-3",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "425792",
+        "building_id": "234414",
+        "matched_bina_id": 202,
+        "matched_bina": "A2-3",
+        "nearest_bina_id": 586,
+        "nearest_bina": "A2-3",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "425793",
+        "building_id": "234414",
+        "matched_bina_id": 202,
+        "matched_bina": "A2-3",
+        "nearest_bina_id": 586,
+        "nearest_bina": "A2-3",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413117",
+        "building_id": "234420",
+        "matched_bina_id": 208,
+        "matched_bina": "A1-5",
+        "nearest_bina_id": 592,
+        "nearest_bina": "A1-5",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413233",
+        "building_id": "234420",
+        "matched_bina_id": 208,
+        "matched_bina": "A1-5",
+        "nearest_bina_id": 592,
+        "nearest_bina": "A1-5",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413250",
+        "building_id": "234424",
+        "matched_bina_id": 212,
+        "matched_bina": "A1-9",
+        "nearest_bina_id": 601,
+        "nearest_bina": "A1-9",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413249",
+        "building_id": "234424",
+        "matched_bina_id": 212,
+        "matched_bina": "A1-9",
+        "nearest_bina_id": 601,
+        "nearest_bina": "A1-9",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "429922",
+        "building_id": "234426",
+        "matched_bina_id": 214,
+        "matched_bina": "A1-11",
+        "nearest_bina_id": 585,
+        "nearest_bina": "A1-11",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "429921",
+        "building_id": "234426",
+        "matched_bina_id": 214,
+        "matched_bina": "A1-11",
+        "nearest_bina_id": 585,
+        "nearest_bina": "A1-11",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "429920",
+        "building_id": "234426",
+        "matched_bina_id": 214,
+        "matched_bina": "A1-11",
+        "nearest_bina_id": 585,
+        "nearest_bina": "A1-11",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "429923",
+        "building_id": "234426",
+        "matched_bina_id": 214,
+        "matched_bina": "A1-11",
+        "nearest_bina_id": 585,
+        "nearest_bina": "A1-11",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413131",
+        "building_id": "234426",
+        "matched_bina_id": 214,
+        "matched_bina": "A1-11",
+        "nearest_bina_id": 585,
+        "nearest_bina": "A1-11",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413282",
+        "building_id": "234428",
+        "matched_bina_id": 216,
+        "matched_bina": "A1-13",
+        "nearest_bina_id": 587,
+        "nearest_bina": "A1-13",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "422978",
+        "building_id": "234435",
+        "matched_bina_id": 223,
+        "matched_bina": "A2-12",
+        "nearest_bina_id": 584,
+        "nearest_bina": "A2-12",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "422979",
+        "building_id": "234435",
+        "matched_bina_id": 223,
+        "matched_bina": "A2-12",
+        "nearest_bina_id": 584,
+        "nearest_bina": "A2-12",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413279",
+        "building_id": "234439",
+        "matched_bina_id": 225,
+        "matched_bina": "A2-15",
+        "nearest_bina_id": 578,
+        "nearest_bina": "A2-15",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413280",
+        "building_id": "234439",
+        "matched_bina_id": 225,
+        "matched_bina": "A2-15",
+        "nearest_bina_id": 578,
+        "nearest_bina": "A2-15",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413281",
+        "building_id": "234439",
+        "matched_bina_id": 225,
+        "matched_bina": "A2-15",
+        "nearest_bina_id": 578,
+        "nearest_bina": "A2-15",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413084",
+        "building_id": "234440",
+        "matched_bina_id": 226,
+        "matched_bina": "TİCARET",
+        "nearest_bina_id": 1757,
+        "nearest_bina": "TİCARET",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "414109",
+        "building_id": "235084",
+        "matched_bina_id": 227,
+        "matched_bina": "A2-13",
+        "nearest_bina_id": 590,
+        "nearest_bina": "A2-13",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "414108",
+        "building_id": "235084",
+        "matched_bina_id": 227,
+        "matched_bina": "A2-13",
+        "nearest_bina_id": 590,
+        "nearest_bina": "A2-13",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "274259",
+        "building_id": "111165",
+        "matched_bina_id": 232,
+        "matched_bina": "Bina #232",
+        "nearest_bina_id": 244,
+        "nearest_bina": "Bina #244",
+        "matched_edge_m": 266,
+        "nearest_edge_m": 5
+      },
+      {
+        "diskapi_id": "425362",
+        "building_id": "244299",
+        "matched_bina_id": 84,
+        "matched_bina": "B1-8",
+        "nearest_bina_id": 246,
+        "nearest_bina": "B1-8",
+        "matched_edge_m": 11,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "425368",
+        "building_id": "244430",
+        "matched_bina_id": 85,
+        "matched_bina": "C.BLOK",
+        "nearest_bina_id": 253,
+        "nearest_bina": "C.BLOK",
+        "matched_edge_m": 7,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "417767",
+        "building_id": "239254",
+        "matched_bina_id": 267,
+        "matched_bina": "BA2",
+        "nearest_bina_id": 888,
+        "nearest_bina": "BA2",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "417800",
+        "building_id": "239257",
+        "matched_bina_id": 269,
+        "matched_bina": "BA6",
+        "nearest_bina_id": 906,
+        "nearest_bina": "BA6",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "417781",
+        "building_id": "239270",
+        "matched_bina_id": 273,
+        "matched_bina": "BTİC2-1",
+        "nearest_bina_id": 421,
+        "nearest_bina": "BTİC2-1",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "417807",
+        "building_id": "239286",
+        "matched_bina_id": 46,
+        "matched_bina": "D11",
+        "nearest_bina_id": 279,
+        "nearest_bina": "D11",
+        "matched_edge_m": 8,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "417814",
+        "building_id": "239437",
+        "matched_bina_id": 294,
+        "matched_bina": "BA3",
+        "nearest_bina_id": 869,
+        "nearest_bina": "BA3",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "352530",
+        "building_id": "136718",
+        "matched_bina_id": 302,
+        "matched_bina": "IBRAHIM PERK CAMII",
+        "nearest_bina_id": 303,
+        "nearest_bina": "IBRAHIM PERK CAMII",
+        "matched_edge_m": 13,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "352529",
+        "building_id": "136718",
+        "matched_bina_id": 302,
+        "matched_bina": "IBRAHIM PERK CAMII",
+        "nearest_bina_id": 303,
+        "nearest_bina": "IBRAHIM PERK CAMII",
+        "matched_edge_m": 13,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "436803",
+        "building_id": "234671",
+        "matched_bina_id": 313,
+        "matched_bina": "A1",
+        "nearest_bina_id": 381,
+        "nearest_bina": "A1",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "413366",
+        "building_id": "234671",
+        "matched_bina_id": 313,
+        "matched_bina": "A1",
+        "nearest_bina_id": 381,
+        "nearest_bina": "A1",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "425305",
+        "building_id": "244359",
+        "matched_bina_id": 151,
+        "matched_bina": "TİP2-6",
+        "nearest_bina_id": 319,
+        "nearest_bina": "TİP2-6",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "425299",
+        "building_id": "244359",
+        "matched_bina_id": 151,
+        "matched_bina": "TİP2-6",
+        "nearest_bina_id": 319,
+        "nearest_bina": "TİP2-6",
+        "matched_edge_m": 1,
+        "nearest_edge_m": 0
+      },
+      {
+        "diskapi_id": "429296",
+        "building_id": "244444",
+        "matched_bina_id": 324,
+        "matched_bina": "T2-1",
+        "nearest_bina_id": 661,
+        "nearest_bina": "T2-1",
+        "matched_edge_m": 0,
+        "nearest_edge_m": 0
+      }
+    ],
+    "ambiguous_id_2": [
+      {
+        "building_id": "235433",
+        "diskapi_id": "421800",
+        "candidate_bina_ids": [
+          1,
+          4745
+        ]
+      },
+      {
+        "building_id": "250195",
+        "diskapi_id": "436548",
+        "candidate_bina_ids": [
+          3,
+          370
+        ]
+      },
+      {
+        "building_id": "250195",
+        "diskapi_id": "436547",
+        "candidate_bina_ids": [
+          3,
+          370
+        ]
+      },
+      {
+        "building_id": "250195",
+        "diskapi_id": "436544",
+        "candidate_bina_ids": [
+          3,
+          370
+        ]
+      },
+      {
+        "building_id": "250195",
+        "diskapi_id": "436545",
+        "candidate_bina_ids": [
+          3,
+          370
+        ]
+      },
+      {
+        "building_id": "250195",
+        "diskapi_id": "436546",
+        "candidate_bina_ids": [
+          3,
+          370
+        ]
+      },
+      {
+        "building_id": "250195",
+        "diskapi_id": "436543",
+        "candidate_bina_ids": [
+          3,
+          370
+        ]
+      },
+      {
+        "building_id": "250239",
+        "diskapi_id": "435776",
+        "candidate_bina_ids": [
+          4,
+          708
+        ]
+      },
+      {
+        "building_id": "250242",
+        "diskapi_id": "435775",
+        "candidate_bina_ids": [
+          5,
+          729
+        ]
+      },
+      {
+        "building_id": "241137",
+        "diskapi_id": "421785",
+        "candidate_bina_ids": [
+          18,
+          4815
+        ]
+      },
+      {
+        "building_id": "252658",
+        "diskapi_id": "441464",
+        "candidate_bina_ids": [
+          23,
+          4476
+        ]
+      },
+      {
+        "building_id": "252658",
+        "diskapi_id": "441463",
+        "candidate_bina_ids": [
+          23,
+          4476
+        ]
+      },
+      {
+        "building_id": "252658",
+        "diskapi_id": "441462",
+        "candidate_bina_ids": [
+          23,
+          4476
+        ]
+      },
+      {
+        "building_id": "252658",
+        "diskapi_id": "441461",
+        "candidate_bina_ids": [
+          23,
+          4476
+        ]
+      },
+      {
+        "building_id": "252658",
+        "diskapi_id": "441460",
+        "candidate_bina_ids": [
+          23,
+          4476
+        ]
+      },
+      {
+        "building_id": "252658",
+        "diskapi_id": "441459",
+        "candidate_bina_ids": [
+          23,
+          4476
+        ]
+      },
+      {
+        "building_id": "252539",
+        "diskapi_id": "439511",
+        "candidate_bina_ids": [
+          25,
+          2576
+        ]
+      },
+      {
+        "building_id": "228840",
+        "diskapi_id": "413573",
+        "candidate_bina_ids": [
+          26,
+          137
+        ]
+      },
+      {
+        "building_id": "234998",
+        "diskapi_id": "413893",
+        "candidate_bina_ids": [
+          27,
+          4622
+        ]
+      },
+      {
+        "building_id": "228832",
+        "diskapi_id": "413608",
+        "candidate_bina_ids": [
+          37,
+          4707
+        ]
+      },
+      {
+        "building_id": "225740",
+        "diskapi_id": "404097",
+        "candidate_bina_ids": [
+          42,
+          2740
+        ]
+      },
+      {
+        "building_id": "253686",
+        "diskapi_id": "441192",
+        "candidate_bina_ids": [
+          50,
+          2841
+        ]
+      },
+      {
+        "building_id": "232994",
+        "diskapi_id": "411278",
+        "candidate_bina_ids": [
+          53,
+          3899
+        ]
+      },
+      {
+        "building_id": "255622",
+        "diskapi_id": "445688",
+        "candidate_bina_ids": [
+          62,
+          556,
+          2807
+        ]
+      },
+      {
+        "building_id": "255622",
+        "diskapi_id": "445689",
+        "candidate_bina_ids": [
+          62,
+          556,
+          2807
+        ]
+      },
+      {
+        "building_id": "247937",
+        "diskapi_id": "433653",
+        "candidate_bina_ids": [
+          65,
+          2395
+        ]
+      },
+      {
+        "building_id": "252679",
+        "diskapi_id": "442325",
+        "candidate_bina_ids": [
+          71,
+          983,
+          1672,
+          4497
+        ]
+      },
+      {
+        "building_id": "233780",
+        "diskapi_id": "424395",
+        "candidate_bina_ids": [
+          74,
+          376,
+          1460,
+          2416
+        ]
+      },
+      {
+        "building_id": "233780",
+        "diskapi_id": "413566",
+        "candidate_bina_ids": [
+          74,
+          376,
+          1460,
+          2416
+        ]
+      },
+      {
+        "building_id": "233780",
+        "diskapi_id": "424393",
+        "candidate_bina_ids": [
+          74,
+          376,
+          1460,
+          2416
+        ]
+      }
+    ],
+    "projected_crs_suspect": []
+  },
+  "safe_next_steps": [
+    "binalar.db ve bina_bilgi tablolarına henüz yazılmadı",
+    "Harita katmanı için data/diskapi-index.json kullanılabilir",
+    "Uyuşmayan kayıtlar issues altında listelendi; karşı tarafa iletilmeli"
+  ]
+}

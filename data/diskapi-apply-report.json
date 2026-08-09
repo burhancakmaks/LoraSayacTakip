@@ -1,0 +1,175 @@
+{
+  "mode": "apply",
+  "to_insert": 1832,
+  "to_update_empty": 61,
+  "skipped_existing_kapi": 20,
+  "skipped_missing_bina": 0,
+  "samples": {
+    "insert_new": [
+      {
+        "bina_id": 1,
+        "bina": "A TİC6-2",
+        "kapi_no": "70/1"
+      },
+      {
+        "bina_id": 2,
+        "bina": "B6",
+        "kapi_no": "12/1"
+      },
+      {
+        "bina_id": 3,
+        "bina": "BT",
+        "kapi_no": "5/4A"
+      },
+      {
+        "bina_id": 4,
+        "bina": "B2",
+        "kapi_no": "5/3"
+      },
+      {
+        "bina_id": 5,
+        "bina": "B-1 BLOK",
+        "kapi_no": "5/2"
+      },
+      {
+        "bina_id": 7,
+        "bina": "CINARLI CAMII",
+        "kapi_no": "4C"
+      },
+      {
+        "bina_id": 9,
+        "bina": "NUR APT",
+        "kapi_no": "29"
+      },
+      {
+        "bina_id": 10,
+        "bina": "KIBRIS APT",
+        "kapi_no": "4B"
+      },
+      {
+        "bina_id": 11,
+        "bina": "Bina #11",
+        "kapi_no": "22B"
+      },
+      {
+        "bina_id": 12,
+        "bina": "Bina #12",
+        "kapi_no": "22/1A"
+      }
+    ],
+    "update_empty": [
+      {
+        "bina_id": 47,
+        "bina": "D10",
+        "kapi_no": "17"
+      },
+      {
+        "bina_id": 57,
+        "bina": "D08",
+        "kapi_no": "3A"
+      },
+      {
+        "bina_id": 302,
+        "bina": "IBRAHIM PERK CAMII",
+        "kapi_no": "18B"
+      },
+      {
+        "bina_id": 558,
+        "bina": "C03",
+        "kapi_no": "1A"
+      },
+      {
+        "bina_id": 713,
+        "bina": "DB-3",
+        "kapi_no": "3"
+      },
+      {
+        "bina_id": 716,
+        "bina": "DB-1",
+        "kapi_no": "16"
+      },
+      {
+        "bina_id": 717,
+        "bina": "DB-2",
+        "kapi_no": "12"
+      },
+      {
+        "bina_id": 718,
+        "bina": "DB-4",
+        "kapi_no": "10"
+      },
+      {
+        "bina_id": 1064,
+        "bina": "D05",
+        "kapi_no": "10B"
+      },
+      {
+        "bina_id": 1065,
+        "bina": "D07",
+        "kapi_no": "14"
+      }
+    ],
+    "skipped_has_value": [
+      {
+        "bina_id": 1609,
+        "bina": "1262 ADA A BLOK",
+        "mevcut": "2",
+        "yeni": "1/1"
+      },
+      {
+        "bina_id": 1610,
+        "bina": "1262 ADA B BLOK",
+        "mevcut": "2",
+        "yeni": "3/1"
+      },
+      {
+        "bina_id": 1688,
+        "bina": "1262 ADA C BLOK",
+        "mevcut": "9",
+        "yeni": "1"
+      },
+      {
+        "bina_id": 1689,
+        "bina": "1262 ADA D BLOK",
+        "mevcut": "2",
+        "yeni": "2A"
+      },
+      {
+        "bina_id": 1722,
+        "bina": "A BLOK",
+        "mevcut": "8",
+        "yeni": "3C"
+      },
+      {
+        "bina_id": 1724,
+        "bina": "D BLOK",
+        "mevcut": "5",
+        "yeni": "5"
+      },
+      {
+        "bina_id": 1732,
+        "bina": "B BLOK",
+        "mevcut": "7",
+        "yeni": "6B"
+      },
+      {
+        "bina_id": 1736,
+        "bina": "E BLOK",
+        "mevcut": "7",
+        "yeni": "4A"
+      },
+      {
+        "bina_id": 1750,
+        "bina": "C BLOK",
+        "mevcut": "10",
+        "yeni": "10A"
+      },
+      {
+        "bina_id": 1751,
+        "bina": "B BLOK",
+        "mevcut": "4",
+        "yeni": "3A"
+      }
+    ]
+  }
+}

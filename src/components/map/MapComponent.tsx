@@ -27,6 +27,7 @@ import {
   shareSayacMapLink,
   syncSayacUrlInBrowser,
 } from "@/lib/sayac-link";
+import { openGoogleMaps } from "@/lib/maps-link";
 import {
   type UzaktanBinaEntry,
   type UzaktanTypeFilter,
@@ -56,6 +57,7 @@ interface Building {
   tarife_karma?: boolean;
   rezerv_abone_sayisi?: number;
   has_tarife?: boolean;
+  dis_kapi_no?: string;
 }
 
 interface SelectedBuilding {
@@ -83,6 +85,18 @@ interface SayacSearchResult {
   oda_id: number | null;
   is_configured: boolean;
   coordinates: [number, number][][];
+}
+
+interface KapiSearchResult {
+  bina_id: number;
+  kapi_no: string;
+  building_name: string;
+  layer: string | null;
+  oda_id: number | null;
+  lat: number;
+  lng: number;
+  alignment: string;
+  edge_distance_m: number | null;
 }
 
 interface SayacSorunBina {
@@ -118,6 +132,10 @@ function createSorunIcon(severity: Exclude<SayacSorunSeverity, null>) {
 
 function normSayacDigits(value: string) {
   return value.trim().replace(/^2025-/i, "").replace(/\D/g, "");
+}
+
+function normKapiNo(value: string) {
+  return value.trim().toLocaleUpperCase("tr-TR").replace(/\s+/g, "");
 }
 
 function escHtml(value: string) {
@@ -227,6 +245,21 @@ function createSayacPinIcon(sayacId: string) {
   });
 }
 
+function createKapiPinIcon(kapiNo: string) {
+  const label = escHtml(kapiNo.trim() || "Kapı");
+  return L.divIcon({
+    className: "kapi-pin-marker",
+    html: `<div style="position:relative;width:160px;height:88px;display:flex;align-items:flex-end;justify-content:center;font-family:Outfit,sans-serif;pointer-events:none">
+      <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center">
+        <div style="background:linear-gradient(135deg,#0ba5ec,#026aa2);color:#fff;font-weight:800;font-size:11px;padding:5px 10px;border-radius:10px;border:2.5px solid #fff;box-shadow:0 4px 14px rgba(2,106,162,.55);white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis;">No ${label}</div>
+        <div style="width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:13px solid #026aa2;margin-top:-1px;"></div>
+      </div>
+    </div>`,
+    iconSize: [160, 88],
+    iconAnchor: [80, 88],
+  });
+}
+
 interface BuildingPolygonStyle {
   color: string;
   fillColor: string;
@@ -300,7 +333,7 @@ function buildPopupContent(building: Building, visual: BuildingVisual): string {
       </div>
 
       <div style="padding:10px 12px 12px;">
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
           <div style="border-radius:8px;border:1px solid #e4e7ec;background:#f9fafb;padding:7px 8px;">
             <div style="font-size:9px;font-weight:500;color:#667085;">Kayıtlı Sayaç</div>
             <div style="margin-top:2px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;color:#101828;">${sayacCount}</div>
@@ -308,6 +341,10 @@ function buildPopupContent(building: Building, visual: BuildingVisual): string {
           <div style="border-radius:8px;border:1px solid #e4e7ec;background:#f9fafb;padding:7px 8px;">
             <div style="font-size:9px;font-weight:500;color:#667085;">Aktif Abone</div>
             <div style="margin-top:2px;font-size:15px;font-weight:700;font-variant-numeric:tabular-nums;color:#101828;">${building.aktif_abone_sayisi}</div>
+          </div>
+          <div style="border-radius:8px;border:1px solid #e4e7ec;background:#f9fafb;padding:7px 8px;">
+            <div style="font-size:9px;font-weight:500;color:#667085;">Dış Kapı No</div>
+            <div style="margin-top:2px;font-size:13px;font-weight:700;color:#101828;line-height:1.2;">${building.dis_kapi_no ? escHtml(building.dis_kapi_no) : "—"}</div>
           </div>
         </div>
 
@@ -442,6 +479,15 @@ export default function MapComponent() {
   const [sharePanelUrl, setSharePanelUrl] = useState<string | null>(null);
   const [jsonExporting, setJsonExporting] = useState(false);
   const [jsonExportError, setJsonExportError] = useState<string | null>(null);
+
+  // Dış kapı arama (sayaç aramasından bağımsız)
+  const [kapiSearch, setKapiSearch] = useState("");
+  const [kapiResults, setKapiResults] = useState<KapiSearchResult[]>([]);
+  const [kapiSearchOpen, setKapiSearchOpen] = useState(false);
+  const [kapiSearching, setKapiSearching] = useState(false);
+  const kapiResultsRef = useRef<KapiSearchResult[]>([]);
+  const [selectedKapiLabel, setSelectedKapiLabel] = useState<string | null>(null);
+  const [selectedKapiTarget, setSelectedKapiTarget] = useState<KapiSearchResult | null>(null);
 
   // Modals state
   const [selectedBuilding, setSelectedBuilding] = useState<SelectedBuilding | null>(null);
@@ -814,6 +860,19 @@ export default function MapComponent() {
     [clearSayacMarker]
   );
 
+  const placeKapiMarker = useCallback(
+    (kapiNo: string, lat: number, lng: number) => {
+      if (!mapRef.current || !kapiNo.trim()) return;
+      clearSayacMarker();
+      const marker = L.marker([lat, lng], {
+        icon: createKapiPinIcon(kapiNo),
+        zIndexOffset: 2500,
+      }).addTo(mapRef.current);
+      sayacMarkerRef.current = marker;
+    },
+    [clearSayacMarker]
+  );
+
   const highlightBuilding = (binaId: number) => {
     clearBuildingHighlight();
     highlightedBinaIdRef.current = binaId;
@@ -843,6 +902,10 @@ export default function MapComponent() {
   useEffect(() => {
     sayacResultsRef.current = sayacResults;
   }, [sayacResults]);
+
+  useEffect(() => {
+    kapiResultsRef.current = kapiResults;
+  }, [kapiResults]);
 
   // Debounced sayaç search (dropdown — not the sayaç modal)
   useEffect(() => {
@@ -1154,6 +1217,9 @@ export default function MapComponent() {
 
       setSayacSearchOpen(false);
       setSayacSearch(result.sayac_id);
+      setSelectedKapiLabel(null);
+      setSelectedKapiTarget(null);
+      setKapiSearchOpen(false);
       setSelectedSayacLabel(`${result.sayac_id} → ${result.building_name}`);
       setSelectedSayacTarget({
         bina_id: result.bina_id,
@@ -1192,25 +1258,57 @@ export default function MapComponent() {
     [placeSayacMarker, triggerSayacAlarm]
   );
 
-  const handleOpenSayacLocation = useCallback(
-    (sayacId: string) => {
-      if (!selectedBuilding || !sayacId.trim()) return;
+  const handleOpenDoorLocation = useCallback(
+    async () => {
+      if (!selectedBuilding) return;
 
       const building = buildingsDataRef.current.get(selectedBuilding.id);
       const buildingName = selectedBuilding.value || building?.value || "Bina";
-      const center = getBuildingCenter(building?.coordinates);
+      const disKapi = building?.dis_kapi_no?.trim() || "";
 
-      if (!center) {
-        setShareFeedback("Bu bina için konum bulunamadı");
-        window.setTimeout(() => setShareFeedback(null), 4000);
-        return;
+      let lat: number | null = null;
+      let lng: number | null = null;
+      let labelKapi = disKapi;
+
+      try {
+        const params = new URLSearchParams({ bina_id: String(selectedBuilding.id) });
+        if (disKapi) params.set("kapi_no", disKapi);
+        const res = await fetch(`/api/diskapi/location?${params}`);
+        if (res.ok) {
+          const data = (await res.json()) as { lat: number; lng: number; kapi_no?: string };
+          if (Number.isFinite(data.lat) && Number.isFinite(data.lng)) {
+            lat = data.lat;
+            lng = data.lng;
+            labelKapi = data.kapi_no || disKapi;
+          }
+        }
+      } catch (err) {
+        console.error("Kapı konumu alınamadı:", err);
       }
 
-      const label = encodeURIComponent(`Sayaç ${sayacId} · ${buildingName}`);
-      const mapsUrl = `https://www.google.com/maps?q=${center.lat},${center.lng}(${label})&z=19`;
-      window.open(mapsUrl, "_blank", "noopener,noreferrer");
+      if (lat == null || lng == null) {
+        const center = getBuildingCenter(building?.coordinates);
+        if (!center) {
+          setShareFeedback("Bu bina için konum bulunamadı");
+          window.setTimeout(() => setShareFeedback(null), 4000);
+          return;
+        }
+        lat = center.lat;
+        lng = center.lng;
+      }
+
+      const label = labelKapi ? `Kapı ${labelKapi} · ${buildingName}` : buildingName;
+      openGoogleMaps(lat, lng, label);
     },
     [selectedBuilding]
+  );
+
+  const handleOpenKapiLocation = useCallback(
+    (result: KapiSearchResult) => {
+      const label = `Kapı ${result.kapi_no} · ${result.building_name}`;
+      openGoogleMaps(result.lat, result.lng, label);
+    },
+    []
   );
 
   const submitSayacSearch = useCallback(() => {
@@ -1253,6 +1351,113 @@ export default function MapComponent() {
       })
       .finally(() => setSayacSearching(false));
   }, [navigateToSayac, sayacSearch]);
+
+  const navigateToKapi = useCallback(
+    (result: KapiSearchResult) => {
+      if (!mapRef.current) return;
+
+      setKapiSearchOpen(false);
+      setKapiSearch(result.kapi_no);
+      setSelectedKapiLabel(`${result.kapi_no} → ${result.building_name}`);
+      setSelectedKapiTarget(result);
+      setSayacSearchOpen(false);
+      setLayerPickerOpen(false);
+      setMahallePickerOpen(false);
+      stopSayacAlarm();
+
+      if (activeHighlightRef.current) {
+        mapRef.current.removeLayer(activeHighlightRef.current);
+        activeHighlightRef.current = null;
+      }
+      setSelectedMahalle("Mahalleler");
+
+      highlightBuilding(result.bina_id);
+      const map = mapRef.current;
+      map.stop();
+      map.flyTo([result.lat, result.lng], 19, { duration: 0.6, animate: true });
+      placeKapiMarker(result.kapi_no, result.lat, result.lng);
+
+      setSelectedBuilding({
+        id: result.bina_id,
+        value: result.building_name,
+        layer: result.layer,
+        oda_id: result.oda_id,
+      });
+    },
+    [placeKapiMarker, stopSayacAlarm]
+  );
+
+  const submitKapiSearch = useCallback(() => {
+    const q = kapiSearch.trim();
+    if (q.length < 2) return;
+
+    const normQ = normKapiNo(q);
+    const pickMatch = (results: KapiSearchResult[]) => {
+      const exact = results.find((r) => normKapiNo(r.kapi_no) === normQ);
+      if (exact) return exact;
+      if (results.length === 1) return results[0];
+      return null;
+    };
+
+    const cached = pickMatch(kapiResultsRef.current);
+    if (cached) {
+      navigateToKapi(cached);
+      return;
+    }
+
+    setKapiSearching(true);
+    fetch(`/api/diskapi/search?q=${encodeURIComponent(q)}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Arama başarısız");
+        return res.json();
+      })
+      .then((data: KapiSearchResult[]) => {
+        setKapiResults(data);
+        const match = pickMatch(data);
+        if (match) {
+          navigateToKapi(match);
+        } else {
+          setKapiSearchOpen(true);
+        }
+      })
+      .catch((err) => {
+        console.error("Kapı arama hatası:", err);
+        setKapiResults([]);
+        setKapiSearchOpen(true);
+      })
+      .finally(() => setKapiSearching(false));
+  }, [kapiSearch, navigateToKapi]);
+
+  // Debounced kapı arama (sayaç aramasından bağımsız)
+  useEffect(() => {
+    const q = kapiSearch.trim();
+    if (q.length < 2) {
+      setKapiResults([]);
+      setKapiSearching(false);
+      return;
+    }
+
+    setKapiSearching(true);
+    const timer = setTimeout(() => {
+      fetch(`/api/diskapi/search?q=${encodeURIComponent(q)}`)
+        .then((res) => {
+          if (!res.ok) throw new Error("Arama başarısız");
+          return res.json();
+        })
+        .then((data: KapiSearchResult[]) => {
+          setKapiResults(data);
+          setKapiSearchOpen(true);
+        })
+        .catch((err) => {
+          console.error("Kapı arama hatası:", err);
+          setKapiResults([]);
+          setKapiSearchOpen(true);
+        })
+        .finally(() => setKapiSearching(false));
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [kapiSearch]);
 
   const showShareFeedback = useCallback((msg: string) => {
     setShareFeedback(msg);
@@ -1532,6 +1737,10 @@ export default function MapComponent() {
     navigateToSayac(result, true);
   };
 
+  const handleKapiSelect = (result: KapiSearchResult) => {
+    navigateToKapi(result);
+  };
+
   useEffect(() => {
     return () => {
       clearSayacUrlInBrowser();
@@ -1542,6 +1751,8 @@ export default function MapComponent() {
     setSayacSearch("");
     setSayacResults([]);
     setSayacSearchOpen(false);
+    setSelectedKapiLabel(null);
+    setSelectedKapiTarget(null);
     setSelectedSayacLabel(null);
     setSelectedSayacTarget(null);
     setFocusSayacId(null);
@@ -1554,6 +1765,16 @@ export default function MapComponent() {
     clearSayacMarker();
     clearBuildingHighlight();
     clearSayacUrlInBrowser();
+  };
+
+  const clearKapiSearch = () => {
+    setKapiSearch("");
+    setKapiResults([]);
+    setKapiSearchOpen(false);
+    setSelectedKapiLabel(null);
+    setSelectedKapiTarget(null);
+    clearSayacMarker();
+    clearBuildingHighlight();
   };
 
   const handleMahalleSelect = (name: string, center: [number, number] | null) => {
@@ -2085,6 +2306,122 @@ export default function MapComponent() {
             )}
           </div>
 
+          {/* Dış kapı arama — sayaç aramasından bağımsız */}
+          <div className="relative w-full pointer-events-auto">
+            <div className={MAP_TOOLBAR_CARD}>
+              <div className="flex items-center gap-2 px-3 py-2.5">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-cyan-600">
+                  <path d="M3 21h18" />
+                  <path d="M5 21V7l7-4 7 4v14" />
+                  <path d="M9 21v-6h6v6" />
+                </svg>
+                <input
+                  type="text"
+                  placeholder="Dış kapı no ara (örn. 70/1)..."
+                  value={kapiSearch}
+                  onChange={(e) => {
+                    setKapiSearch(e.target.value);
+                    setSelectedKapiLabel(null);
+                    setSelectedKapiTarget(null);
+                    if (e.target.value.trim().length >= 2) setKapiSearchOpen(true);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      submitKapiSearch();
+                    }
+                  }}
+                  onFocus={() => {
+                    setLayerPickerOpen(false);
+                    setMahallePickerOpen(false);
+                    setNotifPanelOpen(false);
+                    setSayacSearchOpen(false);
+                    if (kapiSearch.trim().length >= 2) setKapiSearchOpen(true);
+                  }}
+                  className="flex-1 bg-transparent text-sm font-medium text-gray-800 placeholder:text-gray-500 focus:outline-none dark:text-white dark:placeholder:text-gray-400"
+                />
+                {kapiSearching && (
+                  <div className="h-4 w-4 shrink-0 animate-spin rounded-full border-2 border-cyan-600 border-t-transparent" />
+                )}
+                {(kapiSearch || selectedKapiLabel) && (
+                  <button
+                    onClick={clearKapiSearch}
+                    className="shrink-0 rounded-md px-1 text-xs font-semibold text-gray-400 transition hover:bg-cyan-50 hover:text-gray-600 dark:hover:bg-cyan-950/40 dark:hover:text-gray-200"
+                    title="Temizle"
+                  >
+                    ✕
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {selectedKapiLabel && selectedKapiTarget && (
+              <div className="mt-1.5 rounded-xl border border-cyan-200 bg-cyan-50/80 px-3 py-1.5 dark:border-cyan-800 dark:bg-cyan-950/40">
+                <div className="flex min-w-0 items-center gap-2">
+                  <span className="flex-1 truncate text-[11px] font-semibold text-cyan-900 dark:text-cyan-200">
+                    {selectedKapiLabel}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenKapiLocation(selectedKapiTarget)}
+                    className="shrink-0 rounded-lg border border-cyan-300 bg-white/80 px-2 py-0.5 text-[10px] font-semibold text-cyan-800 transition hover:bg-cyan-100 dark:border-cyan-700 dark:bg-gray-900/60 dark:text-cyan-300 dark:hover:bg-cyan-950/60"
+                    title="Kapı konumunu Google Maps'te aç"
+                  >
+                    Maps
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {kapiSearchOpen && kapiSearch.trim().length >= 2 && (
+              <div className={`absolute right-0 z-[1001] mt-2 w-full ${MAP_DROPDOWN_PANEL}`}>
+                <div className="max-h-60 overflow-y-auto">
+                  {kapiResults.length === 0 && !kapiSearching ? (
+                    <div className="px-4 py-3 text-center text-xs text-gray-500 dark:text-gray-400">
+                      Eşleşen kapı bulunamadı.
+                    </div>
+                  ) : (
+                    kapiResults.map((result, idx) => (
+                      <div
+                        key={`${result.bina_id}-${result.kapi_no}-${idx}`}
+                        className="flex items-stretch border-b border-cyan-100 transition last:border-0 hover:bg-cyan-50/60 dark:border-cyan-900/30 dark:hover:bg-cyan-950/30"
+                      >
+                        <button
+                          type="button"
+                          onClick={() => handleKapiSelect(result)}
+                          className="min-w-0 flex-1 px-4 py-3 text-left text-sm"
+                        >
+                          <div className="text-sm font-bold text-cyan-700 dark:text-cyan-400">
+                            No {result.kapi_no}
+                          </div>
+                          <div className="mt-0.5 truncate text-xs font-semibold text-gray-800 dark:text-gray-200">
+                            {result.building_name}
+                          </div>
+                          {result.layer && (
+                            <div className="mt-1 text-[11px] text-gray-500 dark:text-gray-400">{result.layer}</div>
+                          )}
+                        </button>
+                        <div className="mr-2 flex shrink-0 items-center">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleOpenKapiLocation(result);
+                            }}
+                            className="rounded-lg border border-cyan-200 px-2 py-1 text-[10px] font-semibold text-cyan-700 transition hover:bg-cyan-50 dark:border-cyan-800 dark:text-cyan-300 dark:hover:bg-cyan-950/40"
+                            title="Kapı konumunu Google Maps'te aç"
+                          >
+                            Maps
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Araç çubuğu */}
           <div className={`pointer-events-auto flex w-full flex-col gap-1.5 overflow-visible p-1.5 ${MAP_TOOLBAR_SURFACE}`}>
             <div className="flex w-full items-center gap-1.5">
@@ -2298,7 +2635,7 @@ export default function MapComponent() {
             setInfoModalOpen(true);
           }}
           onSaved={handleSayacSaved}
-          onOpenLocation={handleOpenSayacLocation}
+          onOpenDoorLocation={handleOpenDoorLocation}
         />
       )}
 

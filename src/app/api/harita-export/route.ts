@@ -2,21 +2,28 @@ import { NextRequest, NextResponse } from "next/server";
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
 import { requireRole, writeAudit } from "@/lib/auth";
+import {
+  buildHaritaExportPayload,
+  haritaExportContentType,
+  haritaExportFilename,
+  serializeHaritaExportBody,
+  type HaritaExportFormat,
+} from "@/lib/harita-export";
 
 type DbRow = Record<string, unknown>;
 
-function parseCoordinates(value: unknown) {
-  if (typeof value !== "string") return value;
-  try {
-    return JSON.parse(value);
-  } catch {
-    return [];
-  }
+function parseFormat(value: string | null): HaritaExportFormat {
+  const normalized = (value || "json").toLowerCase();
+  if (normalized === "kml" || normalized === "geojson" || normalized === "json") return normalized;
+  return "json";
 }
 
 export async function GET(request: NextRequest) {
   const auth = await requireRole(request, "admin");
   if (auth.response) return auth.response;
+
+  const { searchParams } = new URL(request.url);
+  const format = parseFormat(searchParams.get("format"));
 
   let db: DatabaseSync | null = null;
   try {
@@ -34,56 +41,29 @@ export async function GET(request: NextRequest) {
       ? (db.prepare("SELECT * FROM bina_tarife_ozet ORDER BY bina_id").all() as DbRow[])
       : [];
 
-    const infoByBuilding = new Map(buildingInfo.map((row) => [Number(row.bina_id), row]));
-    const tariffByBuilding = new Map(tariffs.map((row) => [Number(row.bina_id), row]));
-    const metersByBuilding = new Map<number, DbRow[]>();
-    for (const meter of meters) {
-      const buildingId = Number(meter.bina_id);
-      const current = metersByBuilding.get(buildingId) ?? [];
-      current.push(meter);
-      metersByBuilding.set(buildingId, current);
-    }
-
     const exportedAt = new Date().toISOString();
-    const payload = {
-      format: "LoraSayacTakip.HaritaExport",
-      version: 1,
-      exported_at: exportedAt,
-      summary: {
-        building_count: buildings.length,
-        meter_record_count: meters.length,
-        building_info_count: buildingInfo.length,
-        tariff_record_count: tariffs.length,
-      },
-      buildings: buildings.map((building) => {
-        const id = Number(building.id);
-        return {
-          ...building,
-          coordinates: parseCoordinates(building.coordinates),
-          building_info: infoByBuilding.get(id) ?? null,
-          tariff: tariffByBuilding.get(id) ?? null,
-          meters: metersByBuilding.get(id) ?? [],
-        };
-      }),
-    };
+    const payload = buildHaritaExportPayload(buildings, buildingInfo, meters, tariffs, exportedAt);
+    const body = serializeHaritaExportBody(format, payload);
+    const filename = haritaExportFilename(format, exportedAt);
 
     writeAudit(request, auth.user, {
       action: "export",
       entity: "map",
-      summary: "Harita verileri JSON formatında dışa aktarıldı",
-      metadata: payload.summary,
+      summary: `Harita verileri ${format.toUpperCase()} formatında dışa aktarıldı`,
+      metadata: { ...payload.summary, export_format: format },
     });
 
-    const date = exportedAt.slice(0, 10);
-    return new NextResponse(JSON.stringify(payload), {
+    return new NextResponse(body, {
       headers: {
-        "Content-Type": "application/json; charset=utf-8",
-        "Content-Disposition": `attachment; filename="harita-verileri-${date}.json"`,
+        "Content-Type": haritaExportContentType(format),
+        "Content-Disposition": `attachment; filename="${filename}"`,
+        "Content-Encoding": "identity",
         "Cache-Control": "no-store",
+        "X-Content-Type-Options": "nosniff",
       },
     });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "JSON dışa aktarımı başarısız";
+    const message = error instanceof Error ? error.message : "Dışa aktarım başarısız";
     return NextResponse.json({ error: message }, { status: 500 });
   } finally {
     db?.close();

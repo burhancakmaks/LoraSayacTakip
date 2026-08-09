@@ -58,7 +58,9 @@ export async function GET(request: NextRequest) {
       headers: {
         "Content-Type": contentType,
         "Content-Disposition": `attachment; filename="${filename}"`,
+        "Content-Encoding": "identity",
         "Cache-Control": "no-store",
+        "X-Content-Type-Options": "nosniff",
       },
     });
   } catch (error: unknown) {

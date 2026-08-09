@@ -12,7 +12,10 @@
     "generate:import-template": "node scripts/generate-sayac-import-template.mjs",
     "sync:sayac": "node scripts/sayac-otomatik-sync.mjs --force",
     "integrate:harita": "node scripts/integrate-excel-harita.mjs --apply",
-    "audit:sayac": "node scripts/integrate-excel-harita.mjs"
+    "audit:sayac": "node scripts/integrate-excel-harita.mjs",
+    "build:diskapi-index": "node scripts/build-diskapi-index.mjs",
+    "build:diskapi-by-bina": "node scripts/build-diskapi-by-bina.mjs",
+    "apply:diskapi-bilgi": "node scripts/apply-diskapi-bilgi.mjs --apply"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.19",

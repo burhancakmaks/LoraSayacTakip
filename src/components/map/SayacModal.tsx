@@ -44,7 +44,7 @@ interface SayacModalProps {
   highlightSayacId?: string | null;
   onClose: () => void;
   onSaved?: (stats: { sayac_count: number; sayac_kayit: number }) => void;
-  onOpenLocation?: (sayacId: string) => void;
+  onOpenDoorLocation?: () => void;
   onOpenBuildingInfo?: () => void;
 }
 
@@ -136,14 +136,12 @@ function SayacUnitCard({
   binaId,
   uzaktanMatch,
   onQr,
-  onOpenLocation,
 }: {
   row: SayacRow;
   highlighted?: boolean;
   binaId: number;
   uzaktanMatch?: UzaktanSayacMatch | null;
   onQr: (row: SayacRow) => void;
-  onOpenLocation?: (row: SayacRow) => void;
 }) {
   const durum: SayacDurum =
     row.sayac_durum && row.sayac_durum in SAYAC_DURUM
@@ -228,32 +226,18 @@ function SayacUnitCard({
 
         {hasSayac && (
           <div className="space-y-1">
-            <div className="grid grid-cols-2 gap-1">
-              <button
-                type="button"
-                onClick={() => onOpenLocation?.(row)}
-                className="flex items-center justify-center gap-1 rounded-md border border-emerald-300 bg-emerald-50 px-1.5 py-1 text-[9px] font-bold text-emerald-800 transition hover:bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-950/60"
-                title="Konumu Google Maps'te aç"
-              >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                  <circle cx="12" cy="10" r="3" />
-                </svg>
-                Konum
-              </button>
-              <button
-                type="button"
-                onClick={() => onQr(row)}
-                className="flex items-center justify-center gap-1 rounded-md border border-blue-light-300 bg-blue-light-50 px-1.5 py-1 text-[9px] font-bold text-blue-light-800 transition hover:bg-blue-light-100 dark:border-blue-light-700 dark:bg-blue-light-950/40 dark:text-blue-light-300 dark:hover:bg-blue-light-950/60"
-                title="Sayaç QR kodunu göster"
-              >
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-                  <path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6z" />
-                  <path d="M14 14h2v2h-2v-2zm4 0h2v2h-2v-2zm-4 4h2v2h-2v-2zm4 0h2v2h-2v-2z" />
-                </svg>
-                QR
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => onQr(row)}
+              className="flex w-full items-center justify-center gap-1 rounded-md border border-blue-light-300 bg-blue-light-50 px-1.5 py-1 text-[9px] font-bold text-blue-light-800 transition hover:bg-blue-light-100 dark:border-blue-light-700 dark:bg-blue-light-950/40 dark:text-blue-light-300 dark:hover:bg-blue-light-950/60"
+              title="Sayaç QR kodunu göster"
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6z" />
+                <path d="M14 14h2v2h-2v-2zm4 0h2v2h-2v-2zm-4 4h2v2h-2v-2zm4 0h2v2h-2v-2z" />
+              </svg>
+              QR
+            </button>
             <SahaKartiExportButtons
               binaId={binaId}
               sayacId={row.sayac_id}
@@ -294,7 +278,7 @@ export default function SayacModal({
   highlightSayacId,
   onClose,
   onSaved,
-  onOpenLocation,
+  onOpenDoorLocation,
   onOpenBuildingInfo,
 }: SayacModalProps) {
   const { refresh } = useNotifications();
@@ -571,6 +555,20 @@ export default function SayacModal({
               <p className="mt-0.5 truncate text-[10px] font-medium text-gray-600 dark:text-gray-300">
                 {building?.value || "Bilinmeyen Bina"}
               </p>
+              {onOpenDoorLocation && (
+                <button
+                  type="button"
+                  onClick={onOpenDoorLocation}
+                  className="mt-1.5 inline-flex items-center gap-1 rounded-lg border border-emerald-300 bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-800 transition hover:bg-emerald-100 dark:border-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 dark:hover:bg-emerald-950/60"
+                  title="Dış kapı konumunu Google Maps'te aç"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  Kapı Konumu
+                </button>
+              )}
             </div>
             {!loading && !noBinaInfo && rows.length > 0 && (
               <div className="flex min-w-[120px] items-center gap-2 rounded-xl border border-dashed border-violet-300/60 bg-violet-50/80 px-2.5 py-1.5 dark:border-violet-700/40 dark:bg-violet-950/30">
@@ -954,11 +952,6 @@ export default function SayacModal({
                             uzaktanMatch={lookupUzaktanMatch(uzaktanLookup, row.sayac_id)}
                             highlighted={matchesHighlightSayac(row, highlightSayacId)}
                             onQr={handleShowQr}
-                            onOpenLocation={
-                              onOpenLocation
-                                ? (item) => onOpenLocation(item.sayac_id.trim())
-                                : undefined
-                            }
                           />
                         ))}
                       </div>
