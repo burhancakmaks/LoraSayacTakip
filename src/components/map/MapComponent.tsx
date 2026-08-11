@@ -130,6 +130,42 @@ function createSorunIcon(severity: Exclude<SayacSorunSeverity, null>) {
   });
 }
 
+interface BugunBina {
+  bina_id: number;
+  value: string;
+  count: number;
+  last_at: string;
+  center: { lat: number; lng: number } | null;
+  items: Array<{ sayac_id: string; kapi_no: string; blok_no: string; kat: string; updated_at: string }>;
+}
+
+interface BugunOzet {
+  toplam: number;
+  bina_sayisi: number;
+}
+
+function formatBugunTime(iso: string) {
+  if (!iso) return "—";
+  const d = new Date(iso.includes("T") ? iso : iso.replace(" ", "T"));
+  if (Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleString("tr-TR", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" });
+}
+
+function createBugunIcon(count: number) {
+  const label = count.toLocaleString("tr-TR");
+  const width = Math.min(96, Math.max(44, label.length * 8 + 24));
+  const fontSize = count >= 1000 ? 10 : count >= 100 ? 11 : 12;
+  return L.divIcon({
+    className: "bugun-sayac-map-badge",
+    html: `<div style="width:${width}px;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:Outfit,sans-serif;pointer-events:auto;cursor:pointer">
+      <div style="width:100%;padding:4px 6px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;font-weight:800;font-size:${fontSize}px;text-align:center;border:2px solid #fff;box-shadow:0 2px 10px rgba(2,132,199,.45);line-height:1.2">+${label}</div>
+      <div style="font-size:8px;font-weight:700;color:#0369a1;background:rgba(255,255,255,.95);padding:2px 6px;border-radius:6px;border:1px solid #bae6fd">Bugün</div>
+    </div>`,
+    iconAnchor: [width / 2, 42],
+    iconSize: [width, 42],
+  });
+}
+
 function normSayacDigits(value: string) {
   return value.trim().replace(/^2025-/i, "").replace(/\D/g, "");
 }
@@ -430,6 +466,7 @@ export default function MapComponent() {
   const highlightedBinaIdRef = useRef<number | null>(null);
   const buildingAlarmIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const sorunMarkersRef = useRef<L.Marker[]>([]);
+  const bugunMarkersRef = useRef<L.Marker[]>([]);
   const uzaktanBinalarRef = useRef<Map<number, UzaktanBinaEntry>>(new Map());
   const lastDeepLinkKeyRef = useRef<string | null>(null);
   const lastBinaFocusIdRef = useRef<number | null>(null);
@@ -442,6 +479,8 @@ export default function MapComponent() {
   const [stats, setStats] = useState({ total: 0, rezervClassified: 0 });
   const [toplamSayac, setToplamSayac] = useState(0);
   const [sorunOzet, setSorunOzet] = useState<SayacSorunOzet | null>(null);
+  const [bugunOzet, setBugunOzet] = useState<BugunOzet | null>(null);
+  const [bugunLayerEnabled, setBugunLayerEnabled] = useState(true);
   const [sorunLayerEnabled, setSorunLayerEnabled] = useState(true);
   const [uzaktanLayerEnabled, setUzaktanLayerEnabled] = useState(false);
   const [uzaktanTypeFilter, setUzaktanTypeFilter] = useState<UzaktanTypeFilter>("all");
@@ -454,6 +493,7 @@ export default function MapComponent() {
   // Layer switcher UI state
   const [activeLayer, setActiveLayer] = useState<TileKey>("standard");
   const [layerPickerOpen, setLayerPickerOpen] = useState(false);
+  const [uzaktanPanelOpen, setUzaktanPanelOpen] = useState(false);
 
   // Neighborhood UI state
   const [mahalleList, setMahalleList] = useState<MahalleListItem[]>([]);
@@ -575,6 +615,41 @@ export default function MapComponent() {
     });
   }, [theme]);
 
+  const renderBugunMarkers = (binalar: BugunBina[], enabled: boolean) => {
+    const map = mapRef.current;
+    if (!map) return;
+    bugunMarkersRef.current.forEach((m) => map.removeLayer(m));
+    bugunMarkersRef.current = [];
+    if (!enabled) return;
+
+    for (const b of binalar) {
+      if (!b.center || b.count <= 0) continue;
+      const marker = L.marker([b.center.lat, b.center.lng], {
+        icon: createBugunIcon(b.count),
+        zIndexOffset: 1100,
+      });
+      const list = b.items
+        .slice(0, 8)
+        .map((item) => {
+          const label = [item.kapi_no, item.kat, item.blok_no].filter(Boolean).join(" · ");
+          return `<div style="font-size:10px;padding:3px 0;border-bottom:1px solid #e0f2fe"><span style="font-weight:600;color:#0c4a6e">${escHtml(label || "—")}</span> · <span style="color:#0369a1">${escHtml(item.sayac_id)}</span></div>`;
+        })
+        .join("");
+      const more = b.count > 8 ? `<div style="font-size:9px;color:#0284c7;margin-top:4px">+${b.count - 8} kayıt daha…</div>` : "";
+      marker.bindPopup(`
+        <div style="font-family:Outfit,sans-serif;font-size:13px;min-width:220px;max-width:280px">
+          <div style="font-weight:700;color:#0c4a6e">${escHtml(b.value)}</div>
+          <div style="font-size:10px;color:#0284c7;margin:4px 0 8px">Bugün eklenen/güncellenen: <strong>${b.count}</strong> sayaç</div>
+          <div style="max-height:140px;overflow-y:auto">${list}${more}</div>
+          <div style="margin-top:6px;font-size:9px;color:#64748b">Son: ${formatBugunTime(b.last_at)}</div>
+        </div>
+      `);
+      marker.on("click", () => zoomToBuilding(b.bina_id));
+      marker.addTo(map);
+      bugunMarkersRef.current.push(marker);
+    }
+  };
+
   const renderSorunMarkers = (binalar: SayacSorunBina[], enabled: boolean) => {
     const map = mapRef.current;
     if (!map) return;
@@ -609,6 +684,17 @@ export default function MapComponent() {
       .then((d) => setToplamSayac(d.toplam_sayac ?? 0))
       .catch(() => {});
   }, []);
+
+  const refreshBugunData = useCallback(() => {
+    fetch("/api/sayac/bugun")
+      .then((r) => r.json())
+      .then((data: { ozet: BugunOzet; binalar: BugunBina[] }) => {
+        setBugunOzet(data.ozet);
+        renderBugunMarkers(data.binalar, bugunLayerEnabled);
+      })
+      .catch(() => setBugunOzet(null));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bugunLayerEnabled]);
 
   const refreshSorunData = useCallback(() => {
     fetch("/api/sayac/sorunlar")
@@ -664,8 +750,9 @@ export default function MapComponent() {
       }
 
       refreshSorunData();
+      refreshBugunData();
     },
-    [selectedBuilding, refreshSorunData, uzaktanLayerEnabled, uzaktanTypeFilter, applyBuildingStylesForLayer]
+    [selectedBuilding, refreshSorunData, refreshBugunData, uzaktanLayerEnabled, uzaktanTypeFilter, applyBuildingStylesForLayer]
   );
 
   useEffect(() => {
@@ -675,13 +762,7 @@ export default function MapComponent() {
     return () => window.removeEventListener(SAYAC_GUNCELLENDI, loadToplamSayac);
   }, [loading, error, loadToplamSayac]);
 
-  useEffect(() => {
-    if (loading || error) return;
-    refreshSorunData();
-  }, [loading, error, refreshSorunData]);
-
-  useEffect(() => {
-    if (loading || error) return;
+  const loadUzaktanData = useCallback(() => {
     fetch("/api/uzaktan-sozlesme")
       .then((r) => r.json())
       .then((data: {
@@ -704,7 +785,22 @@ export default function MapComponent() {
         uzaktanBinalarRef.current = new Map();
         setUzaktanDataReady(false);
       });
-  }, [loading, error]);
+  }, []);
+
+  useEffect(() => {
+    if (loading || error) return;
+    refreshSorunData();
+    refreshBugunData();
+    window.addEventListener(SAYAC_GUNCELLENDI, refreshBugunData);
+    return () => window.removeEventListener(SAYAC_GUNCELLENDI, refreshBugunData);
+  }, [loading, error, refreshSorunData, refreshBugunData]);
+
+  useEffect(() => {
+    if (loading || error) return;
+    loadUzaktanData();
+    window.addEventListener(SAYAC_GUNCELLENDI, loadUzaktanData);
+    return () => window.removeEventListener(SAYAC_GUNCELLENDI, loadUzaktanData);
+  }, [loading, error, loadUzaktanData]);
 
   useEffect(() => {
     if (loading || error || !uzaktanDataReady) return;
@@ -1901,6 +1997,48 @@ export default function MapComponent() {
               )}
             </div>
 
+            {/* Bugün eklenen sayaçlar */}
+            {bugunOzet && bugunOzet.toplam > 0 && (
+              <div className="overflow-hidden rounded-2xl border border-sky-200/80 bg-white/95 shadow-theme-lg backdrop-blur-sm dark:border-sky-900/40 dark:bg-gray-900/95">
+                <div className="flex items-center justify-between border-b border-sky-100/80 px-3.5 py-2.5 dark:border-sky-900/30">
+                  <h4 className="text-[11px] font-bold text-gray-900 dark:text-white">Bugün Eklenen</h4>
+                  <span className="rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 text-[9px] font-semibold tabular-nums text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300">
+                    {bugunOzet.bina_sayisi} bina
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2 p-3">
+                  <div className="rounded-xl border border-sky-100 bg-sky-50/70 px-2 py-2 text-center dark:border-sky-900/30 dark:bg-sky-950/25">
+                    <div className="text-base font-black tabular-nums text-sky-700 dark:text-sky-400">
+                      {bugunOzet.toplam.toLocaleString("tr-TR")}
+                    </div>
+                    <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">Sayaç kaydı</div>
+                  </div>
+                  <div className="rounded-xl border border-sky-100 bg-sky-50/70 px-2 py-2 text-center dark:border-sky-900/30 dark:bg-sky-950/25">
+                    <div className="text-base font-black tabular-nums text-sky-700 dark:text-sky-400">
+                      {bugunOzet.bina_sayisi}
+                    </div>
+                    <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">Bina</div>
+                  </div>
+                </div>
+                <div className="border-t border-sky-100/80 p-3 dark:border-sky-900/30">
+                  <button
+                    type="button"
+                    onClick={() => setBugunLayerEnabled((v) => !v)}
+                    className={`w-full rounded-xl border py-2 text-[10px] font-semibold transition ${
+                      bugunLayerEnabled
+                        ? "border-sky-600 bg-sky-600 text-white shadow-sm"
+                        : "border-gray-200 bg-white text-gray-700 hover:border-sky-300 hover:bg-sky-50/50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                    }`}
+                  >
+                    {bugunLayerEnabled ? "Harita işaretlerini gizle" : "Haritada göster"}
+                  </button>
+                  <p className="mt-2 text-[9px] leading-snug text-gray-500 dark:text-gray-400">
+                    Mavi <strong>+N / Bugün</strong> rozetleri bugün eklenen veya güncellenen sayaçları gösterir.
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Sayaç Sorunları */}
             {sorunOzet && sorunOzet.bina_sayisi > 0 && (
               <div className="relative overflow-hidden rounded-2xl border border-blue-light-200/70 bg-white/95 shadow-theme-lg backdrop-blur-sm dark:border-blue-light-900/40 dark:bg-gray-900/95">
@@ -1969,107 +2107,6 @@ export default function MapComponent() {
               </div>
             )}
 
-            {/* Uzaktan Okuma Sözleşme */}
-            {uzaktanStats && uzaktanStats.matched_bina > 0 && (
-              <div className="overflow-hidden rounded-2xl border border-violet-200/80 bg-white/95 shadow-theme-lg backdrop-blur-sm dark:border-violet-900/40 dark:bg-gray-900/95">
-                <div className="flex items-center justify-between border-b border-violet-100/80 px-3.5 py-2.5 dark:border-violet-900/30">
-                  <h4 className="text-[11px] font-bold text-gray-900 dark:text-white">Uzaktan Okuma</h4>
-                  <span className="rounded-full border border-violet-200 bg-violet-50 px-2 py-0.5 text-[9px] font-semibold tabular-nums text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-300">
-                    {uzaktanStats.matched_bina} bina
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 p-3">
-                  <div className="rounded-xl border border-violet-100 bg-violet-50/60 px-2 py-2 text-center dark:border-violet-900/30 dark:bg-violet-950/25">
-                    <div className="text-base font-black tabular-nums text-violet-700 dark:text-violet-400">
-                      {uzaktanStats.matched_sayac.toLocaleString("tr-TR")}
-                    </div>
-                    <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">Haritada eşleşen</div>
-                  </div>
-                  <div className="rounded-xl border border-gray-200 bg-gray-50/80 px-2 py-2 text-center dark:border-gray-700 dark:bg-gray-800/50">
-                    <div className="text-base font-black tabular-nums text-gray-600 dark:text-gray-300">
-                      {uzaktanStats.unmatched_excel_meters.toLocaleString("tr-TR")}
-                    </div>
-                    <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">DB&apos;de yok</div>
-                  </div>
-                </div>
-
-                {uzaktanLayerEnabled && (
-                  <div className="flex flex-wrap gap-1.5 px-3 pb-2">
-                    <button
-                      type="button"
-                      onClick={() => setUzaktanTypeFilter("all")}
-                      className={`rounded-lg border px-2 py-1 text-[9px] font-semibold transition ${
-                        uzaktanTypeFilter === "all"
-                          ? "border-violet-600 bg-violet-600 text-white"
-                          : "border-gray-200 bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                      }`}
-                    >
-                      Tümü
-                    </button>
-                    {uzaktanTypeOptions.map((opt) => (
-                      <button
-                        key={opt.id}
-                        type="button"
-                        onClick={() => setUzaktanTypeFilter(opt.id as UzaktanTypeFilter)}
-                        className={`rounded-lg border px-2 py-1 text-[9px] font-semibold transition ${
-                          uzaktanTypeFilter === opt.id
-                            ? "text-white"
-                            : "border-gray-200 bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                        }`}
-                        style={
-                          uzaktanTypeFilter === opt.id
-                            ? { borderColor: opt.color, backgroundColor: opt.color }
-                            : undefined
-                        }
-                      >
-                        {opt.label} ({opt.matched_count})
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {uzaktanLayerEnabled && (
-                  <div className="space-y-1 border-t border-violet-100/80 px-3 py-2 dark:border-violet-900/30">
-                    <div className="text-[9px] font-semibold text-gray-500 dark:text-gray-400">Renkler</div>
-                    {uzaktanTypeOptions.map((opt) => (
-                      <div key={opt.id} className="flex items-center gap-2 text-[9px] text-gray-600 dark:text-gray-300">
-                        <span
-                          className="h-2.5 w-2.5 shrink-0 rounded-full"
-                          style={{ backgroundColor: opt.color }}
-                        />
-                        {opt.label}
-                      </div>
-                    ))}
-                    <div className="flex items-center gap-2 text-[9px] text-gray-600 dark:text-gray-300">
-                      <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-amber-500" />
-                      Karma (aynı binada çoklu tip)
-                    </div>
-                    <div className="flex items-center gap-2 text-[9px] text-gray-500 dark:text-gray-400">
-                      <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-slate-200 dark:bg-slate-600" />
-                      Eşleşmeyen / filtre dışı (soluk)
-                    </div>
-                  </div>
-                )}
-
-                <div className="border-t border-violet-100/80 p-3 dark:border-violet-900/30">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setUzaktanLayerEnabled((v) => !v);
-                      if (!uzaktanLayerEnabled) setUzaktanTypeFilter("all");
-                    }}
-                    className={`w-full rounded-xl border py-2 text-[10px] font-semibold transition ${
-                      uzaktanLayerEnabled
-                        ? "border-violet-600 bg-violet-600 text-white shadow-sm"
-                        : "border-violet-300 bg-violet-50 text-violet-800 hover:bg-violet-100 dark:border-violet-700 dark:bg-violet-950/40 dark:text-violet-300 dark:hover:bg-violet-950/60"
-                    }`}
-                  >
-                    {uzaktanLayerEnabled ? "Renklendirmeyi Kapat" : "Haritada Göster & Renklendir"}
-                  </button>
-                </div>
-              </div>
-            )}
           </div>
 
         </div>
@@ -2125,6 +2162,7 @@ export default function MapComponent() {
                   onFocus={() => {
                     setLayerPickerOpen(false);
                     setMahallePickerOpen(false);
+                    setUzaktanPanelOpen(false);
                     setNotifPanelOpen(false);
                     if (sayacSearch.trim().length >= 3) setSayacSearchOpen(true);
                   }}
@@ -2334,6 +2372,7 @@ export default function MapComponent() {
                   onFocus={() => {
                     setLayerPickerOpen(false);
                     setMahallePickerOpen(false);
+                    setUzaktanPanelOpen(false);
                     setNotifPanelOpen(false);
                     setSayacSearchOpen(false);
                     if (kapiSearch.trim().length >= 2) setKapiSearchOpen(true);
@@ -2458,6 +2497,7 @@ export default function MapComponent() {
                   if (open) {
                     setLayerPickerOpen(false);
                     setMahallePickerOpen(false);
+                    setUzaktanPanelOpen(false);
                     setSayacSearchOpen(false);
                   }
                 }}
@@ -2470,6 +2510,7 @@ export default function MapComponent() {
               onClick={() => {
                 setLayerPickerOpen((v) => !v);
                 setMahallePickerOpen(false);
+                setUzaktanPanelOpen(false);
                 setSayacSearchOpen(false);
                 setNotifPanelOpen(false);
               }}
@@ -2519,6 +2560,7 @@ export default function MapComponent() {
               onClick={() => {
                 setMahallePickerOpen((v) => !v);
                 setLayerPickerOpen(false);
+                setUzaktanPanelOpen(false);
                 setSayacSearchOpen(false);
                 setMahalleSearch("");
                 setNotifPanelOpen(false);
@@ -2586,6 +2628,159 @@ export default function MapComponent() {
             )}
             </div>
             </div>
+
+            {uzaktanStats && uzaktanStats.matched_bina > 0 && (
+              <div className="relative w-full overflow-visible">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUzaktanPanelOpen((v) => !v);
+                    setLayerPickerOpen(false);
+                    setMahallePickerOpen(false);
+                    setSayacSearchOpen(false);
+                    setNotifPanelOpen(false);
+                  }}
+                  className={`${MAP_TOOLBAR_BTN} w-full ${
+                    uzaktanPanelOpen || uzaktanLayerEnabled
+                      ? "border-violet-600 bg-violet-600 text-white dark:border-violet-500 dark:bg-violet-600 dark:text-white"
+                      : ""
+                  }`}
+                  title={`Uzaktan okuma: ${uzaktanStats.matched_sayac.toLocaleString("tr-TR")} eşleşen / ${uzaktanStats.excel_unique_meters.toLocaleString("tr-TR")} Excel toplam`}
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0">
+                    <path d="M5 12.5a7 7 0 0 1 14 0" strokeLinecap="round" />
+                    <path d="M12 19.5v2" strokeLinecap="round" />
+                    <circle cx="12" cy="12.5" r="2" />
+                  </svg>
+                  <span className="min-w-0 truncate">Uzaktan Okuma</span>
+                  <span
+                    className={`shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold tabular-nums whitespace-nowrap ${
+                      uzaktanPanelOpen || uzaktanLayerEnabled
+                        ? "bg-white/20 text-white"
+                        : "bg-violet-100 text-violet-700 dark:bg-violet-950/50 dark:text-violet-300"
+                    }`}
+                  >
+                    {uzaktanStats.matched_sayac.toLocaleString("tr-TR")} /{" "}
+                    {uzaktanStats.excel_unique_meters.toLocaleString("tr-TR")}
+                  </span>
+                  <svg
+                    width="9"
+                    height="9"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    className={`shrink-0 transition-transform ${uzaktanPanelOpen ? "rotate-180" : ""}`}
+                  >
+                    <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+
+                {uzaktanPanelOpen && (
+                  <div
+                    className={`absolute right-0 z-[1001] mt-1.5 w-full max-h-[min(70vh,420px)] overflow-y-auto ${MAP_DROPDOWN_PANEL}`}
+                  >
+                    <div className="border-b border-violet-100/80 px-3 py-2.5 dark:border-violet-900/30">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="text-xs font-bold text-gray-900 dark:text-white">Uzaktan Okuma</span>
+                        <span className="rounded-full border border-violet-200 bg-violet-50 px-2 py-0.5 text-[9px] font-semibold tabular-nums text-violet-700 dark:border-violet-800 dark:bg-violet-950/40 dark:text-violet-300">
+                          {uzaktanStats.matched_bina} bina
+                        </span>
+                      </div>
+                      <p className="mt-1 text-[10px] leading-snug text-gray-500 dark:text-gray-400">
+                        Sözleşme dosyasındaki sayaçlar haritadaki binalarla eşleştirilir.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-3 gap-2 p-3">
+                      <div className="rounded-xl border border-gray-200 bg-gray-50/80 px-2 py-2 text-center dark:border-gray-700 dark:bg-gray-800/50">
+                        <div className="text-sm font-black tabular-nums text-gray-700 dark:text-gray-300">
+                          {uzaktanStats.excel_unique_meters.toLocaleString("tr-TR")}
+                        </div>
+                        <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">Excel toplam</div>
+                      </div>
+                      <div className="rounded-xl border border-violet-100 bg-violet-50/60 px-2 py-2 text-center dark:border-violet-900/30 dark:bg-violet-950/25">
+                        <div className="text-sm font-black tabular-nums text-violet-700 dark:text-violet-400">
+                          {uzaktanStats.matched_sayac.toLocaleString("tr-TR")}
+                        </div>
+                        <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">Eşleşen</div>
+                      </div>
+                      <div className="rounded-xl border border-gray-200 bg-gray-50/80 px-2 py-2 text-center dark:border-gray-700 dark:bg-gray-800/50">
+                        <div className="text-sm font-black tabular-nums text-gray-600 dark:text-gray-300">
+                          {uzaktanStats.unmatched_excel_meters.toLocaleString("tr-TR")}
+                        </div>
+                        <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">Eşleşmedi</div>
+                      </div>
+                    </div>
+
+                    {uzaktanLayerEnabled && (
+                      <div className="flex flex-wrap gap-1.5 px-3 pb-2">
+                        <button
+                          type="button"
+                          onClick={() => setUzaktanTypeFilter("all")}
+                          className={`rounded-lg border px-2 py-1 text-[9px] font-semibold transition ${
+                            uzaktanTypeFilter === "all"
+                              ? "border-violet-600 bg-violet-600 text-white"
+                              : "border-gray-200 bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                          }`}
+                        >
+                          Tümü
+                        </button>
+                        {uzaktanTypeOptions.map((opt) => (
+                          <button
+                            key={opt.id}
+                            type="button"
+                            onClick={() => setUzaktanTypeFilter(opt.id as UzaktanTypeFilter)}
+                            className={`rounded-lg border px-2 py-1 text-[9px] font-semibold transition ${
+                              uzaktanTypeFilter === opt.id
+                                ? "text-white"
+                                : "border-gray-200 bg-white text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
+                            }`}
+                            style={
+                              uzaktanTypeFilter === opt.id
+                                ? { borderColor: opt.color, backgroundColor: opt.color }
+                                : undefined
+                            }
+                          >
+                            {opt.label} ({opt.matched_count})
+                          </button>
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="space-y-1 border-t border-violet-100/80 px-3 py-2 dark:border-violet-900/30">
+                      {uzaktanTypeOptions.map((opt) => (
+                        <div key={opt.id} className="flex items-center gap-2 text-[9px] text-gray-600 dark:text-gray-300">
+                          <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: opt.color }} />
+                          {opt.label}
+                        </div>
+                      ))}
+                      <div className="flex items-center gap-2 text-[9px] text-gray-500 dark:text-gray-400">
+                        <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-slate-200 dark:bg-slate-600" />
+                        Eşleşmeyen binalar soluk görünür
+                      </div>
+                    </div>
+
+                    <div className="border-t border-violet-100/80 p-3 dark:border-violet-900/30">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setUzaktanLayerEnabled((v) => !v);
+                          if (!uzaktanLayerEnabled) setUzaktanTypeFilter("all");
+                        }}
+                        className={`w-full rounded-xl border py-2 text-[10px] font-semibold transition ${
+                          uzaktanLayerEnabled
+                            ? "border-violet-600 bg-violet-600 text-white shadow-sm"
+                            : "border-violet-300 bg-violet-50 text-violet-800 hover:bg-violet-100 dark:border-violet-700 dark:bg-violet-950/40 dark:text-violet-300"
+                        }`}
+                      >
+                        {uzaktanLayerEnabled ? "Renklendirmeyi Kapat" : "Haritada Renklendir"}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           {jsonExportError && (
             <div className="pointer-events-auto w-full rounded-xl border border-error-200 bg-error-50 px-3 py-2 text-xs font-medium text-error-600 shadow-sm dark:border-error-500/30 dark:bg-error-500/10 dark:text-error-300">
