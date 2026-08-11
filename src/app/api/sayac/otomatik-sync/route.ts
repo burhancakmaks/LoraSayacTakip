@@ -46,6 +46,12 @@ export async function POST(request: NextRequest) {
     });
 
     const result = JSON.parse(stdout.trim());
+    const changed =
+      (result.stats?.inserted ?? 0) + (result.stats?.updated ?? 0) + (result.stats?.sorun_aktarildi ?? 0);
+    if (!result.skipped || changed > 0) {
+      const { tryRebuildUzaktanSozlesmeIndex } = await import("@/lib/rebuild-uzaktan-sozlesme-index");
+      result.uzaktan_stats = tryRebuildUzaktanSozlesmeIndex();
+    }
     writeAudit(request, auth.user, {
       action: "sync",
       entity: "sayac_sync",

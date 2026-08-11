@@ -4,17 +4,19 @@ import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
 import { NotificationProvider } from "@/context/NotificationContext";
 
-// Dynamic import with ssr: false is required since Leaflet relies on browser window global objects.
 const MapComponent = dynamic(
   () => import("@/components/map/MapComponent"),
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full w-full flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
-        <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-500 border-t-transparent"></div>
-        <p className="mt-4 font-semibold text-gray-700 dark:text-gray-200">
-          Harita modülü yükleniyor...
-        </p>
+      <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden bg-slate-100 dark:bg-slate-950">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(16,185,129,0.12),transparent_40%),radial-gradient(circle_at_80%_10%,rgba(70,95,255,0.12),transparent_35%)]" />
+        <div className="relative flex flex-col items-center">
+          <div className="h-11 w-11 animate-spin rounded-full border-[3px] border-emerald-500/30 border-t-emerald-500" />
+          <p className="mt-4 text-sm font-semibold text-slate-700 dark:text-slate-200">
+            Harita yükleniyor…
+          </p>
+        </div>
       </div>
     ),
   }
@@ -22,19 +24,19 @@ const MapComponent = dynamic(
 
 export default function MapPage() {
   return (
-    <div className="w-full h-full relative overflow-hidden">
+    <div className="relative h-full w-full overflow-hidden bg-slate-100 dark:bg-slate-950">
       <title>Malatya Bina Haritası | Lora Sayaç Takip</title>
-      <meta 
-        name="description" 
-        content="SQLite veritabanından alınan Malatya ili binaları ve sayaç aboneliklerinin interaktif harita gösterimi." 
+      <meta
+        name="description"
+        content="SQLite veritabanından alınan Malatya ili binaları ve sayaç aboneliklerinin interaktif harita gösterimi."
       />
       <NotificationProvider>
         <Suspense
           fallback={
-            <div className="flex h-full w-full flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
-              <div className="h-12 w-12 animate-spin rounded-full border-4 border-brand-500 border-t-transparent" />
-              <p className="mt-4 font-semibold text-gray-700 dark:text-gray-200">
-                Harita hazırlanıyor...
+            <div className="flex h-full w-full flex-col items-center justify-center">
+              <div className="h-11 w-11 animate-spin rounded-full border-[3px] border-emerald-500/30 border-t-emerald-500" />
+              <p className="mt-4 text-sm font-semibold text-slate-700 dark:text-slate-200">
+                Harita hazırlanıyor…
               </p>
             </div>
           }

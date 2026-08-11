@@ -97,6 +97,9 @@ export async function POST(request: NextRequest) {
         },
       });
 
+      const { tryRebuildUzaktanSozlesmeIndex } = await import("@/lib/rebuild-uzaktan-sozlesme-index");
+      const uzaktan_stats = tryRebuildUzaktanSozlesmeIndex();
+
       return NextResponse.json({
         ok: true,
         message: `Aktarım tamamlandı: ${stats.inserted} yeni, ${stats.updated} güncellendi${
@@ -105,6 +108,7 @@ export async function POST(request: NextRequest) {
         import: entry,
         stats,
         skipped: validation.skipped,
+        uzaktan_stats,
       });
     } finally {
       db.close();

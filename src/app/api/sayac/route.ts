@@ -38,6 +38,8 @@ function getDb() {
   try { db.exec(`ALTER TABLE sayac ADD COLUMN sicil_no TEXT DEFAULT ''`); } catch (e) {}
   try { db.exec(`ALTER TABLE sayac ADD COLUMN abone_no TEXT DEFAULT ''`); } catch (e) {}
   try { db.exec(`ALTER TABLE sayac ADD COLUMN sayac_durum TEXT DEFAULT 'gecerli'`); } catch (e) {}
+  try { db.exec(`ALTER TABLE sayac ADD COLUMN lat REAL`); } catch (e) {}
+  try { db.exec(`ALTER TABLE sayac ADD COLUMN lng REAL`); } catch (e) {}
 
   return db;
 }
@@ -199,12 +201,21 @@ export async function POST(request: NextRequest) {
       metadata: { saved: rows.length, ...sayacStats },
     });
 
+    let uzaktan = { matched: 0, bina_matched: false };
+    try {
+      const { refreshUzaktanForBina } = await import("@/lib/rebuild-uzaktan-sozlesme-index");
+      uzaktan = refreshUzaktanForBina(bina_id);
+    } catch {
+      /* uzaktan excel yoksa kayıt yine başarılı */
+    }
+
     return NextResponse.json({
       success: true,
       saved: rows.length,
       sayac_kayit: sayacStats.sayac_kayit,
       sayac_count: sayacStats.sayac_count,
       bildirimler: yeniBildirimler,
+      uzaktan,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -17,8 +17,8 @@ const EXPLICIT_EXCEL =
 
 const TYPE_COLORS = {
   BAYLAN_LORA_W: "#7c3aed",
-  POLIMETER_LORA_W: "#ea580c",
-  "BRT METER LORA": "#0891b2",
+  POLIMETER_LORA_W: "#7c3aed",
+  "BRT METER LORA": "#7c3aed",
 };
 
 function findExcel() {
@@ -40,7 +40,9 @@ function findExcel() {
 function normDigits(v) {
   return String(v ?? "")
     .trim()
-    .replace(/\D/g, "");
+    .replace(/^2025-/i, "")
+    .replace(/\D/g, "")
+    .replace(/^0+/, "");
 }
 
 function resolveExcelPath() {

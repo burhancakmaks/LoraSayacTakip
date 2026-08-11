@@ -1,0 +1,20 @@
+{
+  "last": {
+    "id": "import-1786347409060",
+    "timestamp": "2026-08-10T07:36:49.060Z",
+    "filename": "BCM KARÇAĞ 132 ADA SAYAÇ NUMARALARI.XLSX",
+    "backupPath": "C:\\Users\\Surface\\Desktop\\LoraLast\\LoraSayacTakip\\data\\backups\\binalar.before-import-2026-08-10T07-36-43.db",
+    "uploadPath": "C:\\Users\\Surface\\Desktop\\LoraLast\\LoraSayacTakip\\data\\uploads\\pending-822c6070-fb6f-4756-b81c-c19e5add58ad-BCM KAR_A_ 132 ADA SAYA_ NUMARALARI.XLSX",
+    "stats": {
+      "inserted": 275,
+      "updated": 0,
+      "unchanged": 0,
+      "skipped_protected": 0,
+      "skipped_duplicate_global": 0,
+      "bina_bilgi_created": 0,
+      "bina_bilgi_expanded": 3,
+      "skipped_rows": 1
+    },
+    "rowCount": 275
+  }
+}

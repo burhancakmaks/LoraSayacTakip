@@ -1,0 +1,420 @@
+{
+  "mode": "apply",
+  "id_2_groups_with_siblings": 1318,
+  "to_insert": 1026,
+  "to_update_empty": 15,
+  "skipped_has_value": 9,
+  "skipped_no_maski_groups": 20,
+  "samples": {
+    "insert_new": [
+      {
+        "bina_id": 4745,
+        "bina": "A TİC6-2",
+        "layer": "RYA_MER_9_17_ARASI_MULTIPOLYGON [2 adet]",
+        "kapi_no": "70/1",
+        "id_2": "235433",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 4626,
+        "bina": "B6",
+        "layer": "RYA_MER_53_MULTIPOLYGON [1 adet]",
+        "kapi_no": "12/1",
+        "id_2": "235005",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 370,
+        "bina": "BT",
+        "layer": "P_KONUT_DÜKKAN_MULTIPOLYGON [365 adet]",
+        "kapi_no": "5/4A",
+        "id_2": "250195",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 708,
+        "bina": "B2",
+        "layer": "P_KONUT_MULTIPOLYGON [727 adet]",
+        "kapi_no": "5/3",
+        "id_2": "250239",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 729,
+        "bina": "B-1 BLOK",
+        "layer": "P_KONUT_MULTIPOLYGON [727 adet]",
+        "kapi_no": "5/2",
+        "id_2": "250242",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1904,
+        "bina": "CINARLI CAMII",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "4C",
+        "id_2": "133409",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 3341,
+        "bina": "NUR APT",
+        "layer": "RYA_MER_3_MULTIPOLYGON [1 adet]",
+        "kapi_no": "29",
+        "id_2": "129383",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1057,
+        "bina": "KIBRIS APT",
+        "layer": "P_KONUT_MULTIPOLYGON [727 adet]",
+        "kapi_no": "4B",
+        "id_2": "142714",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 3554,
+        "bina": "KIBRIS APT",
+        "layer": "RYA_MER_3_MULTIPOLYGON [1 adet]",
+        "kapi_no": "4B",
+        "id_2": "142714",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 4318,
+        "bina": "KIBRIS APT",
+        "layer": "RYA_MER_4_MULTIPOLYGON [1 adet]",
+        "kapi_no": "4B",
+        "id_2": "142714",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 990,
+        "bina": "Bina #990",
+        "layer": "P_KONUT_MULTIPOLYGON [727 adet]",
+        "kapi_no": "22B",
+        "id_2": "151014",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 3692,
+        "bina": "Bina #3692",
+        "layer": "RYA_MER_3_MULTIPOLYGON [1 adet]",
+        "kapi_no": "22B",
+        "id_2": "151014",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 4399,
+        "bina": "Bina #4399",
+        "layer": "RYA_MER_4_MULTIPOLYGON [1 adet]",
+        "kapi_no": "22B",
+        "id_2": "151014",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 993,
+        "bina": "Bina #993",
+        "layer": "P_KONUT_MULTIPOLYGON [727 adet]",
+        "kapi_no": "22/1A",
+        "id_2": "224313",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 4428,
+        "bina": "Bina #4428",
+        "layer": "RYA_MER_4_MULTIPOLYGON [1 adet]",
+        "kapi_no": "22/1A",
+        "id_2": "224313",
+        "kaynak": "maski"
+      }
+    ],
+    "update_empty": [
+      {
+        "bina_id": 303,
+        "bina": "IBRAHIM PERK CAMII",
+        "layer": "P_CAMİ_MULTIPOLYGON [11 adet]",
+        "kapi_no": "18B",
+        "id_2": "136718",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1714,
+        "bina": "T4",
+        "layer": "P_TİCARET_MULTIPOLYGON [261 adet]",
+        "kapi_no": "3A",
+        "id_2": "249171",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1933,
+        "bina": "46 ADA C1 BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "3",
+        "id_2": "244332",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1934,
+        "bina": "46 ADA C2 BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "5C",
+        "id_2": "244333",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1930,
+        "bina": "46 ADA A BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "11H",
+        "id_2": "244322",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1913,
+        "bina": "53 ADA A BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "1A",
+        "id_2": "226143",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1931,
+        "bina": "46 ADA B1 BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "1",
+        "id_2": "244323",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1932,
+        "bina": "46 ADA B2 BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "3C",
+        "id_2": "244330",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1940,
+        "bina": "132 ADA E BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "8A",
+        "id_2": "244461",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1985,
+        "bina": "A BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "3C",
+        "id_2": "246234",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1998,
+        "bina": "F BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "1",
+        "id_2": "246258",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 1997,
+        "bina": "E BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "4",
+        "id_2": "246254",
+        "kaynak": "kardes_db"
+      },
+      {
+        "bina_id": 2017,
+        "bina": "53 ADA B BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "kapi_no": "10",
+        "id_2": "247354",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 2685,
+        "bina": "T6",
+        "layer": "RYA_MER_21_MULTIPOLYGON [1 adet]",
+        "kapi_no": "5",
+        "id_2": "249711",
+        "kaynak": "maski"
+      },
+      {
+        "bina_id": 2673,
+        "bina": "T3",
+        "layer": "RYA_MER_21_MULTIPOLYGON [1 adet]",
+        "kapi_no": "7A",
+        "id_2": "249170",
+        "kaynak": "maski"
+      }
+    ],
+    "skipped_has_value": [
+      {
+        "bina_id": 1609,
+        "bina": "1262 ADA A BLOK",
+        "layer": "P_TİCARET_MULTIPOLYGON [261 adet]",
+        "mevcut": "2",
+        "kardes_kapi": "1/1",
+        "id_2": "246161"
+      },
+      {
+        "bina_id": 1965,
+        "bina": "1262 ADA A BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "mevcut": "2",
+        "kardes_kapi": "1/1",
+        "id_2": "246161"
+      },
+      {
+        "bina_id": 1610,
+        "bina": "1262 ADA B BLOK",
+        "layer": "P_TİCARET_MULTIPOLYGON [261 adet]",
+        "mevcut": "2",
+        "kardes_kapi": "3/1",
+        "id_2": "246162"
+      },
+      {
+        "bina_id": 1966,
+        "bina": "1262 ADA B BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "mevcut": "2",
+        "kardes_kapi": "3/1",
+        "id_2": "246162"
+      },
+      {
+        "bina_id": 1688,
+        "bina": "1262 ADA C BLOK",
+        "layer": "P_TİCARET_MULTIPOLYGON [261 adet]",
+        "mevcut": "9",
+        "kardes_kapi": "1",
+        "id_2": "246163"
+      },
+      {
+        "bina_id": 1967,
+        "bina": "1262 ADA C BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "mevcut": "9",
+        "kardes_kapi": "1",
+        "id_2": "246163"
+      },
+      {
+        "bina_id": 1689,
+        "bina": "1262 ADA D BLOK",
+        "layer": "P_TİCARET_MULTIPOLYGON [261 adet]",
+        "mevcut": "2",
+        "kardes_kapi": "2A",
+        "id_2": "246164"
+      },
+      {
+        "bina_id": 1968,
+        "bina": "1262 ADA D BLOK",
+        "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]",
+        "mevcut": "2",
+        "kardes_kapi": "2A",
+        "id_2": "246164"
+      },
+      {
+        "bina_id": 1722,
+        "bina": "A BLOK",
+        "layer": "P_TİCARET_MULTIPOLYGON [261 adet]",
+        "mevcut": "8",
+        "kardes_kapi": "3C",
+        "id_2": "246234"
+      }
+    ],
+    "skipped_no_maski": [
+      {
+        "id_2": "250244",
+        "binalar": [
+          {
+            "id": 6,
+            "value": "A-1 BLOK",
+            "layer": "RYA_MER_62_MULTIPOLYGON [1 adet]"
+          },
+          {
+            "id": 730,
+            "value": "A-1 BLOK",
+            "layer": "P_KONUT_MULTIPOLYGON [727 adet]"
+          }
+        ]
+      },
+      {
+        "id_2": "246261",
+        "binalar": [
+          {
+            "id": 8,
+            "value": "G BLOK",
+            "layer": "P_CAMİ_MULTIPOLYGON [11 adet]"
+          },
+          {
+            "id": 300,
+            "value": "G BLOK",
+            "layer": "P_CAMİ_MULTIPOLYGON [11 adet]"
+          },
+          {
+            "id": 1999,
+            "value": "G BLOK",
+            "layer": "RYA_MER_1_MULTIPOLYGON [1 adet]"
+          }
+        ]
+      },
+      {
+        "id_2": "239278",
+        "binalar": [
+          {
+            "id": 13,
+            "value": "BTİC18-1",
+            "layer": "P_KONUT_DÜKKAN_MULTIPOLYGON [365 adet]"
+          },
+          {
+            "id": 4770,
+            "value": "BTİC18-1",
+            "layer": "RYA_MER_9_17_ARASI_MULTIPOLYGON [2 adet]"
+          }
+        ]
+      },
+      {
+        "id_2": "129611",
+        "binalar": [
+          {
+            "id": 14,
+            "value": "Bina #14",
+            "layer": "P_KONUT_DÜKKAN_MULTIPOLYGON [365 adet]"
+          },
+          {
+            "id": 1450,
+            "value": "Bina #1450",
+            "layer": "P_TİCARET_BAZA_MULTIPOLYGON [144 adet]"
+          },
+          {
+            "id": 3347,
+            "value": "Bina #3347",
+            "layer": "RYA_MER_3_MULTIPOLYGON [1 adet]"
+          }
+        ]
+      },
+      {
+        "id_2": "137955",
+        "binalar": [
+          {
+            "id": 16,
+            "value": "KÖSEM-A",
+            "layer": "P_KONUT_DÜKKAN_MULTIPOLYGON [365 adet]"
+          },
+          {
+            "id": 1452,
+            "value": "KÖSEM-A",
+            "layer": "P_TİCARET_BAZA_MULTIPOLYGON [144 adet]"
+          },
+          {
+            "id": 3477,
+            "value": "KÖSEM-A",
+            "layer": "RYA_MER_3_MULTIPOLYGON [1 adet]"
+          }
+        ]
+      }
+    ]
+  }
+}

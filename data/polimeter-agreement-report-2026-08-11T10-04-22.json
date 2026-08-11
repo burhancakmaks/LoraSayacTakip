@@ -1,0 +1,12 @@
+{
+  "poly_total": 5252,
+  "matched_agreement": 0,
+  "matched_installation": 1,
+  "skipped_already_linked": 2235,
+  "skipped_no_abone_hit": 3016,
+  "abone_backfilled": 2235,
+  "latlng_updated": 1,
+  "konum_updated": 1,
+  "ambiguous": 0,
+  "finished_at": "2026-08-11T10:05:18.260Z"
+}

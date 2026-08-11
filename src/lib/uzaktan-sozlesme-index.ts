@@ -40,3 +40,8 @@ export function loadUzaktanSozlesmeIndex(): UzaktanSozlesmeIndex {
   cachedMtime = fileStat.mtimeMs;
   return cachedIndex;
 }
+
+export function clearUzaktanIndexCache() {
+  cachedIndex = null;
+  cachedMtime = 0;
+}

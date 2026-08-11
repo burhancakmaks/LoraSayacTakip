@@ -1,6 +1,25 @@
 import { NextResponse } from "next/server";
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
+import { loadDiskapiByBina } from "@/lib/diskapi-lookup";
+
+function buildDiskapiPrimaryById2(
+  binalar: Array<{ id: number; id_2: unknown }>
+): Map<string, string> {
+  const idByBina = new Map(binalar.map((b) => [b.id, String(b.id_2 ?? "").trim()]));
+  const byId2 = new Map<string, string>();
+  const index = loadDiskapiByBina();
+
+  for (const [binaIdStr, entry] of Object.entries(index.binalar || {})) {
+    const kapi = String(entry.primary_kapi ?? "").trim();
+    if (!kapi) continue;
+    const id2 = idByBina.get(Number(binaIdStr));
+    if (!id2) continue;
+    if (!byId2.has(id2)) byId2.set(id2, kapi);
+  }
+
+  return byId2;
+}
 
 export async function GET() {
   try {
@@ -41,8 +60,16 @@ export async function GET() {
       ${tarifeJoin}
     `);
     const rows = query.all() as any[];
+
+    const diskapiById2 = buildDiskapiPrimaryById2(rows);
     
-    const binalar = rows.map((row) => ({
+    const binalar = rows.map((row) => {
+      const directKapi = row.dis_kapi_no ? String(row.dis_kapi_no).trim() : "";
+      const id2 = row.id_2 != null ? String(row.id_2).trim() : "";
+      const disKapi =
+        directKapi || (id2 && diskapiById2.has(id2) ? diskapiById2.get(id2)! : "");
+
+      return {
       id: row.id,
       oda_id: row.oda_id,
       kml_id: row.kml_id,
@@ -57,14 +84,15 @@ export async function GET() {
       is_configured: row.is_configured === 1 || row.sayac_count > 0,
       sayac_count: row.sayac_count || 0,
       sayac_kayit: row.sayac_kayit || 0,
-      dis_kapi_no: row.dis_kapi_no ? String(row.dis_kapi_no).trim() : "",
+      dis_kapi_no: disKapi,
       tarife_sinif: row.tarife_sinif || null,
       tarife_etiket: row.tarife_etiket || null,
       tarife_turu: row.tarife_turu || null,
       tarife_karma: row.tarife_karma === 1,
       rezerv_abone_sayisi: row.rezerv_abone_sayisi || 0,
       has_tarife: !!row.tarife_sinif,
-    }));
+    };
+    });
 
     return NextResponse.json(binalar);
   } catch (error: any) {

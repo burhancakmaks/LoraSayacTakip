@@ -1,0 +1,26 @@
+{
+  "source": "C:\\Users\\Surface\\Downloads\\şayaç koordinat.xlsx",
+  "sheet": "konum",
+  "total": 12740,
+  "imported": 12739,
+  "skipped": 1,
+  "bad_point": 0,
+  "crs_fail": 0,
+  "matched_sayac": 1984,
+  "matched_spatial": 3249,
+  "unmatched": 7506,
+  "sayac_latlng_updated": 2313,
+  "by_type": {
+    "BAYLAN_LORA_W": 7452,
+    "POLIMETER_LORA_W": 5286,
+    "BRT METER LORA": 1
+  },
+  "by_match": {
+    "none": 7506,
+    "sayac_id": 1687,
+    "spatial_in_polygon_multi": 1630,
+    "spatial_in_polygon": 1619,
+    "sayac_id_multi": 297
+  },
+  "finished_at": "2026-08-11T09:31:30.460Z"
+}

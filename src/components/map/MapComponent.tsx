@@ -33,6 +33,7 @@ import {
   type UzaktanTypeFilter,
   type UzaktanSozlesmeIndex,
   UZAKTAN_DIM_STYLE,
+  UZAKTAN_MATCH_COLOR,
   binaMatchesUzaktanFilter,
   resolveUzaktanBuildingStyle,
 } from "@/lib/uzaktan-sozlesme";
@@ -85,6 +86,8 @@ interface SayacSearchResult {
   oda_id: number | null;
   is_configured: boolean;
   coordinates: [number, number][][];
+  lat?: number | null;
+  lng?: number | null;
 }
 
 interface KapiSearchResult {
@@ -160,6 +163,50 @@ function createBugunIcon(count: number) {
     html: `<div style="width:${width}px;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:Outfit,sans-serif;pointer-events:auto;cursor:pointer">
       <div style="width:100%;padding:4px 6px;border-radius:10px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;font-weight:800;font-size:${fontSize}px;text-align:center;border:2px solid #fff;box-shadow:0 2px 10px rgba(2,132,199,.45);line-height:1.2">+${label}</div>
       <div style="font-size:8px;font-weight:700;color:#0369a1;background:rgba(255,255,255,.95);padding:2px 6px;border-radius:6px;border:1px solid #bae6fd">Bugün</div>
+    </div>`,
+    iconAnchor: [width / 2, 42],
+    iconSize: [width, 42],
+  });
+}
+
+interface PolySozlesmeBina {
+  bina_id: number;
+  value: string;
+  count: number;
+  sayac_sayisi: number;
+  center: { lat: number; lng: number } | null;
+}
+
+interface PolySozlesmeOzet {
+  sozlesme_sayisi: number;
+  bina_sayisi: number;
+  sayac_sayisi: number;
+}
+
+function createPolySozlesmeIcon(count: number) {
+  const label = count.toLocaleString("tr-TR");
+  const width = Math.min(100, Math.max(48, label.length * 8 + 28));
+  const fontSize = count >= 1000 ? 10 : count >= 100 ? 11 : 12;
+  return L.divIcon({
+    className: "poly-sozlesme-map-badge",
+    html: `<div style="width:${width}px;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:Outfit,sans-serif;pointer-events:auto;cursor:pointer">
+      <div style="width:100%;padding:4px 6px;border-radius:10px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;font-weight:800;font-size:${fontSize}px;text-align:center;border:2px solid #fff;box-shadow:0 2px 10px rgba(234,88,12,.45);line-height:1.2">${label}</div>
+      <div style="font-size:8px;font-weight:700;color:#c2410c;background:rgba(255,255,255,.95);padding:2px 6px;border-radius:6px;border:1px solid #fed7aa">Sözleşme</div>
+    </div>`,
+    iconAnchor: [width / 2, 42],
+    iconSize: [width, 42],
+  });
+}
+
+function createUzaktanCountIcon(count: number) {
+  const label = count.toLocaleString("tr-TR");
+  const width = Math.min(100, Math.max(48, label.length * 8 + 28));
+  const fontSize = count >= 1000 ? 10 : count >= 100 ? 11 : 12;
+  return L.divIcon({
+    className: "uzaktan-count-map-badge",
+    html: `<div style="width:${width}px;display:flex;flex-direction:column;align-items:center;gap:2px;font-family:Outfit,sans-serif;pointer-events:auto;cursor:pointer">
+      <div style="width:100%;padding:4px 6px;border-radius:10px;background:linear-gradient(135deg,#8b5cf6,${UZAKTAN_MATCH_COLOR});color:#fff;font-weight:800;font-size:${fontSize}px;text-align:center;border:2px solid #fff;box-shadow:0 2px 10px rgba(124,58,237,.5);line-height:1.2">${label}</div>
+      <div style="font-size:8px;font-weight:700;color:#6d28d9;background:rgba(255,255,255,.95);padding:2px 6px;border-radius:6px;border:1px solid #ddd6fe">Uzaktan</div>
     </div>`,
     iconAnchor: [width / 2, 42],
     iconSize: [width, 42],
@@ -264,16 +311,23 @@ function buildingHasSayacKaydi(building: Building | undefined): boolean {
   return resolveBuildingVisual(building).hasSayac;
 }
 
-function createSayacPinIcon(sayacId: string) {
+function createSayacPinIcon(sayacId: string, opts?: { coordinated?: boolean }) {
   const label = escHtml(sayacId.trim() || "Sayaç");
+  const coordinated = opts?.coordinated !== false;
+  // Koordinatlı / kayıtlı sayaç pinleri yeşil (bina rengi ile uyumlu)
+  const c1 = coordinated ? "#10b981" : "#0ba5ec";
+  const c2 = coordinated ? "#059669" : "#026aa2";
+  const glow = coordinated ? "16,185,129" : "2,106,162";
+  const radar = coordinated ? "16,185,129" : "11,165,236";
+
   return L.divIcon({
     className: "sayac-pin-marker",
     html: `<div style="position:relative;width:160px;height:88px;display:flex;align-items:flex-end;justify-content:center;font-family:Outfit,sans-serif;pointer-events:none">
-      <div style="position:absolute;bottom:12px;left:50%;width:54px;height:54px;margin-left:-27px;border-radius:50%;border:2px solid rgba(239,68,68,0.55);animation:sayacRadarPulse 2.2s ease-out infinite"></div>
-      <div style="position:absolute;bottom:12px;left:50%;width:54px;height:54px;margin-left:-27px;border-radius:50%;border:2px solid rgba(239,68,68,0.35);animation:sayacRadarPulse 2.2s ease-out infinite;animation-delay:1.1s"></div>
+      <div style="position:absolute;bottom:12px;left:50%;width:54px;height:54px;margin-left:-27px;border-radius:50%;border:2px solid rgba(${radar},0.55);animation:sayacRadarPulse 2.2s ease-out infinite"></div>
+      <div style="position:absolute;bottom:12px;left:50%;width:54px;height:54px;margin-left:-27px;border-radius:50%;border:2px solid rgba(${radar},0.35);animation:sayacRadarPulse 2.2s ease-out infinite;animation-delay:1.1s"></div>
       <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center">
-        <div style="animation:sayacPinPulse 1.4s ease-in-out infinite;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;font-weight:800;font-size:11px;padding:5px 10px;border-radius:10px;border:2.5px solid #fff;box-shadow:0 4px 14px rgba(220,38,38,.55);white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis;">${label}</div>
-        <div style="width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:13px solid #dc2626;margin-top:-1px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));"></div>
+        <div style="animation:sayacPinPulse 1.4s ease-in-out infinite;background:linear-gradient(135deg,${c1},${c2});color:#fff;font-weight:800;font-size:11px;padding:5px 10px;border-radius:10px;border:2.5px solid #fff;box-shadow:0 4px 14px rgba(${glow},.55);white-space:nowrap;max-width:150px;overflow:hidden;text-overflow:ellipsis;">${label}</div>
+        <div style="width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:13px solid ${c2};margin-top:-1px;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));"></div>
       </div>
     </div>`,
     iconSize: [160, 88],
@@ -312,12 +366,13 @@ interface BuildingVisual extends BuildingPolygonStyle {
 function resolveBuildingVisual(building: Building): BuildingVisual {
   const hasSayac = (building.sayac_count ?? 0) > 0;
   const hasTarife = !!building.has_tarife && !!building.tarife_sinif;
+  const isSynthetic = String(building.layer ?? "").includes("KOORDINAT_SENTETIK");
   const polyColor = hasSayac ? "#10b981" : "#465fff";
 
   return {
     color: polyColor,
     fillColor: polyColor,
-    fillOpacity: hasSayac ? 0.38 : 0.25,
+    fillOpacity: hasSayac ? (isSynthetic ? 0.58 : 0.48) : 0.25,
     weight: hasSayac ? 2.5 : 1.5,
     headerColor: polyColor,
     hasSayac,
@@ -407,35 +462,35 @@ function buildPopupContent(building: Building, visual: BuildingVisual): string {
 
 const TILE_LAYERS = {
   standard: {
-    label: "🗺️ Standart",
+    label: "Standart",
     shortLabel: "Standart",
     url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     isDark: false,
   },
   light: {
-    label: "☁️ Açık",
+    label: "Açık",
     shortLabel: "Açık",
     url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
     isDark: false,
   },
   dark: {
-    label: "🌙 Gece Modu",
+    label: "Gece",
     shortLabel: "Gece",
     url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/">CARTO</a>',
     isDark: true,
   },
   satellite: {
-    label: "🛰️ Uydu",
+    label: "Uydu",
     shortLabel: "Uydu",
     url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     attribution: '&copy; <a href="https://www.esri.com/">Esri</a>, Maxar, GeoEye, Earthstar Geographics',
     isDark: false,
   },
   topo: {
-    label: "🗾 Topoğrafik",
+    label: "Topoğrafik",
     shortLabel: "Topo",
     url: "https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png",
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://opentopomap.org/">OpenTopoMap</a>',
@@ -444,11 +499,13 @@ const TILE_LAYERS = {
 } as const;
 
 const MAP_TOOLBAR_SURFACE =
-  "rounded-2xl border border-blue-light-200/70 bg-white/95 shadow-theme-lg backdrop-blur-sm dark:border-blue-light-900/40 dark:bg-gray-900/95";
+  "rounded-xl border border-slate-200/80 bg-white/92 shadow-[0_8px_28px_rgba(15,23,42,0.08)] backdrop-blur-md dark:border-slate-700/70 dark:bg-slate-950/90 dark:shadow-[0_8px_28px_rgba(0,0,0,0.35)]";
 const MAP_TOOLBAR_CARD = `${MAP_TOOLBAR_SURFACE} overflow-hidden`;
 const MAP_DROPDOWN_PANEL = `${MAP_TOOLBAR_SURFACE} z-[1001]`;
 const MAP_TOOLBAR_BTN =
-  "flex items-center justify-center gap-1.5 rounded-xl border border-blue-light-100 bg-blue-light-50/60 px-2 py-2 text-[10px] font-semibold text-blue-light-800 transition hover:border-blue-light-300 hover:bg-blue-light-50 dark:border-blue-light-900/40 dark:bg-blue-light-950/25 dark:text-blue-light-300 dark:hover:border-blue-light-700";
+  "flex items-center justify-center gap-1.5 rounded-lg border border-slate-200/90 bg-slate-50/90 px-2 py-2 text-[10px] font-semibold text-slate-700 transition hover:border-slate-300 hover:bg-white dark:border-slate-700 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-800";
+const MAP_SECTION_LABEL =
+  "px-1 text-[9px] font-semibold uppercase tracking-[0.08em] text-slate-400 dark:text-slate-500";
 
 type TileKey = keyof typeof TILE_LAYERS;
 
@@ -467,6 +524,9 @@ export default function MapComponent() {
   const buildingAlarmIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const sorunMarkersRef = useRef<L.Marker[]>([]);
   const bugunMarkersRef = useRef<L.Marker[]>([]);
+  const polySozlesmeMarkersRef = useRef<L.Marker[]>([]);
+  const polySozlesmeBinalarRef = useRef<PolySozlesmeBina[]>([]);
+  const uzaktanCountMarkersRef = useRef<L.Marker[]>([]);
   const uzaktanBinalarRef = useRef<Map<number, UzaktanBinaEntry>>(new Map());
   const lastDeepLinkKeyRef = useRef<string | null>(null);
   const lastBinaFocusIdRef = useRef<number | null>(null);
@@ -478,10 +538,17 @@ export default function MapComponent() {
   const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState({ total: 0, rezervClassified: 0 });
   const [toplamSayac, setToplamSayac] = useState(0);
+  const [koordinatliSayac, setKoordinatliSayac] = useState(0);
   const [sorunOzet, setSorunOzet] = useState<SayacSorunOzet | null>(null);
   const [bugunOzet, setBugunOzet] = useState<BugunOzet | null>(null);
-  const [bugunLayerEnabled, setBugunLayerEnabled] = useState(true);
-  const [sorunLayerEnabled, setSorunLayerEnabled] = useState(true);
+  const [bugunLayerEnabled, setBugunLayerEnabled] = useState(false);
+  const [bugunPanelOpen, setBugunPanelOpen] = useState(false);
+  const [polySozlesmeOzet, setPolySozlesmeOzet] = useState<PolySozlesmeOzet | null>(null);
+  const [polySozlesmeLayerEnabled, setPolySozlesmeLayerEnabled] = useState(false);
+  const [polySozlesmePanelOpen, setPolySozlesmePanelOpen] = useState(false);
+  const [leftDockOpen, setLeftDockOpen] = useState(true);
+  const [sorunDockOpen, setSorunDockOpen] = useState(false);
+  const [sorunLayerEnabled, setSorunLayerEnabled] = useState(false);
   const [uzaktanLayerEnabled, setUzaktanLayerEnabled] = useState(false);
   const [uzaktanTypeFilter, setUzaktanTypeFilter] = useState<UzaktanTypeFilter>("all");
   const [uzaktanStats, setUzaktanStats] = useState<UzaktanSozlesmeIndex["stats"] | null>(null);
@@ -650,6 +717,70 @@ export default function MapComponent() {
     }
   };
 
+  const renderPolySozlesmeMarkers = (binalar: PolySozlesmeBina[], enabled: boolean) => {
+    const map = mapRef.current;
+    if (!map) return;
+    polySozlesmeMarkersRef.current.forEach((m) => map.removeLayer(m));
+    polySozlesmeMarkersRef.current = [];
+    if (!enabled) return;
+
+    for (const b of binalar) {
+      if (!b.center || b.count <= 0) continue;
+      const marker = L.marker([b.center.lat, b.center.lng], {
+        icon: createPolySozlesmeIcon(b.count),
+        zIndexOffset: 1050,
+      });
+      marker.bindPopup(`
+        <div style="font-family:Outfit,sans-serif;font-size:13px;min-width:200px">
+          <div style="font-weight:700;color:#9a3412">${escHtml(b.value)}</div>
+          <div style="font-size:11px;color:#c2410c;margin:6px 0 2px">
+            <strong>${b.count.toLocaleString("tr-TR")}</strong> Polimeter sözleşme
+          </div>
+          <div style="font-size:10px;color:#78716c">${b.sayac_sayisi.toLocaleString("tr-TR")} sayaç kaydı</div>
+        </div>
+      `);
+      marker.on("click", () => zoomToBuilding(b.bina_id));
+      marker.addTo(map);
+      polySozlesmeMarkersRef.current.push(marker);
+    }
+  };
+
+  const renderUzaktanCountMarkers = (enabled: boolean, filter: UzaktanTypeFilter) => {
+    const map = mapRef.current;
+    if (!map) return;
+    uzaktanCountMarkersRef.current.forEach((m) => map.removeLayer(m));
+    uzaktanCountMarkersRef.current = [];
+    if (!enabled) return;
+
+    uzaktanBinalarRef.current.forEach((entry, binaId) => {
+      if (!binaMatchesUzaktanFilter(entry, filter) || entry.sayac_count <= 0) return;
+      const building = buildingsDataRef.current.get(binaId);
+      const center = getBuildingCenter(building?.coordinates);
+      if (!center) return;
+
+      const count =
+        filter === "all" ? entry.sayac_count : entry.by_type[filter] ?? 0;
+      if (count <= 0) return;
+
+      const marker = L.marker([center.lat, center.lng], {
+        icon: createUzaktanCountIcon(count),
+        zIndexOffset: 1060,
+      });
+      marker.bindPopup(`
+        <div style="font-family:Outfit,sans-serif;font-size:13px;min-width:200px">
+          <div style="font-weight:700;color:#5b21b6">${escHtml(building?.value || "Bina")}</div>
+          <div style="font-size:11px;color:#6d28d9;margin:6px 0 2px">
+            <strong>${count.toLocaleString("tr-TR")}</strong> Excel ile eşleşen sayaç
+          </div>
+          <div style="font-size:10px;color:#78716c">Uzaktan okuma · mor = uyuşan</div>
+        </div>
+      `);
+      marker.on("click", () => zoomToBuilding(binaId));
+      marker.addTo(map);
+      uzaktanCountMarkersRef.current.push(marker);
+    });
+  };
+
   const renderSorunMarkers = (binalar: SayacSorunBina[], enabled: boolean) => {
     const map = mapRef.current;
     if (!map) return;
@@ -681,7 +812,10 @@ export default function MapComponent() {
   const loadToplamSayac = useCallback(() => {
     fetch("/api/dashboard/ozet")
       .then((r) => r.json())
-      .then((d) => setToplamSayac(d.toplam_sayac ?? 0))
+      .then((d) => {
+        setToplamSayac(d.toplam_sayac ?? 0);
+        setKoordinatliSayac(d.sayac_koordinatli ?? 0);
+      })
       .catch(() => {});
   }, []);
 
@@ -695,6 +829,18 @@ export default function MapComponent() {
       .catch(() => setBugunOzet(null));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bugunLayerEnabled]);
+
+  const refreshPolySozlesmeData = useCallback(() => {
+    fetch("/api/sayac/polimeter")
+      .then((r) => r.json())
+      .then((data: { ozet: PolySozlesmeOzet; binalar: PolySozlesmeBina[] }) => {
+        setPolySozlesmeOzet(data.ozet);
+        polySozlesmeBinalarRef.current = data.binalar ?? [];
+        renderPolySozlesmeMarkers(polySozlesmeBinalarRef.current, polySozlesmeLayerEnabled);
+      })
+      .catch(() => setPolySozlesmeOzet(null));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [polySozlesmeLayerEnabled]);
 
   const refreshSorunData = useCallback(() => {
     fetch("/api/sayac/sorunlar")
@@ -778,6 +924,7 @@ export default function MapComponent() {
         }
         uzaktanBinalarRef.current = binaMap;
         setUzaktanDataReady(true);
+        renderUzaktanCountMarkers(uzaktanLayerEnabled, uzaktanTypeFilter);
       })
       .catch(() => {
         setUzaktanStats(null);
@@ -785,15 +932,26 @@ export default function MapComponent() {
         uzaktanBinalarRef.current = new Map();
         setUzaktanDataReady(false);
       });
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [uzaktanLayerEnabled, uzaktanTypeFilter]);
 
   useEffect(() => {
     if (loading || error) return;
     refreshSorunData();
     refreshBugunData();
+    refreshPolySozlesmeData();
     window.addEventListener(SAYAC_GUNCELLENDI, refreshBugunData);
-    return () => window.removeEventListener(SAYAC_GUNCELLENDI, refreshBugunData);
-  }, [loading, error, refreshSorunData, refreshBugunData]);
+    window.addEventListener(SAYAC_GUNCELLENDI, refreshPolySozlesmeData);
+    return () => {
+      window.removeEventListener(SAYAC_GUNCELLENDI, refreshBugunData);
+      window.removeEventListener(SAYAC_GUNCELLENDI, refreshPolySozlesmeData);
+    };
+  }, [loading, error, refreshSorunData, refreshBugunData, refreshPolySozlesmeData]);
+
+  useEffect(() => {
+    renderPolySozlesmeMarkers(polySozlesmeBinalarRef.current, polySozlesmeLayerEnabled);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [polySozlesmeLayerEnabled]);
 
   useEffect(() => {
     if (loading || error) return;
@@ -805,6 +963,8 @@ export default function MapComponent() {
   useEffect(() => {
     if (loading || error || !uzaktanDataReady) return;
     applyBuildingStylesForLayer(uzaktanLayerEnabled, uzaktanTypeFilter);
+    renderUzaktanCountMarkers(uzaktanLayerEnabled, uzaktanTypeFilter);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     loading,
     error,
@@ -938,12 +1098,21 @@ export default function MapComponent() {
   }, []);
 
   const placeSayacMarker = useCallback(
-    (binaId: number, sayacId: string, coordinates?: [number, number][][]) => {
+    (binaId: number, sayacId: string, coordinates?: [number, number][][], point?: { lat: number; lng: number } | null) => {
       if (!mapRef.current || !sayacId.trim()) return;
       clearSayacMarker();
       const building = buildingsDataRef.current.get(binaId);
       if (!buildingHasSayacKaydi(building)) return;
-      const center = getBuildingCenter(coordinates ?? building?.coordinates);
+
+      const exact =
+        point &&
+        Number.isFinite(point.lat) &&
+        Number.isFinite(point.lng) &&
+        Math.abs(point.lat) <= 90 &&
+        Math.abs(point.lng) <= 180
+          ? ([point.lat, point.lng] as [number, number])
+          : null;
+      const center = exact ?? getBuildingCenter(coordinates ?? building?.coordinates);
       if (!center) return;
 
       const marker = L.marker(center, {
@@ -1058,7 +1227,7 @@ export default function MapComponent() {
     activeTileRef.current = initialTile;
     setActiveLayer(initialLayerKey);
 
-    L.control.zoom({ position: "bottomright" }).addTo(map);
+    L.control.zoom({ position: "bottomleft" }).addTo(map);
 
     map.on("moveend", () => {
       if (!mapRef.current) return;
@@ -1339,7 +1508,10 @@ export default function MapComponent() {
       setSelectedMahalle("Mahalleler");
 
       zoomToBuilding(result.bina_id, result.coordinates, { alarm: true });
-      placeSayacMarker(result.bina_id, result.sayac_id, result.coordinates);
+      placeSayacMarker(result.bina_id, result.sayac_id, result.coordinates, {
+        lat: result.lat ?? NaN,
+        lng: result.lng ?? NaN,
+      });
 
       if (openModal) {
         setSelectedBuilding({
@@ -1720,9 +1892,20 @@ export default function MapComponent() {
       });
       setFocusSayacId(sayac);
       triggerSayacAlarm();
-      placeSayacMarker(binaId, sayac, building?.coordinates);
+      // Exact meter coords when available
+      fetch(`/api/sayac/konum?sayac_id=${encodeURIComponent(sayac)}`)
+        .then((r) => r.json())
+        .then((data: { lat?: number; lng?: number }) => {
+          placeSayacMarker(binaId, sayac, building?.coordinates, {
+            lat: data.lat ?? NaN,
+            lng: data.lng ?? NaN,
+          });
+        })
+        .catch(() => {
+          placeSayacMarker(binaId, sayac, building?.coordinates);
+        });
       setInfoModalOpen(false);
-      setSayacModalOpen(false);
+      setSayacModalOpen(true);
       lastBinaFocusIdRef.current = null;
 
       return true;
@@ -1953,162 +2136,224 @@ export default function MapComponent() {
         </div>
       )}
 
-      {/* Sol Panel: İstatistik + Sayaç Sorunları */}
+      {/* Sol özet doku — tek kabuk, haritayı boğmaz */}
       {!loading && !error && (
-        <div className="pointer-events-none absolute left-4 top-4 z-999 flex h-[calc(100dvh-2rem)] max-h-[calc(100dvh-2rem)] items-stretch">
-          <div className="pointer-events-auto flex flex-col gap-2.5 w-56 shrink-0 overflow-y-auto max-h-full pr-1">
-            {/* Bina Verileri */}
-            <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white/95 shadow-sm backdrop-blur-sm dark:border-gray-800 dark:bg-gray-900/95">
-              <div className="border-b border-gray-200 px-3.5 py-2.5 dark:border-gray-800">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-light-50 text-[11px] text-blue-light-700 dark:bg-blue-light-950/40 dark:text-blue-light-300">
-                    🏢
-                  </div>
-                  <h3 className="text-[11px] font-bold leading-tight text-gray-900 dark:text-white">
-                    Malatya Bina Verileri
-                  </h3>
-                </div>
+        <div className="pointer-events-none absolute left-3 top-3 z-[999] flex max-h-[calc(100dvh-5.5rem)] w-[min(17.5rem,calc(100vw-1.5rem))] flex-col sm:left-4 sm:top-4">
+          <div className={`pointer-events-auto overflow-hidden ${MAP_TOOLBAR_SURFACE}`}>
+            <button
+              type="button"
+              onClick={() => setLeftDockOpen((v) => !v)}
+              className="flex w-full items-center gap-2.5 px-3 py-2.5 text-left"
+            >
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-[11px] font-black tracking-tight text-emerald-700 dark:text-emerald-300">
+                LS
               </div>
-
-              <div className="relative grid grid-cols-2 gap-2 px-3.5 py-3">
-                <div className="rounded-xl border border-blue-light-100 bg-blue-light-50/60 px-2 py-2.5 text-center dark:border-blue-light-900/30 dark:bg-blue-light-950/25">
-                  <div className="text-xl font-black tabular-nums text-blue-light-700 dark:text-blue-light-400">
-                    {stats.total.toLocaleString("tr-TR")}
-                  </div>
-                  <div className="mt-0.5 text-[10px] font-medium text-gray-500 dark:text-gray-400">Toplam Bina</div>
-                </div>
-                <div className="rounded-xl border border-blue-light-100 bg-blue-light-50/60 px-2 py-2.5 text-center dark:border-blue-light-900/30 dark:bg-blue-light-950/25">
-                  <div className="text-xl font-black tabular-nums text-blue-light-500">
-                    {toplamSayac.toLocaleString("tr-TR")}
-                  </div>
-                  <div className="mt-0.5 text-[10px] font-medium text-gray-500 dark:text-gray-400">Toplam Sayaç</div>
-                </div>
+              <div className="min-w-0 flex-1">
+                <div className="truncate text-[12px] font-bold text-slate-900 dark:text-white">Lora Sayaç</div>
+                <div className="truncate text-[10px] text-slate-500 dark:text-slate-400">Malatya harita özeti</div>
               </div>
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                className={`shrink-0 text-slate-400 transition-transform ${leftDockOpen ? "rotate-180" : ""}`}
+              >
+                <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
 
-              {stats.rezervClassified > 0 && (
-                <div className="relative border-t border-blue-light-100/80 px-3.5 py-2.5 text-center dark:border-blue-light-900/30">
-                  <div className="text-lg font-black tabular-nums text-blue-light-900 dark:text-blue-light-300">
-                    {stats.rezervClassified.toLocaleString("tr-TR")}
+            {leftDockOpen && (
+              <div className="max-h-[min(70dvh,34rem)] space-y-3 overflow-y-auto border-t border-slate-200/70 px-3 py-3 dark:border-slate-700/70">
+                <div className="grid grid-cols-2 gap-x-3 gap-y-2.5">
+                  <div>
+                    <div className="text-[18px] font-black tabular-nums leading-none text-slate-900 dark:text-white">
+                      {stats.total.toLocaleString("tr-TR")}
+                    </div>
+                    <div className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">Bina</div>
                   </div>
-                  <div className="text-[10px] font-medium text-gray-500 dark:text-gray-400">
-                    Rezerv Tarife Sınıflı Bina
+                  <div>
+                    <div className="text-[18px] font-black tabular-nums leading-none text-emerald-600 dark:text-emerald-400">
+                      {toplamSayac.toLocaleString("tr-TR")}
+                    </div>
+                    <div className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">Sayaç</div>
                   </div>
+                  <div>
+                    <div className="text-[15px] font-bold tabular-nums leading-none text-sky-600 dark:text-sky-400">
+                      {koordinatliSayac.toLocaleString("tr-TR")}
+                    </div>
+                    <div className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">Koordinatlı</div>
+                  </div>
+                  {stats.rezervClassified > 0 && (
+                    <div>
+                      <div className="text-[15px] font-bold tabular-nums leading-none text-slate-700 dark:text-slate-200">
+                        {stats.rezervClassified.toLocaleString("tr-TR")}
+                      </div>
+                      <div className="mt-1 text-[10px] text-slate-500 dark:text-slate-400">Rezerv tarife</div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
 
-            {/* Bugün eklenen sayaçlar */}
-            {bugunOzet && bugunOzet.toplam > 0 && (
-              <div className="overflow-hidden rounded-2xl border border-sky-200/80 bg-white/95 shadow-theme-lg backdrop-blur-sm dark:border-sky-900/40 dark:bg-gray-900/95">
-                <div className="flex items-center justify-between border-b border-sky-100/80 px-3.5 py-2.5 dark:border-sky-900/30">
-                  <h4 className="text-[11px] font-bold text-gray-900 dark:text-white">Bugün Eklenen</h4>
-                  <span className="rounded-full border border-sky-200 bg-sky-50 px-2 py-0.5 text-[9px] font-semibold tabular-nums text-sky-700 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300">
-                    {bugunOzet.bina_sayisi} bina
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 gap-2 p-3">
-                  <div className="rounded-xl border border-sky-100 bg-sky-50/70 px-2 py-2 text-center dark:border-sky-900/30 dark:bg-sky-950/25">
-                    <div className="text-base font-black tabular-nums text-sky-700 dark:text-sky-400">
-                      {bugunOzet.toplam.toLocaleString("tr-TR")}
+                <div className="space-y-1.5 border-t border-slate-200/70 pt-2.5 dark:border-slate-700/70">
+                  <div className={MAP_SECTION_LABEL}>Katmanlar</div>
+
+                  {bugunOzet && bugunOzet.toplam > 0 && (
+                    <div className="rounded-lg border border-slate-200/80 dark:border-slate-700/80">
+                      <button
+                        type="button"
+                        onClick={() => setBugunPanelOpen((v) => !v)}
+                        className="flex w-full items-center justify-between gap-2 px-2.5 py-1.5 text-left"
+                      >
+                        <span className="text-[11px] font-semibold text-slate-800 dark:text-slate-100">Bugün</span>
+                        <span className="text-[10px] font-bold tabular-nums text-sky-600 dark:text-sky-400">
+                          {bugunOzet.toplam.toLocaleString("tr-TR")}
+                        </span>
+                      </button>
+                      {bugunPanelOpen && (
+                        <div className="space-y-1.5 border-t border-slate-200/70 px-2.5 py-2 dark:border-slate-700/70">
+                          <div className="text-[10px] text-slate-500">{bugunOzet.bina_sayisi} bina · bugünkü kayıt</div>
+                          <button
+                            type="button"
+                            onClick={() => setBugunLayerEnabled((v) => !v)}
+                            className={`w-full rounded-md py-1.5 text-[10px] font-semibold transition ${
+                              bugunLayerEnabled
+                                ? "bg-sky-600 text-white"
+                                : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                            }`}
+                          >
+                            {bugunLayerEnabled ? "Haritada gizle" : "Haritada göster"}
+                          </button>
+                        </div>
+                      )}
                     </div>
-                    <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">Sayaç kaydı</div>
-                  </div>
-                  <div className="rounded-xl border border-sky-100 bg-sky-50/70 px-2 py-2 text-center dark:border-sky-900/30 dark:bg-sky-950/25">
-                    <div className="text-base font-black tabular-nums text-sky-700 dark:text-sky-400">
-                      {bugunOzet.bina_sayisi}
+                  )}
+
+                  {polySozlesmeOzet && polySozlesmeOzet.sozlesme_sayisi > 0 && (
+                    <div className="rounded-lg border border-slate-200/80 dark:border-slate-700/80">
+                      <button
+                        type="button"
+                        onClick={() => setPolySozlesmePanelOpen((v) => !v)}
+                        className="flex w-full items-center justify-between gap-2 px-2.5 py-1.5 text-left"
+                      >
+                        <span className="text-[11px] font-semibold text-slate-800 dark:text-slate-100">Polimeter</span>
+                        <span className="text-[10px] font-bold tabular-nums text-orange-600 dark:text-orange-400">
+                          {polySozlesmeOzet.sozlesme_sayisi.toLocaleString("tr-TR")}
+                        </span>
+                      </button>
+                      {polySozlesmePanelOpen && (
+                        <div className="space-y-1.5 border-t border-slate-200/70 px-2.5 py-2 dark:border-slate-700/70">
+                          <div className="text-[10px] text-slate-500">
+                            {polySozlesmeOzet.bina_sayisi} bina · sözleşme sayısı
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setPolySozlesmeLayerEnabled((v) => !v)}
+                            className={`w-full rounded-md py-1.5 text-[10px] font-semibold transition ${
+                              polySozlesmeLayerEnabled
+                                ? "bg-orange-600 text-white"
+                                : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                            }`}
+                          >
+                            {polySozlesmeLayerEnabled ? "Sayıları gizle" : "Binalarda göster"}
+                          </button>
+                        </div>
+                      )}
                     </div>
-                    <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">Bina</div>
-                  </div>
-                </div>
-                <div className="border-t border-sky-100/80 p-3 dark:border-sky-900/30">
-                  <button
-                    type="button"
-                    onClick={() => setBugunLayerEnabled((v) => !v)}
-                    className={`w-full rounded-xl border py-2 text-[10px] font-semibold transition ${
-                      bugunLayerEnabled
-                        ? "border-sky-600 bg-sky-600 text-white shadow-sm"
-                        : "border-gray-200 bg-white text-gray-700 hover:border-sky-300 hover:bg-sky-50/50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200"
-                    }`}
-                  >
-                    {bugunLayerEnabled ? "Harita işaretlerini gizle" : "Haritada göster"}
-                  </button>
-                  <p className="mt-2 text-[9px] leading-snug text-gray-500 dark:text-gray-400">
-                    Mavi <strong>+N / Bugün</strong> rozetleri bugün eklenen veya güncellenen sayaçları gösterir.
-                  </p>
+                  )}
+
+                  {sorunOzet && sorunOzet.bina_sayisi > 0 && (
+                    <div className="rounded-lg border border-slate-200/80 dark:border-slate-700/80">
+                      <button
+                        type="button"
+                        onClick={() => setSorunDockOpen((v) => !v)}
+                        className="flex w-full items-center justify-between gap-2 px-2.5 py-1.5 text-left"
+                      >
+                        <span className="text-[11px] font-semibold text-slate-800 dark:text-slate-100">Sorunlar</span>
+                        <span className="text-[10px] font-bold tabular-nums text-rose-600 dark:text-rose-400">
+                          {sorunOzet.bina_sayisi}
+                        </span>
+                      </button>
+                      {sorunDockOpen && (
+                        <div className="space-y-2 border-t border-slate-200/70 px-2.5 py-2 dark:border-slate-700/70">
+                          <div className="grid grid-cols-2 gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => openSorunPanel("okuma")}
+                              className="rounded-md bg-rose-50 px-2 py-1.5 text-center dark:bg-rose-950/30"
+                            >
+                              <div className="text-[12px] font-bold tabular-nums text-rose-600">
+                                {sorunOzet.okunmadi + sorunOzet.hatali}
+                              </div>
+                              <div className="text-[9px] text-slate-500">Hatalı</div>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => openSorunPanel("eksik")}
+                              className="rounded-md bg-amber-50 px-2 py-1.5 text-center dark:bg-amber-950/30"
+                            >
+                              <div className="text-[12px] font-bold tabular-nums text-amber-600">
+                                {sorunOzet.eksik}
+                              </div>
+                              <div className="text-[9px] text-slate-500">Eksik</div>
+                            </button>
+                          </div>
+                          <div className="flex gap-1.5">
+                            <button
+                              type="button"
+                              onClick={() => setSorunLayerEnabled((v) => !v)}
+                              className={`flex-1 rounded-md py-1.5 text-[10px] font-semibold transition ${
+                                sorunLayerEnabled
+                                  ? "bg-slate-800 text-white dark:bg-slate-200 dark:text-slate-900"
+                                  : "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                              }`}
+                            >
+                              {sorunLayerEnabled ? "İşaret kapalı" : "İşaret aç"}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (sorunPanelOpen) setSorunPanelOpen(false);
+                                else openSorunPanel("all");
+                              }}
+                              className={`flex-1 rounded-md py-1.5 text-[10px] font-semibold transition ${
+                                sorunPanelOpen
+                                  ? "bg-emerald-600 text-white"
+                                  : "bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+                              }`}
+                            >
+                              Rapor
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
-
-            {/* Sayaç Sorunları */}
-            {sorunOzet && sorunOzet.bina_sayisi > 0 && (
-              <div className="relative overflow-hidden rounded-2xl border border-blue-light-200/70 bg-white/95 shadow-theme-lg backdrop-blur-sm dark:border-blue-light-900/40 dark:bg-gray-900/95">
-                <div className="relative flex items-center justify-between border-b border-blue-light-100/80 px-3.5 py-2.5 dark:border-blue-light-900/30">
-                  <h4 className="text-[11px] font-bold text-gray-900 dark:text-white">Sayaç Sorunları</h4>
-                  <span className="rounded-full border border-blue-light-200 bg-blue-light-50 px-2 py-0.5 text-[9px] font-semibold tabular-nums text-blue-light-700 dark:border-blue-light-800 dark:bg-blue-light-950/40 dark:text-blue-light-300">
-                    {sorunOzet.bina_sayisi} bina
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-2 p-3">
-                  <button
-                    type="button"
-                    onClick={() => openSorunPanel("okuma")}
-                    className="rounded-xl border border-error-200/80 bg-error-50/80 py-2.5 px-2 text-center transition hover:border-error-300 hover:bg-error-50 dark:border-error-500/25 dark:bg-error-500/10 dark:hover:bg-error-500/15"
-                    title="OKUNMADI ve hatalı numara"
-                  >
-                    <div className="text-base font-black tabular-nums text-error-500">
-                      {sorunOzet.okunmadi + sorunOzet.hatali}
-                    </div>
-                    <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">Hatalı Okuma</div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => openSorunPanel("eksik")}
-                    className="rounded-xl border border-warning-200/80 bg-warning-50/80 py-2.5 px-2 text-center transition hover:border-warning-300 hover:bg-warning-50 dark:border-warning-500/25 dark:bg-warning-500/10 dark:hover:bg-warning-500/15"
-                    title="Boş veya girilmemiş sayaç no"
-                  >
-                    <div className="text-base font-black tabular-nums text-warning-500">{sorunOzet.eksik}</div>
-                    <div className="mt-0.5 text-[9px] font-semibold text-gray-600 dark:text-gray-400">Eksik</div>
-                  </button>
-                </div>
-
-                <div className="flex gap-2 border-t border-blue-light-100/80 p-3 dark:border-blue-light-900/30">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSorunLayerEnabled((v) => !v);
-                      setLayerPickerOpen(false);
-                      setMahallePickerOpen(false);
-                      setSayacSearchOpen(false);
-                    }}
-                    className={`flex-1 rounded-xl border py-2 text-[10px] font-semibold transition ${
-                      sorunLayerEnabled
-                        ? "border-blue-light-600 bg-blue-light-600 text-white shadow-sm"
-                        : "border-gray-200 bg-white text-gray-700 hover:border-blue-light-300 hover:bg-blue-light-50/50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200 dark:hover:border-blue-light-700"
-                    }`}
-                  >
-                    {sorunLayerEnabled ? "İşaretleri Gizle" : "İşaretleri Göster"}
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (sorunPanelOpen) setSorunPanelOpen(false);
-                      else openSorunPanel("all");
-                    }}
-                    className={`flex-1 rounded-xl border py-2 text-[10px] font-semibold transition ${
-                      sorunPanelOpen
-                        ? "border-blue-light-700 bg-blue-light-700 text-white shadow-sm"
-                        : "border-blue-light-300 bg-blue-light-50 text-blue-light-800 hover:bg-blue-light-100 dark:border-blue-light-700 dark:bg-blue-light-950/40 dark:text-blue-light-300 dark:hover:bg-blue-light-950/60"
-                    }`}
-                  >
-                    Rapor
-                  </button>
-                </div>
-              </div>
-            )}
-
           </div>
+        </div>
+      )}
 
+      {/* Alt lejant */}
+      {!loading && !error && (
+        <div className="pointer-events-none absolute bottom-3 left-1/2 z-[998] w-[min(34rem,calc(100vw-7rem))] -translate-x-1/2 sm:bottom-4">
+          <div className={`pointer-events-auto flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 px-3 py-2 ${MAP_TOOLBAR_SURFACE}`}>
+            <span className="flex items-center gap-1.5 text-[10px] font-medium text-slate-600 dark:text-slate-300">
+              <span className="h-2.5 w-2.5 rounded-sm bg-[#10b981]" /> Sayaçlı
+            </span>
+            <span className="flex items-center gap-1.5 text-[10px] font-medium text-slate-600 dark:text-slate-300">
+              <span className="h-2.5 w-2.5 rounded-sm bg-[#465fff]" /> Sayaçsız
+            </span>
+            <span className="flex items-center gap-1.5 text-[10px] font-medium text-slate-600 dark:text-slate-300">
+              <span className="h-2.5 w-2.5 rounded-sm bg-[#7c3aed]" /> Uzaktan eşleşen
+            </span>
+            <span className="hidden items-center gap-1.5 text-[10px] font-medium text-slate-600 sm:flex dark:text-slate-300">
+              <span className="h-2.5 w-2.5 rounded-full bg-sky-500" /> Bugün
+            </span>
+          </div>
         </div>
       )}
 
@@ -2121,7 +2366,7 @@ export default function MapComponent() {
             className="pointer-events-auto absolute inset-0 z-[1090] cursor-default bg-slate-950/30 backdrop-blur-[1px] xl:bg-black/10 xl:backdrop-blur-none"
             onClick={() => setSorunPanelOpen(false)}
           />
-          <aside className="pointer-events-auto absolute inset-3 z-[1100] flex min-h-0 min-w-0 xl:bottom-4 xl:left-64 xl:right-auto xl:top-4 xl:w-[28rem]">
+          <aside className="pointer-events-auto absolute inset-3 z-[1100] flex min-h-0 min-w-0 xl:bottom-4 xl:left-[19rem] xl:right-auto xl:top-4 xl:w-[28rem]">
             <SayacSorunPanel
               isOpen={sorunPanelOpen}
               onClose={() => setSorunPanelOpen(false)}
@@ -2132,20 +2377,21 @@ export default function MapComponent() {
         </>
       )}
 
-      {/* Controls Container — MASKİ araç çubuğu */}
+      {/* Sağ araç çubuğu — arama + katmanlar */}
       {!loading && !error && (
-        <div className="absolute top-4 right-4 z-[1000] flex w-80 flex-col items-end gap-2 overflow-visible pointer-events-none">
+        <div className="pointer-events-none absolute right-3 top-3 z-[1000] flex w-[min(19.5rem,calc(100vw-1.5rem))] flex-col items-end gap-2 overflow-visible sm:right-4 sm:top-4">
+          <div className={MAP_SECTION_LABEL + " pointer-events-none w-full text-right pr-0.5"}>Arama</div>
           {/* Sayaç arama */}
           <div className="relative w-full pointer-events-auto">
             <div className={MAP_TOOLBAR_CARD}>
-              <div className="flex items-center gap-2 px-3 py-2.5">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-blue-light-500">
+              <div className="flex items-center gap-2 px-3 py-2">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-slate-400">
                   <circle cx="11" cy="11" r="8" />
                   <path d="m21 21-4.3-4.3" />
                 </svg>
                 <input
                   type="text"
-                  placeholder="Sayaç veya abone no ara..."
+                  placeholder="Sayaç / abone no"
                   value={sayacSearch}
                   onChange={(e) => {
                     setSayacSearch(e.target.value);
@@ -2461,8 +2707,9 @@ export default function MapComponent() {
             )}
           </div>
 
+          <div className={MAP_SECTION_LABEL + " pointer-events-none w-full text-right pr-0.5"}>Harita araçları</div>
           {/* Araç çubuğu */}
-          <div className={`pointer-events-auto flex w-full flex-col gap-1.5 overflow-visible p-1.5 ${MAP_TOOLBAR_SURFACE}`}>
+          <div className={`pointer-events-auto flex w-full flex-col gap-1.5 overflow-visible p-2 ${MAP_TOOLBAR_SURFACE}`}>
             <div className="flex w-full items-center gap-1.5">
               {isAdmin && (
                 <button
@@ -2479,6 +2726,19 @@ export default function MapComponent() {
                   </svg>
                   {jsonExporting ? "Hazırlanıyor" : "Export"}
                 </button>
+              )}
+              {isAdmin && (
+                <Link
+                  href="/yonetici-raporu"
+                  className={`${MAP_TOOLBAR_BTN} min-w-0 flex-1`}
+                  title="Yönetici raporu"
+                >
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M6 3h9l3 3v15H6V3z" strokeLinejoin="round" />
+                    <path d="M9 11h6M9 15h4" strokeLinecap="round" />
+                  </svg>
+                  Rapor
+                </Link>
               )}
               <Link
                 href="/sayac-aktarim"
@@ -2514,7 +2774,7 @@ export default function MapComponent() {
                 setSayacSearchOpen(false);
                 setNotifPanelOpen(false);
               }}
-              className={`${MAP_TOOLBAR_BTN} w-full ${layerPickerOpen ? "border-blue-light-600 bg-blue-light-600 text-white dark:border-blue-light-500 dark:bg-blue-light-600 dark:text-white" : ""}`}
+              className={`${MAP_TOOLBAR_BTN} w-full ${layerPickerOpen ? "border-slate-800 bg-slate-800 text-white dark:border-slate-200 dark:bg-slate-200 dark:text-slate-900" : ""}`}
               title="Katman Seç"
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
@@ -2565,7 +2825,7 @@ export default function MapComponent() {
                 setMahalleSearch("");
                 setNotifPanelOpen(false);
               }}
-              className={`${MAP_TOOLBAR_BTN} w-full ${mahallePickerOpen ? "border-blue-light-600 bg-blue-light-600 text-white dark:border-blue-light-500 dark:bg-blue-light-600 dark:text-white" : ""}`}
+              className={`${MAP_TOOLBAR_BTN} w-full ${mahallePickerOpen ? "border-slate-800 bg-slate-800 text-white dark:border-slate-200 dark:bg-slate-200 dark:text-slate-900" : ""}`}
               title="Mahalleye Odaklan"
             >
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0">
@@ -2791,7 +3051,32 @@ export default function MapComponent() {
       )}
 
       {/* Map Container */}
-      <div ref={mapContainerRef} className="w-full h-full" />
+      <div ref={mapContainerRef} className="map-shell h-full w-full" />
+      <style jsx global>{`
+        .map-shell .leaflet-control-zoom {
+          border: 0 !important;
+          margin-left: 16px !important;
+          margin-bottom: 64px !important;
+          box-shadow: 0 8px 28px rgba(15, 23, 42, 0.1);
+          border-radius: 12px;
+          overflow: hidden;
+        }
+        .map-shell .leaflet-control-zoom a {
+          width: 34px !important;
+          height: 34px !important;
+          line-height: 34px !important;
+          color: #0f172a !important;
+          background: rgba(255, 255, 255, 0.92) !important;
+          border-bottom-color: #e2e8f0 !important;
+        }
+        .map-shell .leaflet-control-attribution {
+          margin: 0 8px 8px 0 !important;
+          border-radius: 8px;
+          background: rgba(255, 255, 255, 0.78) !important;
+          color: #64748b !important;
+          font-size: 10px !important;
+        }
+      `}</style>
 
       {/* Building Info Modal */}
       {infoModalOpen && (

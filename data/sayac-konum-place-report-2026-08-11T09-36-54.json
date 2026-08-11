@@ -1,0 +1,11 @@
+{
+  "spatial_updated": 3376,
+  "inserted": 6620,
+  "skipped_existing": 1984,
+  "binalar_touched": 648,
+  "bina_bilgi_created": 283,
+  "by_match": {
+    "spatial_nearest_40m": 3376
+  },
+  "finished_at": "2026-08-11T09:36:56.395Z"
+}

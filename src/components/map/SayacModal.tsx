@@ -16,6 +16,7 @@ import {
   getUzaktanTypeLabel,
   lookupUzaktanMatch,
 } from "@/lib/uzaktan-sozlesme";
+import { getLoraDurumMeta, type LoraCihaz } from "@/lib/lora-cihaz";
 import SahaKartiExportButtons from "@/components/map/SahaKartiExportButtons";
 import { applyInferredKatToRows } from "@/lib/sayac-kat-infer";
 
@@ -130,17 +131,58 @@ function UzaktanBadge({
   );
 }
 
+function LoraBadge({ devices }: { devices: LoraCihaz[] }) {
+  if (!devices.length) return null;
+  const primary = devices.find((d) => d.durum === "active") || devices[0];
+  const meta = getLoraDurumMeta(primary.durum);
+  const activeCount = devices.filter((d) => d.durum === "active").length;
+
+  return (
+    <div
+      className="rounded-md border px-2 py-1"
+      style={{
+        borderColor: `${meta.color}55`,
+        backgroundColor: `${meta.color}12`,
+      }}
+    >
+      <div className="flex items-center justify-between gap-1">
+        <p className="text-[7px] font-medium text-gray-500 dark:text-gray-400">LoRa</p>
+        <span className="text-[7px] font-bold tabular-nums" style={{ color: meta.color }}>
+          {activeCount}/{devices.length} aktif
+        </span>
+      </div>
+      {devices.slice(0, 2).map((d) => (
+        <p
+          key={d.deveui}
+          className="truncate font-mono text-[8px] font-semibold text-gray-700 dark:text-gray-300"
+          title={`${d.deveui} · ${d.durum}${d.son_uplink ? ` · ${d.son_uplink}` : ""}`}
+        >
+          {d.deveui.slice(-8)}
+          <span className="ml-1 font-sans text-[7px] font-medium opacity-70">
+            {getLoraDurumMeta(d.durum).etiket}
+          </span>
+        </p>
+      ))}
+      {devices.length > 2 ? (
+        <p className="text-[7px] text-gray-500">+{devices.length - 2} cihaz</p>
+      ) : null}
+    </div>
+  );
+}
+
 function SayacUnitCard({
   row,
   highlighted,
   binaId,
   uzaktanMatch,
+  loraDevices,
   onQr,
 }: {
   row: SayacRow;
   highlighted?: boolean;
   binaId: number;
   uzaktanMatch?: UzaktanSayacMatch | null;
+  loraDevices?: LoraCihaz[];
   onQr: (row: SayacRow) => void;
 }) {
   const durum: SayacDurum =
@@ -223,6 +265,7 @@ function SayacUnitCard({
         </div>
 
         <UzaktanBadge match={uzaktanMatch ?? null} hasSayac={hasSayac} />
+        <LoraBadge devices={loraDevices ?? []} />
 
         {hasSayac && (
           <div className="space-y-1">
@@ -301,6 +344,8 @@ export default function SayacModal({
   const [uzaktanLookup, setUzaktanLookup] = useState<Map<string, UzaktanSayacMatch>>(new Map());
   const [uzaktanBinaMatched, setUzaktanBinaMatched] = useState(false);
   const [uzaktanListFilter, setUzaktanListFilter] = useState<UzaktanListFilter>("all");
+  const [loraByKapi, setLoraByKapi] = useState<Record<string, LoraCihaz[]>>({});
+  const [loraSummary, setLoraSummary] = useState<{ total: number; active: number; error: number } | null>(null);
 
   const handleShowQr = useCallback(
     async (row: SayacRow) => {
@@ -332,6 +377,51 @@ export default function SayacModal({
     if (!copied) setQrError("Link kopyalanamadı.");
   }, [qrPreview]);
 
+  const refetchUzaktan = useCallback(async () => {
+    if (!building) return;
+    try {
+      const r = await fetch(`/api/uzaktan-sozlesme?bina_id=${building.id}`);
+      const data: { matched?: boolean; sayaclar?: UzaktanSayacMatch[] } = await r.json();
+      if (!data.matched || !data.sayaclar?.length) {
+        setUzaktanLookup(new Map());
+        setUzaktanBinaMatched(false);
+        return;
+      }
+      setUzaktanBinaMatched(true);
+      setUzaktanLookup(buildUzaktanLookup(data.sayaclar));
+    } catch {
+      setUzaktanLookup(new Map());
+      setUzaktanBinaMatched(false);
+    }
+  }, [building]);
+
+  const refetchLora = useCallback(async () => {
+    if (!building) return;
+    try {
+      const r = await fetch(`/api/lora?bina_id=${building.id}`);
+      const data: {
+        total?: number;
+        active?: number;
+        error?: number;
+        by_kapi?: Record<string, LoraCihaz[]>;
+      } = await r.json();
+      if (!data.total) {
+        setLoraByKapi({});
+        setLoraSummary(null);
+        return;
+      }
+      setLoraByKapi(data.by_kapi || {});
+      setLoraSummary({
+        total: data.total || 0,
+        active: data.active || 0,
+        error: data.error || 0,
+      });
+    } catch {
+      setLoraByKapi({});
+      setLoraSummary(null);
+    }
+  }, [building]);
+
   useEffect(() => {
     if (!building) return;
     setLoading(true);
@@ -344,22 +434,11 @@ export default function SayacModal({
     setUzaktanLookup(new Map());
     setUzaktanBinaMatched(false);
     setUzaktanListFilter("all");
+    setLoraByKapi({});
+    setLoraSummary(null);
 
-    fetch(`/api/uzaktan-sozlesme?bina_id=${building.id}`)
-      .then((r) => r.json())
-      .then((data: { matched?: boolean; sayaclar?: UzaktanSayacMatch[] }) => {
-        if (!data.matched || !data.sayaclar?.length) {
-          setUzaktanLookup(new Map());
-          setUzaktanBinaMatched(false);
-          return;
-        }
-        setUzaktanBinaMatched(true);
-        setUzaktanLookup(buildUzaktanLookup(data.sayaclar));
-      })
-      .catch(() => {
-        setUzaktanLookup(new Map());
-        setUzaktanBinaMatched(false);
-      });
+    refetchUzaktan();
+    refetchLora();
 
     // Fetch bina_bilgi
     fetch(`/api/bina-bilgi?bina_id=${building.id}`)
@@ -423,7 +502,7 @@ export default function SayacModal({
         setError("Veriler yüklenirken hata oluştu.");
         setLoading(false);
       });
-  }, [building]);
+  }, [building, refetchUzaktan, refetchLora]);
 
   useEffect(() => {
     if (!highlightSayacId?.trim() || loading || rows.length === 0) return;
@@ -460,6 +539,7 @@ export default function SayacModal({
       const data = await res.json();
       setSaved(true);
       if (data.bildirimler?.length) await refresh();
+      await refetchUzaktan();
       onSaved?.({
         sayac_count: data.sayac_count ?? 0,
         sayac_kayit: data.sayac_kayit ?? 0,
@@ -486,6 +566,14 @@ export default function SayacModal({
 
   const girilenSayac = rows.filter((r) => r.sayac_id.trim() !== "").length;
   const dolulukYuzde = rows.length > 0 ? Math.round((girilenSayac / rows.length) * 100) : 0;
+
+  const resolveLoraForRow = (row: SayacRow): LoraCihaz[] => {
+    const keys = [row.kapi_no?.trim(), String(row.birim_no)].filter(Boolean) as string[];
+    for (const key of keys) {
+      if (loraByKapi[key]?.length) return loraByKapi[key];
+    }
+    return [];
+  };
   const uzaktanEslesenSayac = rows.filter(
     (r) => r.sayac_id.trim() && lookupUzaktanMatch(uzaktanLookup, r.sayac_id)
   ).length;
@@ -570,6 +658,29 @@ export default function SayacModal({
                 </button>
               )}
             </div>
+            {!loading && !noBinaInfo && loraSummary && loraSummary.total > 0 && (
+              <div className="flex min-w-[120px] items-center gap-2 rounded-xl border border-dashed border-emerald-300/60 bg-emerald-50/80 px-2.5 py-1.5 dark:border-emerald-700/40 dark:bg-emerald-950/30">
+                <div className="flex-1">
+                  <div className="mb-0.5 flex justify-between text-[8px] font-bold uppercase tracking-wide text-gray-500">
+                    <span>LoRa</span>
+                    <span className="tabular-nums text-emerald-700 dark:text-emerald-300">
+                      {loraSummary.active}/{loraSummary.total}
+                    </span>
+                  </div>
+                  <div className="h-1 overflow-hidden rounded-full bg-emerald-100 dark:bg-emerald-950">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-emerald-600 to-emerald-400"
+                      style={{
+                        width: `${loraSummary.total > 0 ? Math.round((loraSummary.active / loraSummary.total) * 100) : 0}%`,
+                      }}
+                    />
+                  </div>
+                  {loraSummary.error > 0 ? (
+                    <p className="mt-0.5 text-[7px] font-semibold text-red-600">{loraSummary.error} hata</p>
+                  ) : null}
+                </div>
+              </div>
+            )}
             {!loading && !noBinaInfo && rows.length > 0 && (
               <div className="flex min-w-[120px] items-center gap-2 rounded-xl border border-dashed border-violet-300/60 bg-violet-50/80 px-2.5 py-1.5 dark:border-violet-700/40 dark:bg-violet-950/30">
                 <div className="flex-1">
@@ -950,6 +1061,7 @@ export default function SayacModal({
                             row={row}
                             binaId={building?.id ?? 0}
                             uzaktanMatch={lookupUzaktanMatch(uzaktanLookup, row.sayac_id)}
+                            loraDevices={resolveLoraForRow(row)}
                             highlighted={matchesHighlightSayac(row, highlightSayacId)}
                             onQr={handleShowQr}
                           />

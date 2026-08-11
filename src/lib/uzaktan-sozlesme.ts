@@ -1,8 +1,11 @@
+/** Eşleşen uzaktan okuma binaları — mor */
+export const UZAKTAN_MATCH_COLOR = "#7c3aed";
+
 export const UZAKTAN_TYPE_COLORS: Record<string, string> = {
-  BAYLAN_LORA_W: "#7c3aed",
-  POLIMETER_LORA_W: "#ea580c",
-  "BRT METER LORA": "#0891b2",
-  KARMA: "#ca8a04",
+  BAYLAN_LORA_W: UZAKTAN_MATCH_COLOR,
+  POLIMETER_LORA_W: UZAKTAN_MATCH_COLOR,
+  "BRT METER LORA": UZAKTAN_MATCH_COLOR,
+  KARMA: UZAKTAN_MATCH_COLOR,
 };
 
 export const UZAKTAN_TYPE_LABELS: Record<string, string> = {
@@ -47,8 +50,8 @@ export interface UzaktanSozlesmeIndex {
   binalar: Record<string, UzaktanBinaEntry>;
 }
 
-export function getUzaktanTypeColor(type: string): string {
-  return UZAKTAN_TYPE_COLORS[type] ?? "#64748b";
+export function getUzaktanTypeColor(_type?: string): string {
+  return UZAKTAN_MATCH_COLOR;
 }
 
 export function getUzaktanTypeLabel(type: string): string {
@@ -77,14 +80,24 @@ export function resolveUzaktanBuildingStyle(
     return { ...UZAKTAN_DIM_STYLE, visible: false };
   }
 
-  const color = getUzaktanTypeColor(entry.primary_type);
-  const intensity = entry.sayac_count >= 5 ? 0.48 : entry.sayac_count >= 2 ? 0.42 : 0.36;
+  const color = UZAKTAN_MATCH_COLOR;
+  // Eşleşen sayaç arttıkça dolgu yoğunluğu artsın
+  const intensity =
+    entry.sayac_count >= 20
+      ? 0.55
+      : entry.sayac_count >= 10
+        ? 0.5
+        : entry.sayac_count >= 5
+          ? 0.45
+          : entry.sayac_count >= 2
+            ? 0.4
+            : 0.34;
 
   return {
     color,
     fillColor: color,
     fillOpacity: intensity,
-    weight: entry.primary_type === "KARMA" ? 3 : 2.5,
+    weight: entry.sayac_count >= 10 ? 3 : 2.5,
     visible: true,
   };
 }
@@ -103,7 +116,8 @@ export function normUzaktanSayacDigits(value: string) {
   return String(value ?? "")
     .trim()
     .replace(/^2025-/i, "")
-    .replace(/\D/g, "");
+    .replace(/\D/g, "")
+    .replace(/^0+/, "");
 }
 
 export function buildUzaktanLookup(
