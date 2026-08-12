@@ -64,6 +64,14 @@ const SearchIcon = () => (
   </svg>
 );
 
+const ReportIcon = () => (
+  <svg className="fill-current" width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 4.75A1.75 1.75 0 0 1 6.75 3h7.94c.46 0 .9.18 1.24.51l2.56 2.56c.33.33.51.78.51 1.24v11.94A1.75 1.75 0 0 1 17.25 21h-10.5A1.75 1.75 0 0 1 5 19.25V4.75Z" stroke="currentColor" strokeWidth="1.8" fill="none" />
+    <path d="M14 3.5V7h3.5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    <path d="M8 11.5h8M8 15h5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+  </svg>
+);
+
 const AccessIcon = () => (
   <svg className="fill-current" width="18" height="18" viewBox="0 0 24 24">
     <path d="M12 12a4 4 0 100-8 4 4 0 000 8zm-7 8a7 7 0 0114 0H5z" fill="currentColor" />
@@ -91,6 +99,11 @@ const navItems: NavItem[] = [
     icon: <SearchIcon />,
     name: "MASKİ Arama",
     path: "/maski-arama",
+  },
+  {
+    icon: <ReportIcon />,
+    name: "Yönetici Raporu",
+    path: "/yonetici-raporu",
   },
   {
     icon: <AccessIcon />,

@@ -2491,6 +2491,18 @@ export default function MapComponent() {
                 </svg>
                 Aktarım
               </Link>
+              <Link
+                href="/yonetici-raporu"
+                className={`${MAP_TOOLBAR_BTN} min-w-0 flex-1`}
+                title="Yönetici raporu: sayaç, abone, sözleşme ve bölge özeti"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 4.75A1.75 1.75 0 0 1 6.75 3h7.94c.46 0 .9.18 1.24.51l2.56 2.56c.33.33.51.78.51 1.24v11.94A1.75 1.75 0 0 1 17.25 21h-10.5A1.75 1.75 0 0 1 5 19.25V4.75Z" />
+                  <path d="M14 3.5V7h3.5" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M8 11.5h8M8 15h5" strokeLinecap="round" />
+                </svg>
+                Rapor
+              </Link>
               <MapNotificationBell
                 onBinaClick={(binaId) => zoomToBuilding(binaId)}
                 onToggle={(open) => {
