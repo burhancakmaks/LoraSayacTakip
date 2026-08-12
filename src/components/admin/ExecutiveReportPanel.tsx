@@ -178,7 +178,7 @@ export default function ExecutiveReportPanel() {
     sayac_durum.gecerli + sayac_durum.eksik + sayac_durum.okunmadi + sayac_durum.hatali;
 
   return (
-    <div className="space-y-6 print:space-y-4">
+    <div className="space-y-6 pb-6 print:space-y-4">
       <section className={`${PANEL_CARD} print:shadow-none`}>
         <div className="border-b border-gray-200 px-6 py-5 dark:border-gray-800">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -360,17 +360,17 @@ export default function ExecutiveReportPanel() {
       ) : null}
 
       <section className="grid grid-cols-1 gap-6 xl:grid-cols-[minmax(0,1.6fr)_minmax(280px,0.8fr)]">
-        <div className={PANEL_CARD}>
-          <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+        <div className={`${PANEL_CARD} flex max-h-[min(72vh,720px)] flex-col print:max-h-none`}>
+          <div className="shrink-0 border-b border-gray-200 px-6 py-4 dark:border-gray-800">
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Bölgesel Dağılım</h4>
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               Bölge bazında sayaç, abone ve toplam envanter içindeki pay.
             </p>
           </div>
 
-          <div className="overflow-auto">
+          <div className="min-h-0 flex-1 overflow-auto overscroll-y-contain [-webkit-overflow-scrolling:touch] print:overflow-visible">
             <table className="min-w-full text-sm">
-              <thead className="bg-gray-50 dark:bg-gray-800/50">
+              <thead className="sticky top-0 z-10 bg-gray-50 shadow-[0_1px_0_0_rgba(0,0,0,0.06)] dark:bg-gray-800/95 dark:shadow-[0_1px_0_0_rgba(255,255,255,0.06)]">
                 <tr className="text-left text-xs uppercase tracking-[0.16em] text-gray-500 dark:text-gray-400">
                   <th className="px-6 py-3">Bölge</th>
                   <th className="px-6 py-3 text-right">Bina</th>
@@ -411,11 +411,11 @@ export default function ExecutiveReportPanel() {
           </div>
         </div>
 
-        <div className={PANEL_CARD}>
-          <div className="border-b border-gray-200 px-6 py-4 dark:border-gray-800">
+        <div className={`${PANEL_CARD} flex max-h-[min(72vh,720px)] flex-col print:max-h-none`}>
+          <div className="shrink-0 border-b border-gray-200 px-6 py-4 dark:border-gray-800">
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Öne Çıkan Bölgeler</h4>
           </div>
-          <div className="space-y-3 px-6 py-5">
+          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-y-contain px-6 py-5 [-webkit-overflow-scrolling:touch] print:overflow-visible">
             {topRegions.map((region, index) => (
               <div
                 key={`${region.bolge}-${index}`}
