@@ -186,11 +186,11 @@ export default function SayacSyncPanel() {
         )}
       </div>
 
-      <div className={`${PANEL_CARD} p-5`}>
-        <h4 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white">Kaynak Dosyalar</h4>
-        <div className="overflow-x-auto">
+      <div className={`${PANEL_CARD} flex max-h-[min(50vh,420px)] flex-col p-5`}>
+        <h4 className="mb-4 shrink-0 text-sm font-semibold text-gray-900 dark:text-white">Kaynak Dosyalar</h4>
+        <div className="min-h-0 flex-1 overflow-auto overscroll-y-contain [-webkit-overflow-scrolling:touch]">
           <table className="w-full text-left text-sm">
-            <thead>
+            <thead className="sticky top-0 z-10 bg-white shadow-[0_1px_0_0_rgba(0,0,0,0.06)] dark:bg-gray-900 dark:shadow-[0_1px_0_0_rgba(255,255,255,0.06)]">
               <tr className="border-b border-blue-light-100 text-xs font-semibold uppercase tracking-wide text-gray-500 dark:border-blue-light-900/30">
                 <th className="pb-3 pr-4">Kaynak</th>
                 <th className="pb-3 pr-4">Dosya</th>

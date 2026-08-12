@@ -577,9 +577,9 @@ export default function SayacExcelImportPanel() {
               <p className="text-sm text-error-600/80 dark:text-error-400/80">Dosya okunamadı veya aktarılacak satır yok</p>
             </div>
           </div>
-          <div className="max-h-72 overflow-y-auto">
+          <div className="max-h-[min(50vh,400px)] overflow-y-auto overscroll-y-contain [-webkit-overflow-scrolling:touch]">
             <table className="w-full text-sm">
-              <thead className="sticky top-0 bg-blue-light-50/95 dark:bg-blue-light-950/80">
+              <thead className="sticky top-0 z-10 bg-blue-light-50/95 shadow-[0_1px_0_0_rgba(0,0,0,0.06)] dark:bg-blue-light-950/90 dark:shadow-[0_1px_0_0_rgba(255,255,255,0.06)]">
                 <tr className="text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
                   <th className="w-20 px-6 py-3">Satır</th>
                   <th className="w-36 px-4 py-3">Sütun</th>
@@ -616,9 +616,9 @@ export default function SayacExcelImportPanel() {
               </p>
             </div>
           </div>
-          <div className="max-h-72 overflow-y-auto">
+          <div className="max-h-[min(50vh,400px)] overflow-y-auto overscroll-y-contain [-webkit-overflow-scrolling:touch]">
             <table className="w-full text-sm">
-              <thead className="sticky top-0 bg-blue-light-50/95 dark:bg-blue-light-950/80">
+              <thead className="sticky top-0 z-10 bg-blue-light-50/95 shadow-[0_1px_0_0_rgba(0,0,0,0.06)] dark:bg-blue-light-950/90 dark:shadow-[0_1px_0_0_rgba(255,255,255,0.06)]">
                 <tr className="text-left text-xs font-semibold uppercase tracking-wide text-gray-500">
                   <th className="w-20 px-6 py-3">Satır</th>
                   <th className="w-36 px-4 py-3">Sütun</th>
@@ -641,15 +641,15 @@ export default function SayacExcelImportPanel() {
 
       {/* Önizleme */}
       {preview.length > 0 && step !== "error" && (
-        <div className={PANEL_CARD}>
-          <div className="border-b border-blue-light-100 px-6 py-4 dark:border-blue-light-900/30">
+        <div className={`${PANEL_CARD} flex max-h-[min(65vh,560px)] flex-col`}>
+          <div className="shrink-0 border-b border-blue-light-100 px-6 py-4 dark:border-blue-light-900/30">
             <h4 className="font-semibold text-gray-900 dark:text-white">Veri Önizlemesi</h4>
             <p className="mt-0.5 text-sm text-gray-500">İlk {preview.length} satır gösteriliyor</p>
           </div>
-          <div className="overflow-x-auto">
+          <div className="min-h-0 flex-1 overflow-auto overscroll-y-contain [-webkit-overflow-scrolling:touch]">
             <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-blue-light-100 bg-blue-light-50/80 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:border-blue-light-900/30 dark:bg-blue-light-950/40">
+              <thead className="sticky top-0 z-10 bg-blue-light-50/95 shadow-[0_1px_0_0_rgba(0,0,0,0.06)] dark:bg-blue-light-950/90 dark:shadow-[0_1px_0_0_rgba(255,255,255,0.06)]">
+                <tr className="border-b border-blue-light-100 text-left text-xs font-semibold uppercase tracking-wide text-gray-500 dark:border-blue-light-900/30">
                   <th className="px-6 py-3">Satır</th>
                   <th className="px-4 py-3">ADA/PARSEL</th>
                   <th className="px-4 py-3">Blok</th>
