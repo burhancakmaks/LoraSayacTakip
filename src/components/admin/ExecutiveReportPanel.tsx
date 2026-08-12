@@ -24,6 +24,8 @@ type ReportSummary = {
 
 type RegionItem = {
   bolge: string;
+  bolge_kisa?: string;
+  bolge_ham?: string;
   bina_sayisi: number;
   sayac_sayisi: number;
   abone_sayisi: number;
@@ -44,6 +46,7 @@ type ReportPayload = {
   highlights: {
     lider_bolge: {
       bolge: string;
+      bolge_kisa?: string;
       sayac_sayisi: number;
       abone_sayisi: number;
       sayac_payi: number;
@@ -119,6 +122,13 @@ function StatusPill({ label, value, color }: { label: string; value: number; col
   );
 }
 
+function formatAboneValue(region: RegionItem) {
+  if (region.abone_sayisi === 0 && region.sayac_sayisi > 0) {
+    return "Kayit yok";
+  }
+  return formatNumber(region.abone_sayisi);
+}
+
 export default function ExecutiveReportPanel() {
   const [data, setData] = useState<ReportPayload | null>(null);
   const [loading, setLoading] = useState(true);
@@ -190,7 +200,7 @@ export default function ExecutiveReportPanel() {
                 Operasyonel görünürlük ve bölgesel yoğunluk
               </h3>
               <p className="mt-2 max-w-3xl text-sm text-gray-500 dark:text-gray-400">
-                Sayaç envanteri, abone kapsaması, sözleşme eşleşmesi ve saha veri kalitesi tek raporda birleştirilir.
+                Sayaç envanteri, abone görünürlüğü, sözleşme eşleşmesi ve saha veri kalitesi tek raporda birleştirilir.
               </p>
             </div>
             <div className="flex flex-wrap items-center gap-2 print:hidden">
@@ -237,7 +247,7 @@ export default function ExecutiveReportPanel() {
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Performans Göstergeleri</h4>
           </div>
           <div className="space-y-5 p-6">
-            <RatioBar label="Abone kapsama oranı" value={summary.abone_kapsama_orani} />
+            <RatioBar label="Abone görünürlük oranı" value={summary.abone_kapsama_orani} />
             <RatioBar label="Sayaç veri sağlığı" value={summary.sayac_saglik_orani} tone="bg-emerald-600" />
             <RatioBar label="Bina yapılandırma oranı" value={summary.bina_yapilandirma_orani} tone="bg-violet-600" />
             <RatioBar label="Uzaktan okuma eşleşme oranı" value={summary.sozlesme_eslesme_orani} tone="bg-amber-600" />
@@ -326,7 +336,9 @@ export default function ExecutiveReportPanel() {
             {highlights.lider_bolge ? (
               <div className="rounded-xl border border-gray-200 bg-gray-50 px-4 py-4 dark:border-gray-800 dark:bg-gray-800/40">
                 <p className="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Lider Bölge</p>
-                <p className="mt-2 text-base font-semibold text-gray-900 dark:text-white">{highlights.lider_bolge.bolge}</p>
+                <p className="mt-2 text-base font-semibold text-gray-900 dark:text-white">
+                  {highlights.lider_bolge.bolge_kisa || highlights.lider_bolge.bolge}
+                </p>
                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                   {formatNumber(highlights.lider_bolge.sayac_sayisi)} sayaç · %{highlights.lider_bolge.sayac_payi.toLocaleString("tr-TR")} pay
                 </p>
@@ -364,7 +376,7 @@ export default function ExecutiveReportPanel() {
           <div className="shrink-0 border-b border-gray-200 px-6 py-4 dark:border-gray-800">
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Bölgesel Dağılım</h4>
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-              Bölge bazında sayaç, abone ve toplam envanter içindeki pay.
+              Bölgeler sadeleştirilmiş isimlerle listelenir; pay sütunu toplam sayaç hacmi içindeki oranı gösterir.
             </p>
           </div>
 
@@ -375,15 +387,20 @@ export default function ExecutiveReportPanel() {
                   <th className="px-6 py-3">Bölge</th>
                   <th className="px-6 py-3 text-right">Bina</th>
                   <th className="px-6 py-3 text-right">Sayaç</th>
-                  <th className="px-6 py-3 text-right">Abone</th>
-                  <th className="px-6 py-3 text-right">Pay</th>
+                  <th className="px-6 py-3 text-right">Abone Kaydı</th>
+                  <th className="px-6 py-3 text-right">Sayaç Payı</th>
                   <th className="px-6 py-3">Yoğunluk</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                 {data.regions.map((region) => (
                   <tr key={region.bolge} className="transition hover:bg-gray-50/80 dark:hover:bg-white/[0.02]">
-                    <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">{region.bolge}</td>
+                    <td className="px-6 py-4">
+                      <div className="font-medium text-gray-900 dark:text-white">{region.bolge_kisa || region.bolge}</div>
+                      {region.bolge_ham && region.bolge_ham !== region.bolge_kisa && (
+                        <div className="mt-1 text-xs text-gray-400 dark:text-gray-500">{region.bolge_ham}</div>
+                      )}
+                    </td>
                     <td className="px-6 py-4 text-right tabular-nums text-gray-600 dark:text-gray-300">
                       {formatNumber(region.bina_sayisi)}
                     </td>
@@ -391,7 +408,7 @@ export default function ExecutiveReportPanel() {
                       {formatNumber(region.sayac_sayisi)}
                     </td>
                     <td className="px-6 py-4 text-right tabular-nums text-gray-600 dark:text-gray-300">
-                      {formatNumber(region.abone_sayisi)}
+                      {formatAboneValue(region)}
                     </td>
                     <td className="px-6 py-4 text-right tabular-nums text-blue-light-700 dark:text-blue-light-300">
                       %{region.sayac_payi.toLocaleString("tr-TR")}
@@ -423,9 +440,9 @@ export default function ExecutiveReportPanel() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-sm font-semibold text-gray-900 dark:text-white">{region.bolge}</p>
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white">{region.bolge_kisa || region.bolge}</p>
                     <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                      {formatNumber(region.bina_sayisi)} bina · %{region.abone_orani.toLocaleString("tr-TR")} abone kapsaması
+                      {formatNumber(region.bina_sayisi)} bina · %{region.abone_orani.toLocaleString("tr-TR")} abone görünürlüğü
                     </p>
                   </div>
                   <span className="rounded-full bg-blue-light-100 px-2 py-0.5 text-[10px] font-bold text-blue-light-700 dark:bg-blue-light-950/50 dark:text-blue-light-300">

@@ -20,6 +20,47 @@ function pct(numerator: number, denominator: number) {
   return Math.round((numerator / denominator) * 1000) / 10;
 }
 
+function toTitleCase(value: string) {
+  return value
+    .split(" ")
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+}
+
+function formatRegionLabel(rawValue: string | null, binaCount: number) {
+  const raw = String(rawValue ?? "").trim();
+  if (!raw) {
+    return {
+      label: "Tanımsız Bölge",
+      shortLabel: "Tanımsız Bölge",
+      raw,
+    };
+  }
+
+  let normalized = raw.replace(/_MULTIPOLYGON$/i, "");
+  normalized = normalized.replace(/^P_/i, "");
+  normalized = normalized.replace(/^RYA_/i, "Rya ");
+  normalized = normalized.replace(/_/g, " ");
+  normalized = normalized.replace(/\s+/g, " ").trim();
+
+  normalized = normalized
+    .replace(/\bMER\b/gi, "Merkez")
+    .replace(/\bTICARET\b/gi, "Ticaret")
+    .replace(/\bKONUT\b/gi, "Konut")
+    .replace(/\bDUKKAN\b/gi, "Dukkan")
+    .replace(/\bCAMI\b/gi, "Cami");
+
+  const shortLabel = toTitleCase(normalized);
+  const label = `${shortLabel} · ${binaCount.toLocaleString("tr-TR")} bina`;
+
+  return {
+    label,
+    shortLabel,
+    raw,
+  };
+}
+
 function loadSozlesmeOzet() {
   try {
     const index = loadUzaktanSozlesmeIndex();
@@ -162,20 +203,25 @@ export async function GET() {
     const sozlesmeEslesmeOrani = pct(sozlesmeOzet.uzaktan_eslesen_sayac, sozlesmeOzet.uzaktan_excel_sayac);
     const birimDolulukOrani = pct(summary.toplam_sayac, summary.beklenen_birim || summary.toplam_birim_kaydi);
 
-    const regionItems = regions.map((region) => ({
-      bolge: region.bolge || "Tanımsız Bölge",
+    const regionItems = regions.map((region) => {
+      const formatted = formatRegionLabel(region.bolge, region.bina_sayisi || 0);
+      return {
+        bolge: formatted.label,
+        bolge_kisa: formatted.shortLabel,
+        bolge_ham: formatted.raw || "Tanımsız Bölge",
       bina_sayisi: region.bina_sayisi || 0,
       sayac_sayisi: region.sayac_sayisi || 0,
       abone_sayisi: region.abone_sayisi || 0,
       abone_orani: pct(region.abone_sayisi, region.sayac_sayisi),
       sayac_payi: pct(region.sayac_sayisi, summary.toplam_sayac),
-    }));
+      };
+    });
 
     const insights: string[] = [];
 
     if (topRegion) {
       insights.push(
-        `${topRegion.bolge} bölgesi toplam sayaç hacminin %${pct(topRegion.sayac_sayisi || 0, summary.toplam_sayac).toLocaleString("tr-TR")}'ini taşıyor.`
+        `${formatRegionLabel(topRegion.bolge, topRegion.bina_sayisi || 0).shortLabel} bölgesi toplam sayaç hacminin %${pct(topRegion.sayac_sayisi || 0, summary.toplam_sayac).toLocaleString("tr-TR")}'ini taşıyor.`
       );
     }
 
@@ -249,7 +295,8 @@ export async function GET() {
       highlights: {
         lider_bolge: topRegion
           ? {
-              bolge: topRegion.bolge || "Tanımsız Bölge",
+              bolge: formatRegionLabel(topRegion.bolge, topRegion.bina_sayisi || 0).label,
+              bolge_kisa: formatRegionLabel(topRegion.bolge, topRegion.bina_sayisi || 0).shortLabel,
               sayac_sayisi: topRegion.sayac_sayisi || 0,
               abone_sayisi: topRegion.abone_sayisi || 0,
               sayac_payi: pct(topRegion.sayac_sayisi || 0, summary.toplam_sayac),
