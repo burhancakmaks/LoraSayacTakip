@@ -1,0 +1,117 @@
+{
+  "mode": "dry-run",
+  "snapMeters": 8,
+  "osmAroundMeters": 8,
+  "alreadyInDb": 8688,
+  "duplicateSource": 44,
+  "matchedExistingPolygon": 51,
+  "osmBuildingsToCreate": 104,
+  "osmMeters": 414,
+  "stillUnmatchedPoints": 368,
+  "stillUnmatchedRows": 3542,
+  "methodDist": {
+    "inside:existing_sayac": 7,
+    "nearest": 29,
+    "inside": 15
+  },
+  "sampleMatched": [
+    {
+      "meter": "1431936",
+      "bina": "D3A",
+      "method": "existing_sayac",
+      "m": 0.000011918922303877373
+    },
+    {
+      "meter": "640001515",
+      "bina": "A8",
+      "method": "existing_sayac",
+      "m": 0
+    },
+    {
+      "meter": "2933026",
+      "bina": "ŞEN YAŞAM EVLERİ",
+      "method": "nearest",
+      "m": 6.144563523418995
+    },
+    {
+      "meter": "2932967",
+      "bina": "ŞEN YAŞAM EVLERİ",
+      "method": "nearest",
+      "m": 6.144563523418995
+    },
+    {
+      "meter": "2933036",
+      "bina": "ŞEN YAŞAM EVLERİ",
+      "method": "nearest",
+      "m": 6.144563523418995
+    },
+    {
+      "meter": "640014567",
+      "bina": "C4",
+      "method": "nearest",
+      "m": 0.5423646066566032
+    },
+    {
+      "meter": "2991008",
+      "bina": "BA8 ",
+      "method": "inside",
+      "m": 0.000015805328256836357
+    },
+    {
+      "meter": "640003831",
+      "bina": "B2-10",
+      "method": "inside",
+      "m": 0
+    }
+  ],
+  "sampleOsm": [
+    {
+      "name": "OSM 1141770626",
+      "sokak": "",
+      "kapi": "",
+      "sayac": 13
+    },
+    {
+      "name": "OSM 1140812603",
+      "sokak": "",
+      "kapi": "",
+      "sayac": 25
+    },
+    {
+      "name": "OSM 1142588972",
+      "sokak": "",
+      "kapi": "",
+      "sayac": 17
+    },
+    {
+      "name": "OSM 1138751985",
+      "sokak": "",
+      "kapi": "",
+      "sayac": 1
+    },
+    {
+      "name": "OSM 1141429090",
+      "sokak": "",
+      "kapi": "",
+      "sayac": 1
+    },
+    {
+      "name": "OSM 453017483",
+      "sokak": "",
+      "kapi": "",
+      "sayac": 1
+    },
+    {
+      "name": "OSM 1142588978",
+      "sokak": "",
+      "kapi": "",
+      "sayac": 5
+    },
+    {
+      "name": "OSM 1138681531",
+      "sokak": "",
+      "kapi": "",
+      "sayac": 1
+    }
+  ]
+}

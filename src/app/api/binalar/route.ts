@@ -2,6 +2,104 @@ import { NextResponse } from "next/server";
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
 
+type BinaRow = {
+  id: number;
+  value: string | null;
+  coordinates: [number, number][][];
+  sayac_count: number;
+  is_configured: boolean;
+  has_overlay_meters: boolean;
+};
+
+function foldName(value: string | null) {
+  return String(value || "")
+    .normalize("NFC")
+    .toLocaleUpperCase("tr-TR")
+    .trim();
+}
+
+function isGeneratedName(value: string | null) {
+  return /^\s*Bina\s*#\d+\s*$/i.test(String(value || "").trim());
+}
+
+function bboxOf(coords: [number, number][][]) {
+  let minLat = 90;
+  let maxLat = -90;
+  let minLng = 180;
+  let maxLng = -180;
+  const rings = Array.isArray(coords?.[0]?.[0]) ? coords : coords ? [coords as unknown as [number, number][]] : [];
+  for (const ring of rings) {
+    for (const p of ring || []) {
+      const lat = Number(p[0]);
+      const lng = Number(p[1]);
+      if (!Number.isFinite(lat) || !Number.isFinite(lng)) continue;
+      if (lat < minLat) minLat = lat;
+      if (lat > maxLat) maxLat = lat;
+      if (lng < minLng) minLng = lng;
+      if (lng > maxLng) maxLng = lng;
+    }
+  }
+  return { minLat, maxLat, minLng, maxLng };
+}
+
+function overlaps(
+  a: { minLat: number; maxLat: number; minLng: number; maxLng: number },
+  b: { minLat: number; maxLat: number; minLng: number; maxLng: number }
+) {
+  return a.minLat <= b.maxLat && a.maxLat >= b.minLat && a.minLng <= b.maxLng && a.maxLng >= b.minLng;
+}
+
+function similarBbox(
+  a: { minLat: number; maxLat: number; minLng: number; maxLng: number },
+  b: { minLat: number; maxLat: number; minLng: number; maxLng: number }
+) {
+  const aLat = a.maxLat - a.minLat;
+  const aLng = a.maxLng - a.minLng;
+  const bLat = b.maxLat - b.minLat;
+  const bLng = b.maxLng - b.minLng;
+  const aArea = Math.max(aLat * aLng, 1e-18);
+  const bArea = Math.max(bLat * bLng, 1e-18);
+  return Math.abs(aArea - bArea) / Math.max(aArea, bArea) <= 0.25;
+}
+
+function markOverlayMeterCopies(binalar: BinaRow[]) {
+  const withBbox = binalar.map((b) => ({ b, bbox: bboxOf(b.coordinates) }));
+  const byName = new Map<string, typeof withBbox>();
+  for (const item of withBbox) {
+    const key = foldName(item.b.value);
+    if (!key) continue;
+    if (!byName.has(key)) byName.set(key, []);
+    byName.get(key)!.push(item);
+  }
+
+  for (const group of byName.values()) {
+    if (group.length < 2) continue;
+    const metered = group.filter((x) => x.b.sayac_count > 0);
+    if (!metered.length) continue;
+    for (const item of group) {
+      if (item.b.sayac_count > 0) continue;
+      if (metered.some((m) => overlaps(m.bbox, item.bbox))) {
+        item.b.has_overlay_meters = true;
+        item.b.is_configured = true;
+      }
+    }
+  }
+
+  const meteredAll = withBbox.filter((x) => x.b.sayac_count > 0);
+  for (const item of withBbox) {
+    if (item.b.sayac_count > 0 || item.b.has_overlay_meters) continue;
+    if (!isGeneratedName(item.b.value)) continue;
+    if (
+      meteredAll.some(
+        (m) => overlaps(m.bbox, item.bbox) && similarBbox(m.bbox, item.bbox) && !isGeneratedName(m.b.value)
+      )
+    ) {
+      item.b.has_overlay_meters = true;
+      item.b.is_configured = true;
+    }
+  }
+}
+
 export async function GET() {
   try {
     const dbPath = path.join(process.cwd(), "data", "binalar.db");
@@ -79,7 +177,10 @@ export async function GET() {
       tarife_karma: row.tarife_karma === 1,
       rezerv_abone_sayisi: row.rezerv_abone_sayisi || 0,
       has_tarife: !!row.tarife_sinif,
+      has_overlay_meters: false,
     }));
+
+    markOverlayMeterCopies(binalar);
 
     return NextResponse.json(binalar);
   } catch (error: any) {

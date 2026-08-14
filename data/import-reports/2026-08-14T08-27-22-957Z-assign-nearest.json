@@ -1,0 +1,159 @@
+{
+  "mode": "dry-run",
+  "force": true,
+  "maxSafeMeters": null,
+  "alreadyInDb": 9049,
+  "duplicateSource": 44,
+  "remainingRows": 3646,
+  "remainingPoints": 450,
+  "matchedRows": 3646,
+  "skippedRows": 0,
+  "methodDist": {
+    "force:nearest_forced": 3544,
+    "force:same_name_existing_sayac": 42,
+    "force:same_name_primary_layer": 34,
+    "force:nearest_forced_tiebreak": 22,
+    "force:existing_bina_bilgi": 3,
+    "force:smallest_nested": 1
+  },
+  "skipReasons": {},
+  "distanceBucketsRows": {
+    "2-10km": 3100,
+    "25-50m": 46,
+    "50-137m": 13,
+    "500m-2km": 34,
+    "137-500m": 37,
+    "8-25m": 10,
+    "10km+": 395,
+    "0-8m": 11
+  },
+  "matchedDistanceBuckets": {
+    "2-10km": 3100,
+    "25-50m": 46,
+    "50-137m": 13,
+    "500m-2km": 34,
+    "137-500m": 37,
+    "8-25m": 10,
+    "10km+": 395,
+    "0-8m": 11
+  },
+  "nearestOfUnmatchedPoints": {
+    "n": 450,
+    "min": 0.000013318543498170067,
+    "p10": 166.9001638585502,
+    "median": 3233.301075038447,
+    "p90": 17966.357923978318,
+    "max": 51989.41299840499
+  },
+  "sampleMatched": [
+    {
+      "meter": "640000397",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    },
+    {
+      "meter": "640000128",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    },
+    {
+      "meter": "640000328",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    },
+    {
+      "meter": "640000321",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    },
+    {
+      "meter": "640000135",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    },
+    {
+      "meter": "640000977",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    },
+    {
+      "meter": "640000980",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    },
+    {
+      "meter": "640000324",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    },
+    {
+      "meter": "640000509",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    },
+    {
+      "meter": "640000729",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    },
+    {
+      "meter": "640000131",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    },
+    {
+      "meter": "6440000123",
+      "bina": "Bina #2874",
+      "method": "force:nearest_forced",
+      "m": 2911.0744196411456,
+      "second": null,
+      "sokak": "",
+      "kapi": "61"
+    }
+  ],
+  "sampleSkipped": []
+}

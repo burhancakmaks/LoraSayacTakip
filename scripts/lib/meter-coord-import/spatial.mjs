@@ -72,14 +72,125 @@ function isRyaLayer(layer) {
   return /^RYA_/i.test(String(layer || ""));
 }
 
+function ringsAreaM2(rings) {
+  let total = 0;
+  for (const ring of rings || []) {
+    if (!ring || ring.length < 3) continue;
+    const refLat = ring[0][0];
+    const refLng = ring[0][1];
+    let a = 0;
+    for (let i = 0; i < ring.length; i++) {
+      const [lat1, lng1] = ring[i];
+      const [lat2, lng2] = ring[(i + 1) % ring.length];
+      const p1 = toMeters(lat1, lng1, refLat, refLng);
+      const p2 = toMeters(lat2, lng2, refLat, refLng);
+      a += p1.x * p2.y - p2.x * p1.y;
+    }
+    total += Math.abs(a / 2);
+  }
+  return total;
+}
+
+function foldedName(value) {
+  return unicodeFold(value).toLocaleUpperCase("tr-TR");
+}
+
+function isGeneratedBuildingName(value) {
+  return /^\s*Bina\s*#\d+\s*$/i.test(unicodeFold(value));
+}
+
+function similarArea(a, b, ratio = 0.2) {
+  const mx = Math.max(a, b);
+  if (!mx || !Number.isFinite(mx)) return false;
+  return Math.abs(a - b) / mx <= ratio;
+}
+
+function dropUnnamedFootprintCopies(hits) {
+  const named = hits.filter((h) => foldedName(h.building.value) && !isGeneratedBuildingName(h.building.value));
+  if (!named.length || named.length === hits.length) return hits;
+  const namedAreas = named.map((h) => ringsAreaM2(h.building.rings));
+  const kept = hits.filter((h) => {
+    if (!isGeneratedBuildingName(h.building.value)) return true;
+    const area = ringsAreaM2(h.building.rings);
+    return !namedAreas.some((na) => similarArea(area, na));
+  });
+  return kept.length ? kept : hits;
+}
+
+function pickNestedOrPrimary(hits) {
+  const ranked = hits
+    .map((h) => ({ ...h, area: ringsAreaM2(h.building.rings) || Number.POSITIVE_INFINITY }))
+    .sort((a, b) => a.area - b.area);
+  const smallest = ranked[0];
+  const second = ranked[1];
+  if (smallest && second && Number.isFinite(smallest.area) && second.area >= smallest.area * 3) {
+    return { building: smallest.building, overlay: "smallest_nested" };
+  }
+
+  const maks = ranked.filter((h) => /Maks_Bina/i.test(h.building.layer || ""));
+  if (maks.length === 1) {
+    return { building: maks[0].building, overlay: "unique_maks_bina" };
+  }
+  if (maks.length > 1) {
+    const a = maks[0];
+    const b = maks[1];
+    if (Number.isFinite(a.area) && b.area >= a.area * 3) {
+      return { building: a.building, overlay: "smallest_maks_bina" };
+    }
+  }
+  return null;
+}
+
+function pickCanonicalSameName(hits) {
+  const ranked = hits
+    .map((h) => ({
+      ...h,
+      area: ringsAreaM2(h.building.rings) || Number.POSITIVE_INFINITY,
+      sayac: h.building.sayacCount || 0,
+      rya: isRyaLayer(h.building.layer),
+      bilgi: !!h.building.hasBilgi,
+    }))
+    .sort((a, b) => {
+      if (b.sayac !== a.sayac) return b.sayac - a.sayac;
+      if (a.bilgi !== b.bilgi) return a.bilgi ? -1 : 1;
+      if (a.rya !== b.rya) return a.rya ? 1 : -1;
+      return a.area - b.area;
+    });
+  const best = ranked[0];
+  let overlay = "same_name_canonical";
+  if (best.sayac > 0) overlay = "same_name_existing_sayac";
+  else if (best.bilgi && ranked.some((r) => !r.bilgi)) overlay = "existing_bina_bilgi";
+  else if (!best.rya && ranked.some((r) => r.rya)) overlay = "same_name_primary_layer";
+  return { building: best.building, overlay };
+}
+
 export function resolveOverlayHits(hits) {
   if (!hits.length) return { building: null, reason: "NO_BUILDING_CANDIDATE", hitIds: [] };
   if (hits.length === 1) {
     return { building: hits[0].building, reason: null, hitIds: [hits[0].building.id] };
   }
 
-  const names = new Set(hits.map((h) => unicodeFold(h.building.value).toLocaleUpperCase("tr-TR")));
+  const deduped = dropUnnamedFootprintCopies(hits);
+  if (deduped.length === 1) {
+    return {
+      building: deduped[0].building,
+      reason: null,
+      hitIds: hits.map((h) => h.building.id),
+      overlay: "named_over_unnamed_copy",
+    };
+  }
+
+  const names = new Set(deduped.map((h) => foldedName(h.building.value)));
   if (names.size !== 1 || ![...names][0]) {
+    const nested = pickNestedOrPrimary(deduped);
+    if (nested?.building) {
+      return {
+        building: nested.building,
+        reason: null,
+        hitIds: hits.map((h) => h.building.id),
+        overlay: nested.overlay,
+      };
+    }
     return {
       building: null,
       reason: "AMBIGUOUS_BUILDING",
@@ -87,25 +198,13 @@ export function resolveOverlayHits(hits) {
     };
   }
 
-  const withSayac = hits.filter((h) => (h.building.sayacCount || 0) > 0);
-  if (withSayac.length === 1) {
-    return { building: withSayac[0].building, reason: null, hitIds: hits.map((h) => h.building.id), overlay: "existing_sayac" };
-  }
-  if (withSayac.length > 1) {
-    return { building: null, reason: "AMBIGUOUS_BUILDING", hitIds: hits.map((h) => h.building.id) };
-  }
-
-  const withBilgi = hits.filter((h) => h.building.hasBilgi);
-  if (withBilgi.length === 1) {
-    return { building: withBilgi[0].building, reason: null, hitIds: hits.map((h) => h.building.id), overlay: "existing_bina_bilgi" };
-  }
-
-  const primary = hits.filter((h) => !isRyaLayer(h.building.layer));
-  if (primary.length === 1) {
-    return { building: primary[0].building, reason: null, hitIds: hits.map((h) => h.building.id), overlay: "same_name_primary_layer" };
-  }
-
-  return { building: null, reason: "AMBIGUOUS_BUILDING", hitIds: hits.map((h) => h.building.id) };
+  const picked = pickCanonicalSameName(deduped);
+  return {
+    building: picked.building,
+    reason: null,
+    hitIds: hits.map((h) => h.building.id),
+    overlay: picked.overlay,
+  };
 }
 
 export function loadBuildingSpatialIndex(db) {

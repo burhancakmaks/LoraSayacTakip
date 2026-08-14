@@ -52,6 +52,7 @@ interface Building {
   sayac_count?: number;
   sayac_kayit?: number;
   polimeter_count?: number;
+  has_overlay_meters?: boolean;
   tarife_sinif?: string | null;
   tarife_etiket?: string | null;
   tarife_turu?: string | null;
@@ -328,7 +329,7 @@ interface BuildingVisual extends BuildingPolygonStyle {
 }
 
 function resolveBuildingVisual(building: Building): BuildingVisual {
-  const hasSayac = (building.sayac_count ?? 0) > 0;
+  const hasSayac = (building.sayac_count ?? 0) > 0 || !!building.has_overlay_meters;
   const hasTarife = !!building.has_tarife && !!building.tarife_sinif;
   const polyColor = hasSayac ? "#10b981" : "#465fff";
 

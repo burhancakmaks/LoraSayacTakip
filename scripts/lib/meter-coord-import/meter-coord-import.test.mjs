@@ -142,6 +142,31 @@ test("same-name overlay resolves to primary layer; different names do not", () =
     { building: other, meters: 0 },
   ]);
   assert.equal(amb.reason, REASON.AMBIGUOUS_BUILDING);
+
+  const small = squareBuilding(10, "D-1", 38.36, 38.33, 0.0002, { layer: "Maks_Bina" });
+  const large = squareBuilding(11, "REZERV", 38.36, 38.33, 0.002, { layer: "RYA_MER_5_MULTIPOLYGON" });
+  const nested = resolveOverlayHits([
+    { building: large, meters: 0 },
+    { building: small, meters: 0 },
+  ]);
+  assert.equal(nested.building.id, 10);
+  assert.equal(nested.overlay, "smallest_nested");
+
+  const more = squareBuilding(21, "E BLOK", 38.36, 38.33, 0.0002, { sayacCount: 325 });
+  const fewer = squareBuilding(22, "E BLOK", 38.36, 38.33, 0.0002, { sayacCount: 76 });
+  const canonical = resolveOverlayHits([
+    { building: fewer, meters: 0 },
+    { building: more, meters: 0 },
+  ]);
+  assert.equal(canonical.building.id, 21);
+
+  const named = squareBuilding(31, "DBT-2", 38.36, 38.33, 0.0002);
+  const unnamed = squareBuilding(32, "Bina #4065", 38.36, 38.33, 0.0002);
+  const namedWins = resolveOverlayHits([
+    { building: unnamed, meters: 0 },
+    { building: named, meters: 0 },
+  ]);
+  assert.equal(namedWins.building.id, 31);
 });
 
 test("block aliases are not merged by parser", () => {
