@@ -1,0 +1,78 @@
+{
+  "mode": "apply",
+  "generated_at": "2026-08-14T06:47:37.656Z",
+  "buildings_with_meters": 821,
+  "insert_count": 0,
+  "update_count": 772,
+  "keep_count": 49,
+  "sample_inserts": [],
+  "sample_updates": [
+    {
+      "bina_id": 1,
+      "daire_sayisi": 9,
+      "toplam": 9,
+      "sayac_count": 9,
+      "from_daire": 0,
+      "from_toplam": 0
+    },
+    {
+      "bina_id": 3,
+      "daire_sayisi": 6,
+      "toplam": 6,
+      "sayac_count": 6,
+      "from_daire": 0,
+      "from_toplam": 0
+    },
+    {
+      "bina_id": 4,
+      "daire_sayisi": 8,
+      "toplam": 8,
+      "sayac_count": 8,
+      "from_daire": 0,
+      "from_toplam": 0
+    },
+    {
+      "bina_id": 5,
+      "daire_sayisi": 4,
+      "toplam": 4,
+      "sayac_count": 4,
+      "from_daire": 0,
+      "from_toplam": 0
+    },
+    {
+      "bina_id": 8,
+      "daire_sayisi": 24,
+      "toplam": 24,
+      "sayac_count": 23,
+      "from_daire": 23,
+      "from_toplam": 23
+    },
+    {
+      "bina_id": 13,
+      "daire_sayisi": 12,
+      "toplam": 12,
+      "sayac_count": 12,
+      "from_daire": 0,
+      "from_toplam": 0
+    },
+    {
+      "bina_id": 18,
+      "daire_sayisi": 12,
+      "toplam": 12,
+      "sayac_count": 12,
+      "from_daire": 0,
+      "from_toplam": 0
+    },
+    {
+      "bina_id": 26,
+      "daire_sayisi": 23,
+      "toplam": 23,
+      "sayac_count": 23,
+      "from_daire": 0,
+      "from_toplam": 0
+    }
+  ],
+  "backup": "C:/Users/Surface/Desktop/LoraLast/LoraSayacTakip/data/backups/binalar.before-fill-bina-bilgi-2026-08-14T06-47-37-653Z.db",
+  "inserted": 0,
+  "updated": 772
+}

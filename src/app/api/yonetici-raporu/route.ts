@@ -119,7 +119,27 @@ export async function GET() {
           (SELECT COUNT(*) FROM sayac) AS toplam_birim_kaydi,
           (SELECT COUNT(*) FROM bina_bilgi) AS yapilandirilmis_bina,
           (SELECT COUNT(DISTINCT bina_id) FROM sayac WHERE TRIM(COALESCE(sayac_id, '')) != '') AS sayacli_bina,
-          (SELECT COALESCE(SUM(toplam_bagımsız_bolum), 0) FROM bina_bilgi) AS beklenen_birim
+          (SELECT COALESCE(SUM(toplam_bagımsız_bolum), 0) FROM bina_bilgi) AS beklenen_birim,
+          (
+            SELECT COUNT(*) FROM sayac
+            WHERE TRIM(COALESCE(sayac_id, '')) != ''
+              AND instr(lower(trim(coalesce(sayac_markasi, ''))), 'polimeter') > 0
+          ) AS toplam_polimeter,
+          (
+            SELECT COUNT(DISTINCT bina_id) FROM sayac
+            WHERE TRIM(COALESCE(sayac_id, '')) != ''
+              AND instr(lower(trim(coalesce(sayac_markasi, ''))), 'polimeter') > 0
+          ) AS polimeter_bina,
+          (
+            SELECT COUNT(*) FROM sayac
+            WHERE TRIM(COALESCE(sayac_id, '')) != ''
+              AND instr(lower(trim(coalesce(sayac_markasi, ''))), 'baylan') > 0
+          ) AS toplam_baylan,
+          (
+            SELECT COUNT(DISTINCT bina_id) FROM sayac
+            WHERE TRIM(COALESCE(sayac_id, '')) != ''
+              AND instr(lower(trim(coalesce(sayac_markasi, ''))), 'baylan') > 0
+          ) AS baylan_bina
       `
       )
       .get() as {
@@ -130,6 +150,10 @@ export async function GET() {
       yapilandirilmis_bina: number;
       sayacli_bina: number;
       beklenen_birim: number;
+      toplam_polimeter: number;
+      polimeter_bina: number;
+      toplam_baylan: number;
+      baylan_bina: number;
     };
 
     const sayacDurum = db
@@ -239,6 +263,12 @@ export async function GET() {
       insights.push("Saha veri kalitesi açısından kritik sayaç sorunu görünmüyor.");
     }
 
+    if ((summary.toplam_baylan ?? 0) > 0 || (summary.toplam_polimeter ?? 0) > 0) {
+      insights.push(
+        `Kayıtlı sayaç markası: ${summary.toplam_baylan.toLocaleString("tr-TR")} Baylan Lora (${summary.baylan_bina} bina), ${summary.toplam_polimeter.toLocaleString("tr-TR")} Polimeter (${summary.polimeter_bina} bina).`
+      );
+    }
+
     if (sozlesmeOzet.uzaktan_excel_sayac > 0) {
       insights.push(
         `Uzaktan okuma envanterinin %${sozlesmeEslesmeOrani.toLocaleString("tr-TR")}'i harita üzerinde eşleşmiş durumda.`
@@ -261,6 +291,10 @@ export async function GET() {
         yapilandirilmis_bina: summary.yapilandirilmis_bina,
         sayacli_bina: summary.sayacli_bina,
         beklenen_birim: summary.beklenen_birim,
+        toplam_polimeter: summary.toplam_polimeter ?? 0,
+        polimeter_bina: summary.polimeter_bina ?? 0,
+        toplam_baylan: summary.toplam_baylan ?? 0,
+        baylan_bina: summary.baylan_bina ?? 0,
         toplam_sozlesme: sozlesmeOzet.toplam_sozlesme,
         eslesen_sozlesme: sozlesmeOzet.eslesen_sozlesme,
         uzaktan_eslesen_sayac: sozlesmeOzet.uzaktan_eslesen_sayac,

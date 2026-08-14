@@ -1,0 +1,231 @@
+{
+  "mode": "dry-run",
+  "at": "2026-08-14T05:13:22.892Z",
+  "before": {
+    "binalar": {
+      "n": 4739,
+      "max_id": 4835,
+      "sum_id": 11487164,
+      "kml_u": 1268,
+      "id2_u": 3113
+    },
+    "sayac": 6989,
+    "bina_bilgi": 1982
+  },
+  "stats": {
+    "kml_path": "C:/Users/Surface/Downloads/Tüm Rezerv Alanlar.kml",
+    "kml_placemarks": 6405,
+    "by_src": {
+      "Maks_Bina": 1570,
+      "Binalar": 4835
+    },
+    "skip": {
+      "no_polygon": 0,
+      "outside_bbox": 0,
+      "tiny_area": 7,
+      "field_missing": 1,
+      "identity_pair": 4663,
+      "identity_id2": 165,
+      "identity_geom": 0,
+      "spatial_overlap": 0,
+      "kml_dup_id": 0,
+      "kml_dup_geom": 67
+    },
+    "insert": {
+      "maks": 1502,
+      "cad": 0,
+      "named": 1473,
+      "with_abone": 556
+    }
+  },
+  "insert_count": 1502,
+  "insert_bbox": {
+    "minLat": 38.29376512988635,
+    "maxLat": 38.3287410911727,
+    "minLng": 38.157127119719924,
+    "maxLng": 38.19759404090545
+  },
+  "spatial_skip_samples": [],
+  "samples": [
+    {
+      "src": "Maks_Bina",
+      "kml_id": 92472,
+      "id_2": 92472,
+      "value": "UAVT 198088643",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 0,
+      "area_m2": 26.6,
+      "centroid": {
+        "lat": 38.29942343436184,
+        "lng": 38.188070325575524
+      }
+    },
+    {
+      "src": "Maks_Bina",
+      "kml_id": 97020,
+      "id_2": 97020,
+      "value": "UAVT 190223909",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 1,
+      "area_m2": 210.8,
+      "centroid": {
+        "lat": 38.31970134404968,
+        "lng": 38.192812972863116
+      }
+    },
+    {
+      "src": "Maks_Bina",
+      "kml_id": 98517,
+      "id_2": 98517,
+      "value": "16/208",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 1,
+      "area_m2": 76.1,
+      "centroid": {
+        "lat": 38.2971206855524,
+        "lng": 38.19129325629649
+      }
+    },
+    {
+      "src": "Maks_Bina",
+      "kml_id": 100488,
+      "id_2": 100488,
+      "value": "175/1",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 0,
+      "area_m2": 55.1,
+      "centroid": {
+        "lat": 38.305473674294376,
+        "lng": 38.184150460843895
+      }
+    },
+    {
+      "src": "Maks_Bina",
+      "kml_id": 103730,
+      "id_2": 103730,
+      "value": "1/141",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 4,
+      "area_m2": 152.3,
+      "centroid": {
+        "lat": 38.32359110207748,
+        "lng": 38.19016626267532
+      }
+    },
+    {
+      "src": "Maks_Bina",
+      "kml_id": 103738,
+      "id_2": 103738,
+      "value": "UAVT 111757282",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 2,
+      "area_m2": 236.6,
+      "centroid": {
+        "lat": 38.30993275271984,
+        "lng": 38.191736493713115
+      }
+    },
+    {
+      "src": "Maks_Bina",
+      "kml_id": 109119,
+      "id_2": 109119,
+      "value": "175/1",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 0,
+      "area_m2": 41.6,
+      "centroid": {
+        "lat": 38.30491284736768,
+        "lng": 38.185190645700196
+      }
+    },
+    {
+      "src": "Maks_Bina",
+      "kml_id": 109221,
+      "id_2": 109221,
+      "value": "1/175",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 0,
+      "area_m2": 61.1,
+      "centroid": {
+        "lat": 38.30565542385965,
+        "lng": 38.183352695897575
+      }
+    },
+    {
+      "src": "Maks_Bina",
+      "kml_id": 109225,
+      "id_2": 109225,
+      "value": "175/1",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 0,
+      "area_m2": 57.1,
+      "centroid": {
+        "lat": 38.3052254021378,
+        "lng": 38.18452604723435
+      }
+    },
+    {
+      "src": "Maks_Bina",
+      "kml_id": 109227,
+      "id_2": 109227,
+      "value": "1/175",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 0,
+      "area_m2": 46.3,
+      "centroid": {
+        "lat": 38.30515533660295,
+        "lng": 38.1848671927353
+      }
+    },
+    {
+      "src": "Maks_Bina",
+      "kml_id": 118044,
+      "id_2": 118044,
+      "value": "1/175",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 0,
+      "area_m2": 52,
+      "centroid": {
+        "lat": 38.30554599005687,
+        "lng": 38.183718330645576
+      }
+    },
+    {
+      "src": "Maks_Bina",
+      "kml_id": 120151,
+      "id_2": 120151,
+      "value": "476/1",
+      "layer": "Maks_Bina",
+      "oda_id": null,
+      "oda_from": "null",
+      "abone": 0,
+      "area_m2": 18.7,
+      "centroid": {
+        "lat": 38.29811915580788,
+        "lng": 38.180016357056346
+      }
+    }
+  ]
+}

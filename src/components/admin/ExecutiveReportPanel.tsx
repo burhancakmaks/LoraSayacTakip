@@ -20,6 +20,10 @@ type ReportSummary = {
   sayac_saglik_orani: number;
   sozlesme_eslesme_orani: number;
   birim_doluluk_orani: number;
+  toplam_polimeter: number;
+  polimeter_bina: number;
+  toplam_baylan: number;
+  baylan_bina: number;
 };
 
 type RegionItem = {
@@ -225,8 +229,20 @@ export default function ExecutiveReportPanel() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 p-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 p-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
           <MetricCard label="Toplam Sayaç" value={summary.toplam_sayac} detail={`${formatNumber(summary.sayacli_bina)} sayaçlı bina`} />
+          <MetricCard
+            label="Baylan Lora"
+            value={summary.toplam_baylan ?? 0}
+            detail={`${formatNumber(summary.baylan_bina ?? 0)} binada`}
+            accent="text-violet-700 dark:text-violet-300"
+          />
+          <MetricCard
+            label="Polimeter"
+            value={summary.toplam_polimeter ?? 0}
+            detail={`${formatNumber(summary.polimeter_bina ?? 0)} binada`}
+            accent="text-orange-600 dark:text-orange-400"
+          />
           <MetricCard label="Toplam Abone" value={summary.toplam_abone} detail={`Kapsama %${summary.abone_kapsama_orani.toLocaleString("tr-TR")}`} />
           <MetricCard
             label="Uzaktan Sözleşme"

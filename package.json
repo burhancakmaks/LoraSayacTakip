@@ -15,7 +15,9 @@
     "audit:sayac": "node scripts/integrate-excel-harita.mjs",
     "build:diskapi-index": "node scripts/build-diskapi-index.mjs",
     "build:diskapi-by-bina": "node scripts/build-diskapi-by-bina.mjs",
-    "apply:diskapi-bilgi": "node scripts/apply-diskapi-bilgi.mjs --apply"
+    "apply:diskapi-bilgi": "node scripts/apply-diskapi-bilgi.mjs --apply",
+    "import:meter-coords": "node scripts/import-meter-coordinates.mjs",
+    "test:meter-coords": "node --test scripts/lib/meter-coord-import/meter-coord-import.test.mjs"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.19",

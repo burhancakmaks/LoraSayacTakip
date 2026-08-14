@@ -177,12 +177,19 @@ export async function POST(request: NextRequest) {
         `
       SELECT
         COUNT(*) AS sayac_kayit,
-        SUM(CASE WHEN TRIM(COALESCE(sayac_id, '')) != '' THEN 1 ELSE 0 END) AS sayac_count
+        SUM(CASE WHEN TRIM(COALESCE(sayac_id, '')) != '' THEN 1 ELSE 0 END) AS sayac_count,
+        SUM(
+          CASE
+            WHEN TRIM(COALESCE(sayac_id, '')) != ''
+             AND instr(lower(trim(coalesce(sayac_markasi, ''))), 'polimeter') > 0
+            THEN 1 ELSE 0
+          END
+        ) AS polimeter_count
       FROM sayac
       WHERE bina_id = ?
     `
       )
-      .get(bina_id) as { sayac_kayit: number; sayac_count: number };
+      .get(bina_id) as { sayac_kayit: number; sayac_count: number; polimeter_count: number };
 
     writeAudit(request, auth.user, {
       action: "update",
@@ -204,6 +211,7 @@ export async function POST(request: NextRequest) {
       saved: rows.length,
       sayac_kayit: sayacStats.sayac_kayit,
       sayac_count: sayacStats.sayac_count,
+      polimeter_count: sayacStats.polimeter_count || 0,
       bildirimler: yeniBildirimler,
     });
   } catch (error: any) {

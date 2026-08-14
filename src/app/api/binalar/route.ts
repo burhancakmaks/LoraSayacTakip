@@ -41,6 +41,20 @@ export async function GET() {
       ${tarifeJoin}
     `);
     const rows = query.all() as any[];
+
+    const polimeterByBina = new Map<number, number>(
+      (
+        db
+          .prepare(
+            `SELECT bina_id, COUNT(*) AS c
+             FROM sayac
+             WHERE TRIM(COALESCE(sayac_id, '')) != ''
+               AND instr(lower(trim(coalesce(sayac_markasi, ''))), 'polimeter') > 0
+             GROUP BY bina_id`
+          )
+          .all() as Array<{ bina_id: number; c: number }>
+      ).map((row) => [row.bina_id, row.c])
+    );
     
     const binalar = rows.map((row) => ({
       id: row.id,
@@ -57,6 +71,7 @@ export async function GET() {
       is_configured: row.is_configured === 1 || row.sayac_count > 0,
       sayac_count: row.sayac_count || 0,
       sayac_kayit: row.sayac_kayit || 0,
+      polimeter_count: polimeterByBina.get(row.id) || 0,
       dis_kapi_no: row.dis_kapi_no ? String(row.dis_kapi_no).trim() : "",
       tarife_sinif: row.tarife_sinif || null,
       tarife_etiket: row.tarife_etiket || null,

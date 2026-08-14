@@ -43,7 +43,7 @@ interface SayacModalProps {
   building: SelectedBuilding | null;
   highlightSayacId?: string | null;
   onClose: () => void;
-  onSaved?: (stats: { sayac_count: number; sayac_kayit: number }) => void;
+  onSaved?: (stats: { sayac_count: number; sayac_kayit: number; polimeter_count?: number }) => void;
   onOpenDoorLocation?: () => void;
   onOpenBuildingInfo?: () => void;
 }
@@ -365,41 +365,43 @@ export default function SayacModal({
     fetch(`/api/bina-bilgi?bina_id=${building.id}`)
       .then((r) => r.json())
       .then(async (bilgi) => {
-        const toplam: number = bilgi?.["toplam_bagımsız_bolum"] ?? bilgi?.toplam_bagımsız_bolum ?? 0;
-        if (!bilgi || toplam === 0) {
-          setNoBinaInfo(true);
-          setLoading(false);
-          return;
-        }
+        const toplamBilgi: number = bilgi?.["toplam_bagımsız_bolum"] ?? bilgi?.toplam_bagımsız_bolum ?? 0;
 
-        // Dynamically build floor options in sorted order
         const opts: string[] = [];
-        if (bilgi.has_zemin === 1) {
+        if (bilgi?.has_zemin === 1 || (!bilgi?.kat_sayisi && toplamBilgi > 0)) {
           opts.push("ZEMİN KAT");
         }
-        const katSayisi = bilgi.kat_sayisi || 0;
+        const katSayisi = bilgi?.kat_sayisi || 0;
         for (let k = 1; k <= katSayisi; k++) {
           opts.push(`${k}. KAT`);
         }
         opts.push("BODRUM KAT");
         opts.push("ORTAK ALAN");
-        
-        // Sort floor options using getFloorWeight helper
         const sortedOpts = [...opts].sort((a, b) => getFloorWeight(a) - getFloorWeight(b));
         setFloorOptions(sortedOpts);
 
-        // Fetch existing sayac rows
         const sayacRes = await fetch(`/api/sayac?bina_id=${building.id}`);
-        const existing: SayacRow[] = await sayacRes.json();
+        const sayacPayload = await sayacRes.json();
+        const existing: SayacRow[] = Array.isArray(sayacPayload) ? sayacPayload : [];
+        const highestUnitNumber = existing.reduce(
+          (highest, row) => Math.max(highest, Number(row.birim_no) || 0),
+          0
+        );
+        const rowCount = Math.max(toplamBilgi, existing.length, highestUnitNumber);
+        if (rowCount === 0) {
+          setNoBinaInfo(true);
+          setRows([]);
+          setLoading(false);
+          return;
+        }
+        setNoBinaInfo(false);
 
-        // Check if there is configured data to choose default view mode
         const hasData = existing.some((r) => r.sayac_id || r.kapi_no);
         setViewMode(hasData ? "grid" : "edit");
 
-        // Build full row array
         const defaultBlok = building.value || "";
-        const existingMap = new Map(existing.map((r) => [r.birim_no, r]));
-        const fullRows: SayacRow[] = Array.from({ length: toplam }, (_, i) => {
+        const existingMap = new Map(existing.map((r) => [Number(r.birim_no), r]));
+        const fullRows: SayacRow[] = Array.from({ length: rowCount }, (_, i) => {
           const birim_no = i + 1;
           const found = existingMap.get(birim_no);
           return {
@@ -416,7 +418,7 @@ export default function SayacModal({
           };
         });
 
-        setRows(applyInferredKatToRows(fullRows, bilgi));
+        setRows(applyInferredKatToRows(fullRows, bilgi || {}));
         setLoading(false);
       })
       .catch(() => {
@@ -463,6 +465,7 @@ export default function SayacModal({
       onSaved?.({
         sayac_count: data.sayac_count ?? 0,
         sayac_kayit: data.sayac_kayit ?? 0,
+        polimeter_count: data.polimeter_count ?? 0,
       });
       notifySayacGuncellendi();
     } catch (err: unknown) {

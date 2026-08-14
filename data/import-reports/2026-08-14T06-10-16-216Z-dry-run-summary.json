@@ -1,0 +1,125 @@
+{
+  "mode": "dry-run",
+  "branch": "30temUpdate",
+  "startedAt": "2026-08-14T06:10:16.216Z",
+  "excelPath": "C:/Users/Surface/Downloads/şayaç koordinat.xlsx",
+  "csvPath": "C:/Users/Surface/Downloads/sayaclar_20260810_093255.csv",
+  "excelHash": "801f749cf554249eb62781446ddb77ed417eaaa4142d28dce9c01002964c5383",
+  "csvHash": "dd60d649506927999bfc27a0b030d1d11c55e68a2e44d430be9c5944c69c141d",
+  "applyAllowed": true,
+  "stopReasons": [],
+  "selectedCrs": {
+    "code": "EPSG:5258",
+    "name": "TUREF / TM39",
+    "sample": {
+      "lat": 38.36112029512118,
+      "lng": 38.33763735307904
+    },
+    "inRegion": 1520,
+    "inRegionRatio": 0.9290953545232273,
+    "inside": 938,
+    "insideRatio": 0.5733496332518337,
+    "ambiguous": 218,
+    "outside": 480,
+    "invalid": 0,
+    "distance": {
+      "min": 0,
+      "median": 0.000012684163772208857,
+      "p95": 0.7047654913405468,
+      "max": 147.67851393335192
+    },
+    "score": 1.502444987775061
+  },
+  "excelSummary": {
+    "rows": 12740,
+    "uniqueCoordinates": 1636,
+    "uniqueRawMeters": 12696,
+    "uniqueNormalizedMeters": 12695,
+    "emptyMeters": 1,
+    "duplicateMeters": 44,
+    "normalizationCollisions": 0,
+    "valueDist": {
+      "BAYLAN_LORA_W": 7452,
+      "POLIMETER_LORA_W": 5287,
+      "BRT METER LORA": 1
+    }
+  },
+  "csvSummary": {
+    "rows": 7000,
+    "uniqueDeveui": 7000,
+    "duplicateDeveui": 0,
+    "durumDist": {
+      "active": 1964,
+      "registered": 5016,
+      "error": 20
+    },
+    "uniqueBlocks": 189,
+    "multiDeviceUnits": 1744
+  },
+  "gis": {
+    "selectedCrs": "EPSG:5258",
+    "crsEvidence": {
+      "code": "EPSG:5258",
+      "name": "TUREF / TM39",
+      "sample": {
+        "lat": 38.36112029512118,
+        "lng": 38.33763735307904
+      },
+      "inRegion": 1520,
+      "inRegionRatio": 0.9290953545232273,
+      "inside": 938,
+      "insideRatio": 0.5733496332518337,
+      "ambiguous": 218,
+      "outside": 480,
+      "invalid": 0,
+      "distance": {
+        "min": 0,
+        "median": 0.000012684163772208857,
+        "p95": 0.7047654913405468,
+        "max": 147.67851393335192
+      },
+      "score": 1.502444987775061
+    },
+    "parsedCoordinates": 1636,
+    "invalidCoordinates": 0,
+    "inside": 938,
+    "multiPolygon": 218,
+    "none": 412,
+    "nearestWithinThreshold": 3,
+    "leftUncertain": 695,
+    "distance": {
+      "min": 0,
+      "median": 0.000012684163772208857,
+      "p95": 0.7047654913405468,
+      "max": 147.67851393335192
+    }
+  },
+  "dbSummary": {
+    "sayacInsert": 0,
+    "sayacUnchanged": 7176,
+    "sayacUpdate": 0,
+    "sayacSkip": 5564,
+    "sayacConflict": 1241,
+    "binaBilgiCreate": 0,
+    "binaBilgiKeep": 708,
+    "deviceInsert": 0,
+    "deviceUpdate": 0,
+    "deviceUnchanged": 6999,
+    "provenDeviceMeterLinks": 0,
+    "unmatchedDeveui": 7000,
+    "newlyGreen": 0,
+    "stillBlueOrUncertain": 5367,
+    "alreadyGreen": 821,
+    "willBeGreen": 821
+  },
+  "skipReasons": {
+    "METER_ALREADY_IN_OTHER_BUILDING": 1153,
+    "AMBIGUOUS_BUILDING": 666,
+    "NO_BUILDING_CANDIDATE": 3544,
+    "DUPLICATE_SOURCE_METER": 88,
+    "TOO_FAR_FROM_BUILDING": 112,
+    "EMPTY_METER_NUMBER": 1
+  },
+  "provenMeters": 7176,
+  "skippedMeters": 5564
+}

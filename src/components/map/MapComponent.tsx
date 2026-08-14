@@ -51,6 +51,7 @@ interface Building {
   is_configured?: boolean;
   sayac_count?: number;
   sayac_kayit?: number;
+  polimeter_count?: number;
   tarife_sinif?: string | null;
   tarife_etiket?: string | null;
   tarife_turu?: string | null;
@@ -164,6 +165,23 @@ function createBugunIcon(count: number) {
     iconAnchor: [width / 2, 42],
     iconSize: [width, 42],
   });
+}
+
+const POLIMETER_LABEL_MIN_ZOOM = 16;
+
+function largestPolygon(polygons: L.Polygon[]): L.Polygon | null {
+  if (!polygons.length) return null;
+  let best = polygons[0];
+  let bestArea = 0;
+  for (const polygon of polygons) {
+    const b = polygon.getBounds();
+    const area = Math.abs(b.getNorth() - b.getSouth()) * Math.abs(b.getEast() - b.getWest());
+    if (area >= bestArea) {
+      best = polygon;
+      bestArea = area;
+    }
+  }
+  return best;
 }
 
 function normSayacDigits(value: string) {
@@ -383,6 +401,14 @@ function buildPopupContent(building: Building, visual: BuildingVisual): string {
             <div style="margin-top:2px;font-size:13px;font-weight:700;color:#101828;line-height:1.2;">${building.dis_kapi_no ? escHtml(building.dis_kapi_no) : "—"}</div>
           </div>
         </div>
+        ${
+          (building.polimeter_count ?? 0) > 0
+            ? `<div style="margin-top:6px;border-radius:8px;border:1px solid #fdba74;background:#fff7ed;padding:6px 8px;display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:9px;font-weight:700;color:#c2410c;">Polimeter</span>
+                <span style="font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;color:#ea580c;">${building.polimeter_count}</span>
+              </div>`
+            : ""
+        }
 
         ${tarifeBlock}
 
@@ -467,6 +493,9 @@ export default function MapComponent() {
   const buildingAlarmIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const sorunMarkersRef = useRef<L.Marker[]>([]);
   const bugunMarkersRef = useRef<L.Marker[]>([]);
+  const polimeterLabelPolygonsRef = useRef<Map<number, L.Polygon>>(new Map());
+  const upsertPolimeterLabelRef = useRef<(building: Building) => void>(() => {});
+  const syncPolimeterLabelVisibilityRef = useRef<() => void>(() => {});
   const uzaktanBinalarRef = useRef<Map<number, UzaktanBinaEntry>>(new Map());
   const lastDeepLinkKeyRef = useRef<string | null>(null);
   const lastBinaFocusIdRef = useRef<number | null>(null);
@@ -482,6 +511,7 @@ export default function MapComponent() {
   const [bugunOzet, setBugunOzet] = useState<BugunOzet | null>(null);
   const [bugunLayerEnabled, setBugunLayerEnabled] = useState(true);
   const [sorunLayerEnabled, setSorunLayerEnabled] = useState(true);
+  const [polimeterLayerEnabled, setPolimeterLayerEnabled] = useState(true);
   const [uzaktanLayerEnabled, setUzaktanLayerEnabled] = useState(false);
   const [uzaktanTypeFilter, setUzaktanTypeFilter] = useState<UzaktanTypeFilter>("all");
   const [uzaktanStats, setUzaktanStats] = useState<UzaktanSozlesmeIndex["stats"] | null>(null);
@@ -552,6 +582,46 @@ export default function MapComponent() {
   openSayacModalRef.current = (b: SelectedBuilding) => {
     setSelectedBuilding(b);
     setSayacModalOpen(true);
+  };
+
+  syncPolimeterLabelVisibilityRef.current = () => {
+    const map = mapRef.current;
+    if (!map) return;
+    const zoom = map.getZoom();
+    const el = map.getContainer();
+    el.classList.toggle(
+      "show-polimeter-labels",
+      polimeterLayerEnabled && zoom >= POLIMETER_LABEL_MIN_ZOOM
+    );
+    el.classList.remove("polimeter-z16", "polimeter-z17", "polimeter-z18");
+    if (zoom >= 18) el.classList.add("polimeter-z18");
+    else if (zoom >= 17) el.classList.add("polimeter-z17");
+    else el.classList.add("polimeter-z16");
+  };
+
+  upsertPolimeterLabelRef.current = (building: Building) => {
+    const existing = polimeterLabelPolygonsRef.current.get(building.id);
+    existing?.unbindTooltip();
+    polimeterLabelPolygonsRef.current.delete(building.id);
+
+    const count = building.polimeter_count ?? 0;
+    if (count <= 0) return;
+
+    const polygon = largestPolygon(buildingPolygonsRef.current.get(building.id) || []);
+    if (!polygon) return;
+
+    const box = document.createElement("div");
+    box.className = "polimeter-box";
+    box.innerHTML = `<span class="polimeter-box-title">Polimeter</span><span class="polimeter-box-count">${count}</span>`;
+
+    polygon.bindTooltip(box, {
+      permanent: true,
+      direction: "center",
+      className: "polimeter-on-building",
+      opacity: 1,
+      interactive: false,
+    });
+    polimeterLabelPolygonsRef.current.set(building.id, polygon);
   };
 
   const applyBuildingStylesForLayer = useCallback(
@@ -709,7 +779,7 @@ export default function MapComponent() {
   }, [sorunLayerEnabled, refreshNotifications]);
 
   const handleSayacSaved = useCallback(
-    (savedStats: { sayac_count: number; sayac_kayit: number }) => {
+    (savedStats: { sayac_count: number; sayac_kayit: number; polimeter_count?: number }) => {
       if (!selectedBuilding) return;
       const binaId = selectedBuilding.id;
       const building = buildingsDataRef.current.get(binaId);
@@ -720,8 +790,10 @@ export default function MapComponent() {
       building.aktif_abone_sayisi = newCount;
       building.sayac_count = savedStats.sayac_count;
       building.sayac_kayit = savedStats.sayac_kayit;
+      if (savedStats.polimeter_count != null) building.polimeter_count = savedStats.polimeter_count;
       if (savedStats.sayac_count > 0) building.is_configured = true;
       buildingsDataRef.current.set(binaId, building);
+      upsertPolimeterLabelRef.current(building);
 
       const visual = resolveBuildingVisual(building);
       const polygons = buildingPolygonsRef.current.get(binaId) || [];
@@ -813,6 +885,10 @@ export default function MapComponent() {
     uzaktanTypeFilter,
     applyBuildingStylesForLayer,
   ]);
+
+  useEffect(() => {
+    syncPolimeterLabelVisibilityRef.current();
+  }, [polimeterLayerEnabled]);
 
   useEffect(() => {
     if (loading || error || !sorunOzet) return;
@@ -1066,6 +1142,11 @@ export default function MapComponent() {
       saveMapView(center.lat, center.lng, map.getZoom());
     });
 
+    map.on("zoomend", () => {
+      syncPolimeterLabelVisibilityRef.current();
+    });
+    syncPolimeterLabelVisibilityRef.current();
+
     // Listen for popup buttons
     map.on("popupopen", (e) => {
       const el = e.popup.getElement();
@@ -1168,6 +1249,8 @@ export default function MapComponent() {
           if (buildingPolygons.length > 0) {
             buildingPolygonsRef.current.set(building.id, buildingPolygons);
           }
+
+          upsertPolimeterLabelRef.current(building);
         });
 
         // Üst üste binen sayaçsız mavi poligonlar, sayaçlı yeşil binaları kapatmasın.
@@ -1176,6 +1259,8 @@ export default function MapComponent() {
           const polygons = buildingPolygonsRef.current.get(building.id);
           polygons?.forEach((polygon) => polygon.bringToFront());
         }
+
+        syncPolimeterLabelVisibilityRef.current();
 
         if (cancelled || !mapRef.current) return;
 
@@ -1236,6 +1321,8 @@ export default function MapComponent() {
         const map = mapRef.current;
         sorunMarkersRef.current.forEach((m) => map.removeLayer(m));
         sorunMarkersRef.current = [];
+        polimeterLabelPolygonsRef.current.forEach((polygon) => polygon.unbindTooltip());
+        polimeterLabelPolygonsRef.current.clear();
         if (sayacMarkerRef.current) {
           map.removeLayer(sayacMarkerRef.current);
           sayacMarkerRef.current = null;
@@ -2640,6 +2727,35 @@ export default function MapComponent() {
             )}
             </div>
             </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setPolimeterLayerEnabled((v) => !v);
+                setLayerPickerOpen(false);
+                setMahallePickerOpen(false);
+                setUzaktanPanelOpen(false);
+                setSayacSearchOpen(false);
+                setNotifPanelOpen(false);
+              }}
+              className={`${MAP_TOOLBAR_BTN} w-full ${
+                polimeterLayerEnabled
+                  ? "border-orange-600 bg-orange-600 text-white dark:border-orange-500 dark:bg-orange-600 dark:text-white"
+                  : ""
+              }`}
+              title={polimeterLayerEnabled ? "Polimeter kutularını gizle" : "Polimeter kutularını göster"}
+            >
+              <span className="min-w-0 truncate">Polimeter</span>
+              <span
+                className={`ml-auto shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold ${
+                  polimeterLayerEnabled
+                    ? "bg-white/20 text-white"
+                    : "bg-orange-100 text-orange-700 dark:bg-orange-950/50 dark:text-orange-300"
+                }`}
+              >
+                {polimeterLayerEnabled ? "Açık" : "Kapalı"}
+              </span>
+            </button>
 
             {uzaktanStats && uzaktanStats.matched_bina > 0 && (
               <div className="relative w-full overflow-visible">
