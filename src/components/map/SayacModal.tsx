@@ -415,6 +415,7 @@ export default function SayacModal({
             sayac_id: found?.sayac_id ?? "",
             sicil_no: found?.sicil_no ?? "",
             abone_no: found?.abone_no ?? "",
+            sayac_durum: found?.sayac_durum,
           };
         });
 

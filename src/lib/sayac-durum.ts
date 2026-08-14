@@ -21,6 +21,8 @@ export function classifySayacDurum(raw: string | null | undefined): SayacDurum {
   if (!s) return "eksik";
   if (/OKUNMADI|OKUNAMADI|TAKILAMADI|TAKILMADI|SAYA[CÇ]\s*YOK|SAYAC\s*TAKIL/i.test(s)) return "okunmadi";
   if (s === "-" || /^YOK$/i.test(s)) return "eksik";
+  const compact = s.replace(/[\s:-]/g, "");
+  if (/^[0-9a-f]{16}$/i.test(compact)) return "gecerli";
   const digits = s.replace(/^2025-/i, "").replace(/\D/g, "");
   if (digits.length >= 6 && digits.length <= 12) return "gecerli";
   return "hatali";

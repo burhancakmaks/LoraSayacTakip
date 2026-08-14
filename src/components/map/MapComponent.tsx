@@ -87,6 +87,8 @@ interface SayacSearchResult {
   oda_id: number | null;
   is_configured: boolean;
   coordinates: [number, number][][];
+  bolge?: string;
+  source?: "sayac" | "lora";
 }
 
 interface KapiSearchResult {
@@ -2394,10 +2396,12 @@ export default function MapComponent() {
                             {result.building_name}
                           </div>
                           <div className="mt-1 flex flex-wrap gap-x-2 gap-y-0.5 text-[11px] text-gray-500 dark:text-gray-400">
+                            {result.bolge && <span>{result.bolge}</span>}
                             {result.blok_no && <span>Blok: {result.blok_no}</span>}
                             {result.kat && <span>Kat: {result.kat}</span>}
                             {result.kapi_no && <span>Kapı: {result.kapi_no}</span>}
                             {result.abone_no && <span>Abone: {result.abone_no}</span>}
+                            {result.source === "lora" && <span>LoRa</span>}
                           </div>
                         </button>
                         <div className="mr-2 flex shrink-0 items-center gap-1">
