@@ -1,0 +1,2 @@
+source_row,meter_number,installation_number,agreement_number,abone_no,value,sayac_markasi,location,crs,source_x,source_y,latitude,longitude,bina_id,bina_value,bina_layer,method,meters,confidence,overlay,action,reason,hitIds
+357,2440500318,,,420502,KLEPSAN,KLEPSAN,POINT (469822.8387 4250362.5761),EPSG:5258,469822.8387,4250362.5761,38.38565789468979,38.654607445337824,,,,,,,,skip,NO_BUILDING_CANDIDATE,

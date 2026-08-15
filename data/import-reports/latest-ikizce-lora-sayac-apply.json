@@ -1,0 +1,73 @@
+{
+  "mode": "apply",
+  "devices": 6999,
+  "planned": 6999,
+  "skipped_exists": 0,
+  "skipped_no_bina": 0,
+  "buildings": 185,
+  "sample": [
+    {
+      "lora_id": 1,
+      "bina_id": 5507,
+      "bina_value": "A1",
+      "sayac_id": "000019c640010392",
+      "blok_no": "A1",
+      "kat": "ZEMİN KAT",
+      "kapi_no": "1",
+      "durum": "gecerli"
+    },
+    {
+      "lora_id": 1,
+      "bina_id": 5507,
+      "bina_value": "A1",
+      "sayac_id": "000019c640010392",
+      "blok_no": "A1",
+      "kat": "ZEMİN KAT",
+      "kapi_no": "1",
+      "durum": "gecerli"
+    },
+    {
+      "lora_id": 2,
+      "bina_id": 5507,
+      "bina_value": "A1",
+      "sayac_id": "000019c640012848",
+      "blok_no": "A1",
+      "kat": "ZEMİN KAT",
+      "kapi_no": "1",
+      "durum": "gecerli"
+    },
+    {
+      "lora_id": 3,
+      "bina_id": 5507,
+      "bina_value": "A1",
+      "sayac_id": "000019c600004133",
+      "blok_no": "A1",
+      "kat": "ZEMİN KAT",
+      "kapi_no": "10",
+      "durum": "gecerli"
+    },
+    {
+      "lora_id": 4,
+      "bina_id": 5507,
+      "bina_value": "A1",
+      "sayac_id": "000019c640013725",
+      "blok_no": "A1",
+      "kat": "ZEMİN KAT",
+      "kapi_no": "10",
+      "durum": "gecerli"
+    },
+    {
+      "lora_id": 5,
+      "bina_id": 5507,
+      "bina_value": "A1",
+      "sayac_id": "000019c600001223",
+      "blok_no": "A1",
+      "kat": "ZEMİN KAT",
+      "kapi_no": "11",
+      "durum": "gecerli"
+    }
+  ],
+  "missing_bloks": [],
+  "backup": "C:/Users/Surface/Desktop/LoraLast/LoraSayacTakip/data/backups/binalar.before-ikizce-lora-sayac-2026-08-14T09-08-08-407Z.db",
+  "inserted": 6999
+}

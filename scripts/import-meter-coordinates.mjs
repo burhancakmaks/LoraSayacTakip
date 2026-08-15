@@ -3,24 +3,52 @@
  * Varsayılan: --dry-run (veritabanına yazmaz).
  *
  *   node scripts/import-meter-coordinates.mjs
+ *   node scripts/import-meter-coordinates.mjs --excel "C:/...xlsx"
  *   node scripts/import-meter-coordinates.mjs --excel "C:/...xlsx" --csv "C:/...csv"
  *   node scripts/import-meter-coordinates.mjs --apply --max-nearest-meters 0.5
  */
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { DatabaseSync } from "node:sqlite";
 import { argValue, hasFlag, stampIso } from "./lib/meter-coord-import/common.mjs";
-import { readCoordinateWorkbook, parseCsvDevices } from "./lib/meter-coord-import/parsers.mjs";
+import { emptyCsv, readCoordinateWorkbook, parseCsvDevices, EXCEL_SCHEMA } from "./lib/meter-coord-import/parsers.mjs";
 import { buildImportPlan, summarizePlan, DEFAULT_MAX_NEAREST_M } from "./lib/meter-coord-import/plan.mjs";
 import { applyPlan, createDbBackup, verifyAfterApply } from "./lib/meter-coord-import/apply.mjs";
+import { iterKmlPlacemarks, parseKmlSimpleData } from "./lib/diskapi-geo.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const DEFAULT_EXCEL = "C:/Users/Surface/Downloads/şayaç koordinat.xlsx";
-const DEFAULT_CSV = "C:/Users/Surface/Downloads/sayaclar_20260810_093255.csv";
+const DEFAULT_KML = "C:/Users/Surface/Downloads/Maks_Bina.kml";
 const DB_PATH = join(ROOT, "data/binalar.db");
 const BACKUP_DIR = join(ROOT, "data/backups");
+
+function adaParselFromAttrs(d) {
+  const block = String(d.building_block ?? "").trim();
+  const layout = String(d.building_layout ?? "").trim();
+  if (!block) return "";
+  if (layout && layout !== "0") return `${block}/${layout}`;
+  return block;
+}
+
+function loadAdaByBinaId(db, kmlPath) {
+  const out = new Map();
+  if (!kmlPath || !existsSync(kmlPath)) return out;
+  const byKmlId = new Map();
+  const text = readFileSync(kmlPath, "utf8");
+  for (const xml of iterKmlPlacemarks(text)) {
+    const d = parseKmlSimpleData(xml);
+    const id = String(d.id ?? "").trim();
+    const ada = adaParselFromAttrs(d);
+    if (id && ada) byKmlId.set(id, ada);
+  }
+  for (const row of db.prepare("SELECT id, kml_id FROM binalar WHERE kml_id IS NOT NULL").all()) {
+    const ada = byKmlId.get(String(row.kml_id));
+    if (ada) out.set(row.id, ada);
+  }
+  return out;
+}
 
 function toCsv(rows, columns) {
   const esc = (v) => {
@@ -50,7 +78,9 @@ function writeReports(reportDir, stamp, mode, summary, plan) {
     "meter_number",
     "installation_number",
     "agreement_number",
+    "abone_no",
     "value",
+    "sayac_markasi",
     "location",
     "crs",
     "source_x",
@@ -133,11 +163,17 @@ function main() {
   const argv = process.argv;
   const apply = hasFlag(argv, "--apply");
   const excelPath = argValue(argv, "--excel") || DEFAULT_EXCEL;
-  const csvPath = argValue(argv, "--csv") || DEFAULT_CSV;
+  const kmlPath = argValue(argv, "--kml") || (existsSync(DEFAULT_KML) ? DEFAULT_KML : null);
+  const csvExplicit = hasFlag(argv, "--csv");
+  const csvPath = argValue(argv, "--csv");
   const reportDir = argValue(argv, "--report-dir") || join(ROOT, "data/import-reports");
   const crs = argValue(argv, "--crs");
   const nearestArg = argValue(argv, "--max-nearest-meters");
   const maxNearestMeters = nearestArg == null ? DEFAULT_MAX_NEAREST_M : Number(nearestArg);
+  const expectExcelArg = argValue(argv, "--expect-excel-rows");
+  const expectCsvArg = argValue(argv, "--expect-csv-rows");
+  const expectExcelRows = expectExcelArg == null ? null : Number(expectExcelArg);
+  const expectCsvRows = expectCsvArg == null ? null : Number(expectCsvArg);
   const mode = apply ? "apply" : "dry-run";
   const branch = currentBranch();
 
@@ -145,7 +181,11 @@ function main() {
     console.error("Excel bulunamadı:", excelPath);
     process.exit(1);
   }
-  if (!existsSync(csvPath)) {
+  if (csvExplicit && !csvPath) {
+    console.error("--csv bir dosya yolu gerektirir");
+    process.exit(1);
+  }
+  if (csvPath && !existsSync(csvPath)) {
     console.error("CSV bulunamadı:", csvPath);
     process.exit(1);
   }
@@ -159,16 +199,24 @@ function main() {
   }
 
   const excel = readCoordinateWorkbook(excelPath);
-  const csv = parseCsvDevices(csvPath);
+  const csv = csvPath ? parseCsvDevices(csvPath) : emptyCsv();
   const db = apply ? new DatabaseSync(DB_PATH) : new DatabaseSync(DB_PATH, { readOnly: true });
-  const plan = buildImportPlan({ db, excel, csv, crsCode: crs, maxNearestMeters });
+  const plan = buildImportPlan({
+    db,
+    excel,
+    csv,
+    crsCode: crs,
+    maxNearestMeters,
+    expectExcelRows: Number.isFinite(expectExcelRows) ? expectExcelRows : null,
+    expectCsvRows: Number.isFinite(expectCsvRows) ? expectCsvRows : null,
+  });
   const stamp = stampIso();
   const summary = {
     mode,
     branch,
     startedAt: new Date().toISOString(),
     excelPath,
-    csvPath,
+    csvPath: csvPath || null,
     excelHash: excel.hash,
     csvHash: csv.hash,
     ...summarizePlan(plan),
@@ -181,11 +229,6 @@ function main() {
     return;
   }
 
-  if (branch && branch !== "30temUpdate") {
-    console.error("APPLY DURDURULDU: branch 30temUpdate değil:", branch);
-    db.close();
-    process.exit(2);
-  }
   if (!plan.applyAllowed) {
     console.error("APPLY DURDURULDU: dry-run kritik kontrolleri geçmedi.");
     db.close();
@@ -195,12 +238,17 @@ function main() {
   db.close();
   const writable = new DatabaseSync(DB_PATH);
   writable.exec("PRAGMA busy_timeout = 15000");
-  const backup = createDbBackup(DB_PATH, BACKUP_DIR, "meter-coord");
+  const backup = createDbBackup(
+    DB_PATH,
+    BACKUP_DIR,
+    excel.schema === EXCEL_SCHEMA.ABONE_LOCATION ? "sayac-xlsx" : "meter-coord"
+  );
   let applied;
   try {
     applied = applyPlan(writable, plan, {
-      csvName: basename(csvPath),
+      csvName: csvPath ? basename(csvPath) : "",
       csvHash: csv.hash,
+      adaByBinaId: loadAdaByBinaId(writable, kmlPath),
     });
   } catch (err) {
     console.error("APPLY HATASI, rollback yapıldı:", err);

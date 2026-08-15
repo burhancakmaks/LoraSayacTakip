@@ -1,0 +1,45 @@
+{
+  "mode": "dry-run",
+  "at": "2026-08-15T07:48:34.392Z",
+  "before": {
+    "binalar": {
+      "n": 6734,
+      "max_id": 6830,
+      "sum_id": 23123999,
+      "kml_u": 3263,
+      "id2_u": 5108
+    },
+    "sayac": 24299,
+    "bina_bilgi": 2589
+  },
+  "stats": {
+    "kml_path": "C:/Users/Surface/Downloads/Tüm Rezerv Alanlar.kml",
+    "kml_placemarks": 6405,
+    "by_src": {
+      "Maks_Bina": 1570,
+      "Binalar": 4835
+    },
+    "skip": {
+      "no_polygon": 0,
+      "outside_bbox": 0,
+      "tiny_area": 7,
+      "field_missing": 1,
+      "identity_pair": 6165,
+      "identity_id2": 165,
+      "identity_geom": 67,
+      "spatial_overlap": 0,
+      "kml_dup_id": 0,
+      "kml_dup_geom": 0
+    },
+    "insert": {
+      "maks": 0,
+      "cad": 0,
+      "named": 0,
+      "with_abone": 0
+    }
+  },
+  "insert_count": 0,
+  "insert_bbox": null,
+  "spatial_skip_samples": [],
+  "samples": []
+}

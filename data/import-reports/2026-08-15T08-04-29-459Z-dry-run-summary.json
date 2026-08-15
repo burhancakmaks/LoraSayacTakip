@@ -1,0 +1,123 @@
+{
+  "mode": "dry-run",
+  "branch": "14agustos",
+  "startedAt": "2026-08-15T08:04:29.459Z",
+  "excelPath": "C:\\Users\\Surface\\Downloads\\sayaç.xlsx",
+  "csvPath": null,
+  "excelHash": "ca2c0a63f076a03c226e1abe4bea06feb6daf590baa5e8bd51aa7c9bda91f121",
+  "csvHash": null,
+  "applyAllowed": true,
+  "stopReasons": [],
+  "selectedCrs": {
+    "code": "EPSG:5258",
+    "name": "TUREF / TM39",
+    "sample": {
+      "lat": 38.35140184263987,
+      "lng": 38.661022535357496
+    },
+    "inRegion": 256,
+    "inRegionRatio": 1,
+    "inside": 255,
+    "insideRatio": 0.99609375,
+    "ambiguous": 0,
+    "outside": 1,
+    "invalid": 0,
+    "distance": {
+      "min": 0,
+      "median": 8.383027322093061e-9,
+      "p95": 0.0001873841393001729,
+      "max": 0.00042816466247424205
+    },
+    "score": 1.99609375
+  },
+  "excelSummary": {
+    "rows": 400,
+    "schema": "abone-location",
+    "uniqueCoordinates": 256,
+    "uniqueRawMeters": 400,
+    "uniqueNormalizedMeters": 400,
+    "emptyMeters": 0,
+    "duplicateMeters": 0,
+    "normalizationCollisions": 0,
+    "valueDist": {
+      "GÜNAL": 11,
+      "KLEPSAN": 132,
+      "CEM": 51,
+      "PAKSAY": 68,
+      "BAYLAN": 93,
+      "TÜRKOĞLU": 28,
+      "TEKSAN": 15,
+      "KONTROLDE": 1,
+      "PAKSAN": 1
+    }
+  },
+  "csvSummary": {
+    "rows": 0,
+    "uniqueDeveui": 0,
+    "duplicateDeveui": 0,
+    "durumDist": {},
+    "uniqueBlocks": 0,
+    "multiDeviceUnits": 0
+  },
+  "gis": {
+    "selectedCrs": "EPSG:5258",
+    "crsEvidence": {
+      "code": "EPSG:5258",
+      "name": "TUREF / TM39",
+      "sample": {
+        "lat": 38.35140184263987,
+        "lng": 38.661022535357496
+      },
+      "inRegion": 256,
+      "inRegionRatio": 1,
+      "inside": 255,
+      "insideRatio": 0.99609375,
+      "ambiguous": 0,
+      "outside": 1,
+      "invalid": 0,
+      "distance": {
+        "min": 0,
+        "median": 8.383027322093061e-9,
+        "p95": 0.0001873841393001729,
+        "max": 0.00042816466247424205
+      },
+      "score": 1.99609375
+    },
+    "parsedCoordinates": 256,
+    "invalidCoordinates": 0,
+    "inside": 255,
+    "multiPolygon": 0,
+    "none": 1,
+    "nearestWithinThreshold": 0,
+    "leftUncertain": 1,
+    "distance": {
+      "min": 0,
+      "median": 8.383027322093061e-9,
+      "p95": 0.0001873841393001729,
+      "max": 0.00042816466247424205
+    }
+  },
+  "dbSummary": {
+    "sayacInsert": 399,
+    "sayacUnchanged": 0,
+    "sayacUpdate": 0,
+    "sayacSkip": 1,
+    "sayacConflict": 0,
+    "binaBilgiCreate": 246,
+    "binaBilgiKeep": 0,
+    "deviceInsert": 0,
+    "deviceUpdate": 0,
+    "deviceUnchanged": 0,
+    "provenDeviceMeterLinks": 0,
+    "unmatchedDeveui": 0,
+    "newlyGreen": 246,
+    "stillBlueOrUncertain": 5492,
+    "alreadyGreen": 943,
+    "willBeGreen": 1189
+  },
+  "skipReasons": {
+    "NO_BUILDING_CANDIDATE": 1
+  },
+  "provenMeters": 399,
+  "skippedMeters": 1
+}

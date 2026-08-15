@@ -1,7 +1,8 @@
 {
-  "built_at": "2026-08-09T11:42:40.304Z",
+  "built_at": "2026-08-15T14:31:15.549Z",
   "source": "C:/Users/Surface/Desktop/LoraLast/LoraSayacTakip/data/diskapi-index.json",
-  "total_binalar": 1913,
+  "extra_source": "C:/Users/Surface/Downloads/Maks_Dış_Kapı_No.kml",
+  "total_binalar": 2404,
   "binalar": {
     "1": {
       "primary_kapi": "70/1",
@@ -50699,6 +50700,6821 @@
           "kapi_no": "68D",
           "lat": 38.3404380451121,
           "lng": 38.2929877515588,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6338": {
+      "primary_kapi": "84",
+      "doors": [
+        {
+          "diskapi_id": 324007,
+          "kapi_no": "84",
+          "lat": 38.3518147706112,
+          "lng": 38.6624612723985,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6339": {
+      "primary_kapi": "70",
+      "doors": [
+        {
+          "diskapi_id": 290419,
+          "kapi_no": "70",
+          "lat": 38.3887545751998,
+          "lng": 38.6520665394801,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6340": {
+      "primary_kapi": "93",
+      "doors": [
+        {
+          "diskapi_id": 301634,
+          "kapi_no": "93",
+          "lat": 38.351961130564,
+          "lng": 38.663649741484,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6341": {
+      "primary_kapi": "115",
+      "doors": [
+        {
+          "diskapi_id": 300980,
+          "kapi_no": "115",
+          "lat": 38.3513520624306,
+          "lng": 38.6633532432798,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355438,
+          "kapi_no": "115A",
+          "lat": 38.3514295589067,
+          "lng": 38.6633538283009,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6342": {
+      "primary_kapi": "77",
+      "doors": [
+        {
+          "diskapi_id": 303298,
+          "kapi_no": "77",
+          "lat": 38.3524601629422,
+          "lng": 38.6625159546654,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6343": {
+      "primary_kapi": "160",
+      "doors": [
+        {
+          "diskapi_id": 290436,
+          "kapi_no": "160",
+          "lat": 38.3505750241323,
+          "lng": 38.6655651406161,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6344": {
+      "primary_kapi": "119",
+      "doors": [
+        {
+          "diskapi_id": 300239,
+          "kapi_no": "119",
+          "lat": 38.3512552094468,
+          "lng": 38.6627023513917,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6345": {
+      "primary_kapi": "48",
+      "doors": [
+        {
+          "diskapi_id": 317632,
+          "kapi_no": "48",
+          "lat": 38.3507864355126,
+          "lng": 38.6620553507656,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6346": {
+      "primary_kapi": "39",
+      "doors": [
+        {
+          "diskapi_id": 295386,
+          "kapi_no": "39",
+          "lat": 38.35089479889,
+          "lng": 38.662666771141,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6347": {
+      "primary_kapi": "131",
+      "doors": [
+        {
+          "diskapi_id": 312296,
+          "kapi_no": "131",
+          "lat": 38.3510299687902,
+          "lng": 38.6637659880508,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6348": {
+      "primary_kapi": "72",
+      "doors": [
+        {
+          "diskapi_id": 297109,
+          "kapi_no": "72",
+          "lat": 38.3526284297731,
+          "lng": 38.6621231203988,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6349": {
+      "primary_kapi": "60",
+      "doors": [
+        {
+          "diskapi_id": 304619,
+          "kapi_no": "60",
+          "lat": 38.350358738352,
+          "lng": 38.6590289309463,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6350": {
+      "primary_kapi": "116",
+      "doors": [
+        {
+          "diskapi_id": 289861,
+          "kapi_no": "116",
+          "lat": 38.3514547610741,
+          "lng": 38.66324097879,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6351": {
+      "primary_kapi": "37A",
+      "doors": [
+        {
+          "diskapi_id": 355346,
+          "kapi_no": "37A",
+          "lat": 38.3818918644783,
+          "lng": 38.6443485813576,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 318663,
+          "kapi_no": "37",
+          "lat": 38.3819086847605,
+          "lng": 38.6443444898605,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6352": {
+      "primary_kapi": "59",
+      "doors": [
+        {
+          "diskapi_id": 298395,
+          "kapi_no": "59",
+          "lat": 38.3877589251003,
+          "lng": 38.6457667704061,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6353": {
+      "primary_kapi": "98",
+      "doors": [
+        {
+          "diskapi_id": 323858,
+          "kapi_no": "98",
+          "lat": 38.3528678028489,
+          "lng": 38.6640129595526,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6354": {
+      "primary_kapi": "86",
+      "doors": [
+        {
+          "diskapi_id": 318588,
+          "kapi_no": "86",
+          "lat": 38.3935069986909,
+          "lng": 38.6652904833253,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6355": {
+      "primary_kapi": "109",
+      "doors": [
+        {
+          "diskapi_id": 321160,
+          "kapi_no": "109",
+          "lat": 38.3876313246381,
+          "lng": 38.6681562840325,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6356": {
+      "primary_kapi": "69",
+      "doors": [
+        {
+          "diskapi_id": 304716,
+          "kapi_no": "69",
+          "lat": 38.352517400753,
+          "lng": 38.6619633275871,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6357": {
+      "primary_kapi": "68",
+      "doors": [
+        {
+          "diskapi_id": 316415,
+          "kapi_no": "68",
+          "lat": 38.3852670870334,
+          "lng": 38.6530616075543,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6358": {
+      "primary_kapi": "71",
+      "doors": [
+        {
+          "diskapi_id": 319447,
+          "kapi_no": "71",
+          "lat": 38.3888280973888,
+          "lng": 38.6518270867847,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6359": {
+      "primary_kapi": "12",
+      "doors": [
+        {
+          "diskapi_id": 323282,
+          "kapi_no": "12",
+          "lat": 38.3532895194646,
+          "lng": 38.6597464546726,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6360": {
+      "primary_kapi": "30",
+      "doors": [
+        {
+          "diskapi_id": 293816,
+          "kapi_no": "30",
+          "lat": 38.3515740487812,
+          "lng": 38.6597866905235,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6361": {
+      "primary_kapi": "81",
+      "doors": [
+        {
+          "diskapi_id": 300730,
+          "kapi_no": "81",
+          "lat": 38.3521293236306,
+          "lng": 38.6629552237397,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6362": {
+      "primary_kapi": "116",
+      "doors": [
+        {
+          "diskapi_id": 318801,
+          "kapi_no": "116",
+          "lat": 38.3906992967774,
+          "lng": 38.6669173419308,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6363": {
+      "primary_kapi": "61",
+      "doors": [
+        {
+          "diskapi_id": 300293,
+          "kapi_no": "61",
+          "lat": 38.3864703753439,
+          "lng": 38.648434401199,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6364": {
+      "primary_kapi": "35",
+      "doors": [
+        {
+          "diskapi_id": 286875,
+          "kapi_no": "35",
+          "lat": 38.3838481906884,
+          "lng": 38.6403374633105,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6365": {
+      "primary_kapi": "14",
+      "doors": [
+        {
+          "diskapi_id": 295495,
+          "kapi_no": "14",
+          "lat": 38.3882183476327,
+          "lng": 38.6138668292699,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6366": {
+      "primary_kapi": "137",
+      "doors": [
+        {
+          "diskapi_id": 325778,
+          "kapi_no": "137",
+          "lat": 38.3869852826744,
+          "lng": 38.680455042634,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6367": {
+      "primary_kapi": "73",
+      "doors": [
+        {
+          "diskapi_id": 291024,
+          "kapi_no": "73",
+          "lat": 38.3891211702933,
+          "lng": 38.6520490573072,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6368": {
+      "primary_kapi": "58",
+      "doors": [
+        {
+          "diskapi_id": 321780,
+          "kapi_no": "58",
+          "lat": 38.350468915632,
+          "lng": 38.663242962381,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6369": {
+      "primary_kapi": "53",
+      "doors": [
+        {
+          "diskapi_id": 315375,
+          "kapi_no": "53",
+          "lat": 38.3892039702684,
+          "lng": 38.6395620101195,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6370": {
+      "primary_kapi": "135",
+      "doors": [
+        {
+          "diskapi_id": 306580,
+          "kapi_no": "135",
+          "lat": 38.3857467101547,
+          "lng": 38.6772277166374,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6371": {
+      "primary_kapi": "41",
+      "doors": [
+        {
+          "diskapi_id": 316119,
+          "kapi_no": "41",
+          "lat": 38.3507170067899,
+          "lng": 38.6633333285824,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6372": {
+      "primary_kapi": "44",
+      "doors": [
+        {
+          "diskapi_id": 309552,
+          "kapi_no": "44",
+          "lat": 38.3508530089219,
+          "lng": 38.6618375043423,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6373": {
+      "primary_kapi": "3",
+      "doors": [
+        {
+          "diskapi_id": 300618,
+          "kapi_no": "3",
+          "lat": 38.3752792075968,
+          "lng": 38.6110148653303,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6374": {
+      "primary_kapi": "30",
+      "doors": [
+        {
+          "diskapi_id": 286653,
+          "kapi_no": "30",
+          "lat": 38.3525121123933,
+          "lng": 38.6611143120643,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355325,
+          "kapi_no": "30A",
+          "lat": 38.3525126909333,
+          "lng": 38.6611458592769,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6375": {
+      "primary_kapi": "13",
+      "doors": [
+        {
+          "diskapi_id": 321647,
+          "kapi_no": "13",
+          "lat": 38.353076750592,
+          "lng": 38.6597948396388,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6376": {
+      "primary_kapi": "170",
+      "doors": [
+        {
+          "diskapi_id": 285990,
+          "kapi_no": "170",
+          "lat": 38.3498199717301,
+          "lng": 38.6682036025771,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6377": {
+      "primary_kapi": "33",
+      "doors": [
+        {
+          "diskapi_id": 320732,
+          "kapi_no": "33",
+          "lat": 38.3511681575845,
+          "lng": 38.6618719604555,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6378": {
+      "primary_kapi": "50A",
+      "doors": [
+        {
+          "diskapi_id": 355304,
+          "kapi_no": "50A",
+          "lat": 38.3503373016327,
+          "lng": 38.6617929898256,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 316799,
+          "kapi_no": "50",
+          "lat": 38.3502991960708,
+          "lng": 38.6618921644938,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6379": {
+      "primary_kapi": "23",
+      "doors": [
+        {
+          "diskapi_id": 316424,
+          "kapi_no": "23",
+          "lat": 38.3514018434686,
+          "lng": 38.6610225353536,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355437,
+          "kapi_no": "23A",
+          "lat": 38.3513467751707,
+          "lng": 38.6608895599618,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6380": {
+      "primary_kapi": "42",
+      "doors": [
+        {
+          "diskapi_id": 314877,
+          "kapi_no": "42",
+          "lat": 38.350788340942,
+          "lng": 38.6614573023788,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6381": {
+      "primary_kapi": "120A",
+      "doors": [
+        {
+          "diskapi_id": 355449,
+          "kapi_no": "120A",
+          "lat": 38.3889031338525,
+          "lng": 38.6707355796724,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355444,
+          "kapi_no": "120B",
+          "lat": 38.3888653506801,
+          "lng": 38.6708427410803,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 300017,
+          "kapi_no": "120",
+          "lat": 38.388900923946,
+          "lng": 38.6707804556399,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6382": {
+      "primary_kapi": "102",
+      "doors": [
+        {
+          "diskapi_id": 291775,
+          "kapi_no": "102",
+          "lat": 38.3527060262747,
+          "lng": 38.6650761255664,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6383": {
+      "primary_kapi": "48",
+      "doors": [
+        {
+          "diskapi_id": 285705,
+          "kapi_no": "48",
+          "lat": 38.3516525544658,
+          "lng": 38.658141324691,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6384": {
+      "primary_kapi": "67",
+      "doors": [
+        {
+          "diskapi_id": 309395,
+          "kapi_no": "67",
+          "lat": 38.351224055085,
+          "lng": 38.6603925327484,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6385": {
+      "primary_kapi": "89",
+      "doors": [
+        {
+          "diskapi_id": 302216,
+          "kapi_no": "89",
+          "lat": 38.3517999530177,
+          "lng": 38.6628686625689,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6386": {
+      "primary_kapi": "164",
+      "doors": [
+        {
+          "diskapi_id": 319243,
+          "kapi_no": "164",
+          "lat": 38.3497502825778,
+          "lng": 38.6645777837552,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6387": {
+      "primary_kapi": "174",
+      "doors": [
+        {
+          "diskapi_id": 321791,
+          "kapi_no": "174",
+          "lat": 38.3488502460726,
+          "lng": 38.6689709364578,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6388": {
+      "primary_kapi": "8",
+      "doors": [
+        {
+          "diskapi_id": 301922,
+          "kapi_no": "8",
+          "lat": 38.3535718814621,
+          "lng": 38.6603489914323,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6389": {
+      "primary_kapi": "52",
+      "doors": [
+        {
+          "diskapi_id": 299105,
+          "kapi_no": "52",
+          "lat": 38.3890840968864,
+          "lng": 38.643335320989,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6390": {
+      "primary_kapi": "73",
+      "doors": [
+        {
+          "diskapi_id": 328447,
+          "kapi_no": "73",
+          "lat": 38.3529495669357,
+          "lng": 38.6623632704448,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6391": {
+      "primary_kapi": "62",
+      "doors": [
+        {
+          "diskapi_id": 301587,
+          "kapi_no": "62",
+          "lat": 38.3506357932236,
+          "lng": 38.6594836751276,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6392": {
+      "primary_kapi": "27/1",
+      "doors": [
+        {
+          "diskapi_id": 316051,
+          "kapi_no": "27/1",
+          "lat": 38.396602461748,
+          "lng": 38.6388637952603,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6393": {
+      "primary_kapi": "54",
+      "doors": [
+        {
+          "diskapi_id": 296271,
+          "kapi_no": "54",
+          "lat": 38.3506798836161,
+          "lng": 38.662351373234,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6394": {
+      "primary_kapi": "9",
+      "doors": [
+        {
+          "diskapi_id": 307751,
+          "kapi_no": "9",
+          "lat": 38.3534953960865,
+          "lng": 38.6604194291812,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6395": {
+      "primary_kapi": "31",
+      "doors": [
+        {
+          "diskapi_id": 305921,
+          "kapi_no": "31",
+          "lat": 38.3510518466488,
+          "lng": 38.6618518715223,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6396": {
+      "primary_kapi": "21",
+      "doors": [
+        {
+          "diskapi_id": 316186,
+          "kapi_no": "21",
+          "lat": 38.3516362321138,
+          "lng": 38.6605385431652,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6397": {
+      "primary_kapi": "45",
+      "doors": [
+        {
+          "diskapi_id": 310701,
+          "kapi_no": "45",
+          "lat": 38.3503672550594,
+          "lng": 38.6639388675081,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6398": {
+      "primary_kapi": "88",
+      "doors": [
+        {
+          "diskapi_id": 314491,
+          "kapi_no": "88",
+          "lat": 38.3516155186402,
+          "lng": 38.6628690452048,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6399": {
+      "primary_kapi": "16",
+      "doors": [
+        {
+          "diskapi_id": 314916,
+          "kapi_no": "16",
+          "lat": 38.3531849409544,
+          "lng": 38.6593949027267,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6400": {
+      "primary_kapi": "63",
+      "doors": [
+        {
+          "diskapi_id": 328274,
+          "kapi_no": "63",
+          "lat": 38.3859657542784,
+          "lng": 38.6502486350914,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6401": {
+      "primary_kapi": "144",
+      "doors": [
+        {
+          "diskapi_id": 289388,
+          "kapi_no": "144",
+          "lat": 38.3510124722108,
+          "lng": 38.6647392042785,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6402": {
+      "primary_kapi": "103",
+      "doors": [
+        {
+          "diskapi_id": 299104,
+          "kapi_no": "103",
+          "lat": 38.3854570401344,
+          "lng": 38.6672029621192,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6403": {
+      "primary_kapi": "42",
+      "doors": [
+        {
+          "diskapi_id": 301199,
+          "kapi_no": "42",
+          "lat": 38.3522016086417,
+          "lng": 38.661182160398,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6404": {
+      "primary_kapi": "71",
+      "doors": [
+        {
+          "diskapi_id": 322885,
+          "kapi_no": "71",
+          "lat": 38.3523809048594,
+          "lng": 38.6622414528198,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6405": {
+      "primary_kapi": "10",
+      "doors": [
+        {
+          "diskapi_id": 299853,
+          "kapi_no": "10",
+          "lat": 38.3849428420914,
+          "lng": 38.6148094011969,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6406": {
+      "primary_kapi": "4A",
+      "doors": [
+        {
+          "diskapi_id": 355492,
+          "kapi_no": "4A",
+          "lat": 38.3820671351369,
+          "lng": 38.6691580093,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 320092,
+          "kapi_no": "4",
+          "lat": 38.3822036990063,
+          "lng": 38.6690391417569,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6407": {
+      "primary_kapi": "58",
+      "doors": [
+        {
+          "diskapi_id": 286962,
+          "kapi_no": "58",
+          "lat": 38.3928441416352,
+          "lng": 38.6447080792964,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6408": {
+      "primary_kapi": "50/1",
+      "doors": [
+        {
+          "diskapi_id": 325533,
+          "kapi_no": "50/1",
+          "lat": 38.3503603229806,
+          "lng": 38.6618500033537,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6409": {
+      "primary_kapi": "6",
+      "doors": [
+        {
+          "diskapi_id": 313300,
+          "kapi_no": "6",
+          "lat": 38.3536600376499,
+          "lng": 38.6606948778791,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6410": {
+      "primary_kapi": "101",
+      "doors": [
+        {
+          "diskapi_id": 308536,
+          "kapi_no": "101",
+          "lat": 38.3855754312906,
+          "lng": 38.6667070798363,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6411": {
+      "primary_kapi": "22",
+      "doors": [
+        {
+          "diskapi_id": 287867,
+          "kapi_no": "22",
+          "lat": 38.3527840898742,
+          "lng": 38.6610241843075,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6412": {
+      "primary_kapi": "31",
+      "doors": [
+        {
+          "diskapi_id": 312072,
+          "kapi_no": "31",
+          "lat": 38.3821297069889,
+          "lng": 38.6351615431527,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6413": {
+      "primary_kapi": "106",
+      "doors": [
+        {
+          "diskapi_id": 296304,
+          "kapi_no": "106",
+          "lat": 38.3525893937813,
+          "lng": 38.6640707826472,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6414": {
+      "primary_kapi": "100",
+      "doors": [
+        {
+          "diskapi_id": 289604,
+          "kapi_no": "100",
+          "lat": 38.3859692071453,
+          "lng": 38.664934792269,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6415": {
+      "primary_kapi": "18",
+      "doors": [
+        {
+          "diskapi_id": 316131,
+          "kapi_no": "18",
+          "lat": 38.3527321114584,
+          "lng": 38.6600971233045,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6416": {
+      "primary_kapi": "139",
+      "doors": [
+        {
+          "diskapi_id": 320542,
+          "kapi_no": "139",
+          "lat": 38.3515980116749,
+          "lng": 38.6647312478419,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6417": {
+      "primary_kapi": "128",
+      "doors": [
+        {
+          "diskapi_id": 307574,
+          "kapi_no": "128",
+          "lat": 38.3507895138834,
+          "lng": 38.6630518211806,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6418": {
+      "primary_kapi": "111A",
+      "doors": [
+        {
+          "diskapi_id": 355475,
+          "kapi_no": "111A",
+          "lat": 38.3900233083249,
+          "lng": 38.6670602609573,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 296970,
+          "kapi_no": "111",
+          "lat": 38.3900500025199,
+          "lng": 38.6670595330604,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6419": {
+      "primary_kapi": "100",
+      "doors": [
+        {
+          "diskapi_id": 307347,
+          "kapi_no": "100",
+          "lat": 38.3527114977294,
+          "lng": 38.6642616452553,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6420": {
+      "primary_kapi": "32",
+      "doors": [
+        {
+          "diskapi_id": 296436,
+          "kapi_no": "32",
+          "lat": 38.3513586287839,
+          "lng": 38.6597398274735,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6421": {
+      "primary_kapi": "43",
+      "doors": [
+        {
+          "diskapi_id": 298813,
+          "kapi_no": "43",
+          "lat": 38.3515663892375,
+          "lng": 38.661898333656,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6422": {
+      "primary_kapi": "121A",
+      "doors": [
+        {
+          "diskapi_id": 355459,
+          "kapi_no": "121A",
+          "lat": 38.3884152198108,
+          "lng": 38.6711369254724,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 304306,
+          "kapi_no": "121",
+          "lat": 38.3884023154516,
+          "lng": 38.6711374428926,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6423": {
+      "primary_kapi": "118A",
+      "doors": [
+        {
+          "diskapi_id": 355450,
+          "kapi_no": "118A",
+          "lat": 38.3897433579714,
+          "lng": 38.6680736462698,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 292253,
+          "kapi_no": "118",
+          "lat": 38.3897432901447,
+          "lng": 38.6680490569002,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6424": {
+      "primary_kapi": "95A",
+      "doors": [
+        {
+          "diskapi_id": 355458,
+          "kapi_no": "95A",
+          "lat": 38.3857514678025,
+          "lng": 38.6642462306718,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355483,
+          "kapi_no": "95B",
+          "lat": 38.3857426891402,
+          "lng": 38.6642765262362,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 288713,
+          "kapi_no": "95",
+          "lat": 38.3857604302266,
+          "lng": 38.6642153036044,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6425": {
+      "primary_kapi": "79",
+      "doors": [
+        {
+          "diskapi_id": 301001,
+          "kapi_no": "79",
+          "lat": 38.3522722621997,
+          "lng": 38.6628652703511,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6426": {
+      "primary_kapi": "99",
+      "doors": [
+        {
+          "diskapi_id": 327632,
+          "kapi_no": "99",
+          "lat": 38.3847887698156,
+          "lng": 38.6642234596667,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355429,
+          "kapi_no": "99B",
+          "lat": 38.3847713006255,
+          "lng": 38.6641679401822,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 287253,
+          "kapi_no": "99/1",
+          "lat": 38.3846660070445,
+          "lng": 38.6643710502429,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6427": {
+      "primary_kapi": "146",
+      "doors": [
+        {
+          "diskapi_id": 289441,
+          "kapi_no": "146",
+          "lat": 38.3509168291348,
+          "lng": 38.664433633379,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6428": {
+      "primary_kapi": "68",
+      "doors": [
+        {
+          "diskapi_id": 297418,
+          "kapi_no": "68",
+          "lat": 38.3516024834028,
+          "lng": 38.6606293349281,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6429": {
+      "primary_kapi": "20",
+      "doors": [
+        {
+          "diskapi_id": 287697,
+          "kapi_no": "20",
+          "lat": 38.3527793643141,
+          "lng": 38.6605077219814,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6430": {
+      "primary_kapi": "11",
+      "doors": [
+        {
+          "diskapi_id": 323399,
+          "kapi_no": "11",
+          "lat": 38.3851037090195,
+          "lng": 38.6153760572276,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6431": {
+      "primary_kapi": "86",
+      "doors": [
+        {
+          "diskapi_id": 319857,
+          "kapi_no": "86",
+          "lat": 38.3515680501868,
+          "lng": 38.6621464135908,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6432": {
+      "primary_kapi": "137",
+      "doors": [
+        {
+          "diskapi_id": 327416,
+          "kapi_no": "137",
+          "lat": 38.351362860643,
+          "lng": 38.6641041706531,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6433": {
+      "primary_kapi": "62",
+      "doors": [
+        {
+          "diskapi_id": 313822,
+          "kapi_no": "62",
+          "lat": 38.3857796723974,
+          "lng": 38.6499109681877,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6434": {
+      "primary_kapi": "145",
+      "doors": [
+        {
+          "diskapi_id": 299924,
+          "kapi_no": "145",
+          "lat": 38.35107530581,
+          "lng": 38.6642560587805,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6435": {
+      "primary_kapi": "133",
+      "doors": [
+        {
+          "diskapi_id": 292486,
+          "kapi_no": "133",
+          "lat": 38.3512263066463,
+          "lng": 38.6635627893265,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6436": {
+      "primary_kapi": "155",
+      "doors": [
+        {
+          "diskapi_id": 295394,
+          "kapi_no": "155",
+          "lat": 38.3500561814779,
+          "lng": 38.6648596614461,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6437": {
+      "primary_kapi": "23",
+      "doors": [
+        {
+          "diskapi_id": 290661,
+          "kapi_no": "23",
+          "lat": 38.352735383362,
+          "lng": 38.6611579045762,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6438": {
+      "primary_kapi": "46",
+      "doors": [
+        {
+          "diskapi_id": 327599,
+          "kapi_no": "46",
+          "lat": 38.3506962665816,
+          "lng": 38.6616368236161,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6439": {
+      "primary_kapi": "124",
+      "doors": [
+        {
+          "diskapi_id": 312566,
+          "kapi_no": "124",
+          "lat": 38.3511197429908,
+          "lng": 38.6629245948221,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6440": {
+      "primary_kapi": "19",
+      "doors": [
+        {
+          "diskapi_id": 296936,
+          "kapi_no": "19",
+          "lat": 38.351690675686,
+          "lng": 38.6603591344941,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6441": {
+      "primary_kapi": "109",
+      "doors": [
+        {
+          "diskapi_id": 313782,
+          "kapi_no": "109",
+          "lat": 38.3522706208303,
+          "lng": 38.6639756874328,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6442": {
+      "primary_kapi": "75",
+      "doors": [
+        {
+          "diskapi_id": 292043,
+          "kapi_no": "75",
+          "lat": 38.3527287688158,
+          "lng": 38.6626694297308,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6443": {
+      "primary_kapi": "51",
+      "doors": [
+        {
+          "diskapi_id": 323398,
+          "kapi_no": "51",
+          "lat": 38.3887501412361,
+          "lng": 38.6431780480056,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355228,
+          "kapi_no": "51A",
+          "lat": 38.3887546006295,
+          "lng": 38.6432144883051,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6444": {
+      "primary_kapi": "9",
+      "doors": [
+        {
+          "diskapi_id": 297584,
+          "kapi_no": "9",
+          "lat": 38.3719036676156,
+          "lng": 38.6641079134807,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6445": {
+      "primary_kapi": "29",
+      "doors": [
+        {
+          "diskapi_id": 328659,
+          "kapi_no": "29",
+          "lat": 38.3511762611811,
+          "lng": 38.6616980765636,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6446": {
+      "primary_kapi": "15",
+      "doors": [
+        {
+          "diskapi_id": 325798,
+          "kapi_no": "15",
+          "lat": 38.3530396114389,
+          "lng": 38.6605981953748,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6447": {
+      "primary_kapi": "45",
+      "doors": [
+        {
+          "diskapi_id": 306830,
+          "kapi_no": "45",
+          "lat": 38.3524290978395,
+          "lng": 38.6589122861305,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6448": {
+      "primary_kapi": "94",
+      "doors": [
+        {
+          "diskapi_id": 323747,
+          "kapi_no": "94",
+          "lat": 38.3856576231307,
+          "lng": 38.6645752237893,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6449": {
+      "primary_kapi": "50",
+      "doors": [
+        {
+          "diskapi_id": 308956,
+          "kapi_no": "50",
+          "lat": 38.3875836402346,
+          "lng": 38.6438485405283,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355287,
+          "kapi_no": "50A",
+          "lat": 38.3875403404364,
+          "lng": 38.6439488826534,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6450": {
+      "primary_kapi": "82",
+      "doors": [
+        {
+          "diskapi_id": 285706,
+          "kapi_no": "82",
+          "lat": 38.3520342922855,
+          "lng": 38.6625545318125,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6451": {
+      "primary_kapi": "27",
+      "doors": [
+        {
+          "diskapi_id": 304168,
+          "kapi_no": "27",
+          "lat": 38.3526216202542,
+          "lng": 38.6615181245902,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355418,
+          "kapi_no": "27A",
+          "lat": 38.3526623093879,
+          "lng": 38.6614561520031,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6452": {
+      "primary_kapi": "83",
+      "doors": [
+        {
+          "diskapi_id": 315804,
+          "kapi_no": "83",
+          "lat": 38.3890639305991,
+          "lng": 38.653588936401,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6453": {
+      "primary_kapi": "115",
+      "doors": [
+        {
+          "diskapi_id": 298012,
+          "kapi_no": "115",
+          "lat": 38.3907015948482,
+          "lng": 38.6673040330334,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6454": {
+      "primary_kapi": "66",
+      "doors": [
+        {
+          "diskapi_id": 301955,
+          "kapi_no": "66",
+          "lat": 38.3853827262899,
+          "lng": 38.6525273415045,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6455": {
+      "primary_kapi": "40",
+      "doors": [
+        {
+          "diskapi_id": 302677,
+          "kapi_no": "40",
+          "lat": 38.3512518804443,
+          "lng": 38.6606225273455,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6456": {
+      "primary_kapi": "155/1",
+      "doors": [
+        {
+          "diskapi_id": 307421,
+          "kapi_no": "155/1",
+          "lat": 38.3500249881507,
+          "lng": 38.6644917965109,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6457": {
+      "primary_kapi": "26",
+      "doors": [
+        {
+          "diskapi_id": 311695,
+          "kapi_no": "26",
+          "lat": 38.3515804227167,
+          "lng": 38.659297472943,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6458": {
+      "primary_kapi": "7",
+      "doors": [
+        {
+          "diskapi_id": 304636,
+          "kapi_no": "7",
+          "lat": 38.3809122708322,
+          "lng": 38.6234611833309,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6459": {
+      "primary_kapi": "27",
+      "doors": [
+        {
+          "diskapi_id": 324910,
+          "kapi_no": "27",
+          "lat": 38.3954494834527,
+          "lng": 38.6369053911273,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355289,
+          "kapi_no": "27A",
+          "lat": 38.3954464786449,
+          "lng": 38.6369093256086,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6460": {
+      "primary_kapi": "1",
+      "doors": [
+        {
+          "diskapi_id": 300096,
+          "kapi_no": "1",
+          "lat": 38.3548479605789,
+          "lng": 38.6604809811065,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6461": {
+      "primary_kapi": "99",
+      "doors": [
+        {
+          "diskapi_id": 295574,
+          "kapi_no": "99",
+          "lat": 38.3529595985686,
+          "lng": 38.6640565268253,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6462": {
+      "primary_kapi": "52",
+      "doors": [
+        {
+          "diskapi_id": 323786,
+          "kapi_no": "52",
+          "lat": 38.3512046475257,
+          "lng": 38.6586154213018,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6463": {
+      "primary_kapi": "104",
+      "doors": [
+        {
+          "diskapi_id": 287505,
+          "kapi_no": "104",
+          "lat": 38.3860079260287,
+          "lng": 38.667094008109,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6464": {
+      "primary_kapi": "92",
+      "doors": [
+        {
+          "diskapi_id": 322696,
+          "kapi_no": "92",
+          "lat": 38.3517562733926,
+          "lng": 38.6631837317012,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6465": {
+      "primary_kapi": "110",
+      "doors": [
+        {
+          "diskapi_id": 306817,
+          "kapi_no": "110",
+          "lat": 38.3521042241803,
+          "lng": 38.6639454260453,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6466": {
+      "primary_kapi": "112",
+      "doors": [
+        {
+          "diskapi_id": 306878,
+          "kapi_no": "112",
+          "lat": 38.3517160382274,
+          "lng": 38.6640154238071,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6467": {
+      "primary_kapi": "20",
+      "doors": [
+        {
+          "diskapi_id": 310898,
+          "kapi_no": "20",
+          "lat": 38.3529154337039,
+          "lng": 38.6593292165223,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6468": {
+      "primary_kapi": "159",
+      "doors": [
+        {
+          "diskapi_id": 300987,
+          "kapi_no": "159",
+          "lat": 38.3507653913206,
+          "lng": 38.6646697004867,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6469": {
+      "primary_kapi": "53",
+      "doors": [
+        {
+          "diskapi_id": 326029,
+          "kapi_no": "53",
+          "lat": 38.3513132575364,
+          "lng": 38.6588856712122,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6470": {
+      "primary_kapi": "2",
+      "doors": [
+        {
+          "diskapi_id": 301979,
+          "kapi_no": "2",
+          "lat": 38.3543900536877,
+          "lng": 38.6604208245161,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6471": {
+      "primary_kapi": "17",
+      "doors": [
+        {
+          "diskapi_id": 326627,
+          "kapi_no": "17",
+          "lat": 38.3529405012643,
+          "lng": 38.6597384288736,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6472": {
+      "primary_kapi": "27",
+      "doors": [
+        {
+          "diskapi_id": 309962,
+          "kapi_no": "27",
+          "lat": 38.3512100521838,
+          "lng": 38.6616029212558,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6473": {
+      "primary_kapi": "25",
+      "doors": [
+        {
+          "diskapi_id": 302199,
+          "kapi_no": "25",
+          "lat": 38.3527892869892,
+          "lng": 38.6615309614515,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6474": {
+      "primary_kapi": "111",
+      "doors": [
+        {
+          "diskapi_id": 318749,
+          "kapi_no": "111",
+          "lat": 38.3517600040801,
+          "lng": 38.6638103885999,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6475": {
+      "primary_kapi": "19",
+      "doors": [
+        {
+          "diskapi_id": 322284,
+          "kapi_no": "19",
+          "lat": 38.3529291825387,
+          "lng": 38.6602255095964,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6476": {
+      "primary_kapi": "88",
+      "doors": [
+        {
+          "diskapi_id": 306123,
+          "kapi_no": "88",
+          "lat": 38.3874815590245,
+          "lng": 38.6564749628109,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6477": {
+      "primary_kapi": "65",
+      "doors": [
+        {
+          "diskapi_id": 303979,
+          "kapi_no": "65",
+          "lat": 38.350994541572,
+          "lng": 38.6597488722131,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6478": {
+      "primary_kapi": "148",
+      "doors": [
+        {
+          "diskapi_id": 325178,
+          "kapi_no": "148",
+          "lat": 38.3506411272462,
+          "lng": 38.6642832119048,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355299,
+          "kapi_no": "148A",
+          "lat": 38.3506806541514,
+          "lng": 38.6642644188938,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6479": {
+      "primary_kapi": "113",
+      "doors": [
+        {
+          "diskapi_id": 304231,
+          "kapi_no": "113",
+          "lat": 38.3515789048337,
+          "lng": 38.6640022240809,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6480": {
+      "primary_kapi": "14",
+      "doors": [
+        {
+          "diskapi_id": 307103,
+          "kapi_no": "14",
+          "lat": 38.3534978916475,
+          "lng": 38.6594760535676,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6481": {
+      "primary_kapi": "138",
+      "doors": [
+        {
+          "diskapi_id": 314059,
+          "kapi_no": "138",
+          "lat": 38.3515976062827,
+          "lng": 38.6641711857691,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6482": {
+      "primary_kapi": "47",
+      "doors": [
+        {
+          "diskapi_id": 291198,
+          "kapi_no": "47",
+          "lat": 38.3520999829431,
+          "lng": 38.6580593675222,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6483": {
+      "primary_kapi": "8",
+      "doors": [
+        {
+          "diskapi_id": 314116,
+          "kapi_no": "8",
+          "lat": 38.3814279226858,
+          "lng": 38.6242750271751,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6484": {
+      "primary_kapi": "118",
+      "doors": [
+        {
+          "diskapi_id": 286951,
+          "kapi_no": "118",
+          "lat": 38.3513751185904,
+          "lng": 38.6629365224709,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6485": {
+      "primary_kapi": "122",
+      "doors": [
+        {
+          "diskapi_id": 305305,
+          "kapi_no": "122",
+          "lat": 38.3510302891028,
+          "lng": 38.6626082103688,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6486": {
+      "primary_kapi": "25",
+      "doors": [
+        {
+          "diskapi_id": 304620,
+          "kapi_no": "25",
+          "lat": 38.3511480906087,
+          "lng": 38.661508793889,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6487": {
+      "primary_kapi": "69",
+      "doors": [
+        {
+          "diskapi_id": 313374,
+          "kapi_no": "69",
+          "lat": 38.3884898740863,
+          "lng": 38.6518779040976,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6488": {
+      "primary_kapi": "78",
+      "doors": [
+        {
+          "diskapi_id": 295193,
+          "kapi_no": "78",
+          "lat": 38.3906483674459,
+          "lng": 38.6520029673471,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6489": {
+      "primary_kapi": "72",
+      "doors": [
+        {
+          "diskapi_id": 313863,
+          "kapi_no": "72",
+          "lat": 38.3887734872971,
+          "lng": 38.651627395828,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6490": {
+      "primary_kapi": "112",
+      "doors": [
+        {
+          "diskapi_id": 291271,
+          "kapi_no": "112",
+          "lat": 38.3905062084433,
+          "lng": 38.667518885782,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6491": {
+      "primary_kapi": "5",
+      "doors": [
+        {
+          "diskapi_id": 298308,
+          "kapi_no": "5",
+          "lat": 38.3740708833345,
+          "lng": 38.6653014049831,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6492": {
+      "primary_kapi": "44",
+      "doors": [
+        {
+          "diskapi_id": 326769,
+          "kapi_no": "44",
+          "lat": 38.352584271766,
+          "lng": 38.6588434360665,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6493": {
+      "primary_kapi": "38",
+      "doors": [
+        {
+          "diskapi_id": 286337,
+          "kapi_no": "38",
+          "lat": 38.3519874715759,
+          "lng": 38.6607649893654,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6494": {
+      "primary_kapi": "120",
+      "doors": [
+        {
+          "diskapi_id": 294632,
+          "kapi_no": "120",
+          "lat": 38.3512112438108,
+          "lng": 38.6623879233128,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6495": {
+      "primary_kapi": "91",
+      "doors": [
+        {
+          "diskapi_id": 297766,
+          "kapi_no": "91",
+          "lat": 38.3519274347859,
+          "lng": 38.6630875520041,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6496": {
+      "primary_kapi": "76",
+      "doors": [
+        {
+          "diskapi_id": 309708,
+          "kapi_no": "76",
+          "lat": 38.352549004603,
+          "lng": 38.6628110794802,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6497": {
+      "primary_kapi": "10",
+      "doors": [
+        {
+          "diskapi_id": 305223,
+          "kapi_no": "10",
+          "lat": 38.3548638193951,
+          "lng": 38.65948926542,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6498": {
+      "primary_kapi": "85",
+      "doors": [
+        {
+          "diskapi_id": 309941,
+          "kapi_no": "85",
+          "lat": 38.3517512435863,
+          "lng": 38.6625979770676,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6499": {
+      "primary_kapi": "64",
+      "doors": [
+        {
+          "diskapi_id": 326085,
+          "kapi_no": "64",
+          "lat": 38.3486063852106,
+          "lng": 38.6650686585707,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355445,
+          "kapi_no": "64A",
+          "lat": 38.348606625789,
+          "lng": 38.6650775060181,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6500": {
+      "primary_kapi": "113",
+      "doors": [
+        {
+          "diskapi_id": 315486,
+          "kapi_no": "113",
+          "lat": 38.3905212661027,
+          "lng": 38.6673200037772,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6501": {
+      "primary_kapi": "3",
+      "doors": [
+        {
+          "diskapi_id": 310376,
+          "kapi_no": "3",
+          "lat": 38.3543060779328,
+          "lng": 38.6599641161735,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6502": {
+      "primary_kapi": "114",
+      "doors": [
+        {
+          "diskapi_id": 325389,
+          "kapi_no": "114",
+          "lat": 38.3515879692127,
+          "lng": 38.6635688815174,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6503": {
+      "primary_kapi": "58",
+      "doors": [
+        {
+          "diskapi_id": 288106,
+          "kapi_no": "58",
+          "lat": 38.3506341155224,
+          "lng": 38.6586305899449,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355427,
+          "kapi_no": "58A",
+          "lat": 38.350631290309,
+          "lng": 38.658666770606,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6504": {
+      "primary_kapi": "82",
+      "doors": [
+        {
+          "diskapi_id": 325565,
+          "kapi_no": "82",
+          "lat": 38.3891799327782,
+          "lng": 38.6533723863582,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6505": {
+      "primary_kapi": "129",
+      "doors": [
+        {
+          "diskapi_id": 290345,
+          "kapi_no": "129",
+          "lat": 38.3508303558268,
+          "lng": 38.663208932817,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6506": {
+      "primary_kapi": "110",
+      "doors": [
+        {
+          "diskapi_id": 325606,
+          "kapi_no": "110",
+          "lat": 38.3877668856794,
+          "lng": 38.6685232647284,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6507": {
+      "primary_kapi": "2",
+      "doors": [
+        {
+          "diskapi_id": 298644,
+          "kapi_no": "2",
+          "lat": 38.3753868935653,
+          "lng": 38.6105974792375,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6508": {
+      "primary_kapi": "36",
+      "doors": [
+        {
+          "diskapi_id": 323670,
+          "kapi_no": "36",
+          "lat": 38.381756059132,
+          "lng": 38.6439756156084,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355293,
+          "kapi_no": "36A",
+          "lat": 38.3817643218366,
+          "lng": 38.6440316697348,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6509": {
+      "primary_kapi": "66",
+      "doors": [
+        {
+          "diskapi_id": 295385,
+          "kapi_no": "66",
+          "lat": 38.3510747906751,
+          "lng": 38.6603079834218,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6510": {
+      "primary_kapi": "35",
+      "doors": [
+        {
+          "diskapi_id": 302691,
+          "kapi_no": "35",
+          "lat": 38.3510215679472,
+          "lng": 38.6620586051993,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6511": {
+      "primary_kapi": "107",
+      "doors": [
+        {
+          "diskapi_id": 291216,
+          "kapi_no": "107",
+          "lat": 38.3869982813206,
+          "lng": 38.6689400867444,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 318817,
+          "kapi_no": "107A",
+          "lat": 38.3869980730153,
+          "lng": 38.668972234026,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355468,
+          "kapi_no": "107B",
+          "lat": 38.386997958744,
+          "lng": 38.668989829988,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6512": {
+      "primary_kapi": "74",
+      "doors": [
+        {
+          "diskapi_id": 321506,
+          "kapi_no": "74",
+          "lat": 38.3528638361277,
+          "lng": 38.6626921630591,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6513": {
+      "primary_kapi": "127",
+      "doors": [
+        {
+          "diskapi_id": 318495,
+          "kapi_no": "127",
+          "lat": 38.3510196935394,
+          "lng": 38.6633393231436,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6514": {
+      "primary_kapi": "30",
+      "doors": [
+        {
+          "diskapi_id": 317105,
+          "kapi_no": "30",
+          "lat": 38.3827085330412,
+          "lng": 38.6355323959668,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6515": {
+      "primary_kapi": "64",
+      "doors": [
+        {
+          "diskapi_id": 318644,
+          "kapi_no": "64",
+          "lat": 38.3509334058351,
+          "lng": 38.6597274943571,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6516": {
+      "primary_kapi": "114",
+      "doors": [
+        {
+          "diskapi_id": 307030,
+          "kapi_no": "114",
+          "lat": 38.3904609854652,
+          "lng": 38.6668996392526,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6517": {
+      "primary_kapi": "28",
+      "doors": [
+        {
+          "diskapi_id": 311315,
+          "kapi_no": "28",
+          "lat": 38.3514713302555,
+          "lng": 38.6594951744856,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6518": {
+      "primary_kapi": "80",
+      "doors": [
+        {
+          "diskapi_id": 320966,
+          "kapi_no": "80",
+          "lat": 38.3523133701579,
+          "lng": 38.6630336719066,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355417,
+          "kapi_no": "80A",
+          "lat": 38.3523478028628,
+          "lng": 38.6630987410398,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6519": {
+      "primary_kapi": "31",
+      "doors": [
+        {
+          "diskapi_id": 317041,
+          "kapi_no": "31",
+          "lat": 38.3523408178452,
+          "lng": 38.661273908649,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6520": {
+      "primary_kapi": "97",
+      "doors": [
+        {
+          "diskapi_id": 320221,
+          "kapi_no": "97",
+          "lat": 38.352623100295,
+          "lng": 38.663639446819,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6521": {
+      "primary_kapi": "123",
+      "doors": [
+        {
+          "diskapi_id": 295115,
+          "kapi_no": "123",
+          "lat": 38.3511692462063,
+          "lng": 38.6627232495397,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6522": {
+      "primary_kapi": "121",
+      "doors": [
+        {
+          "diskapi_id": 310352,
+          "kapi_no": "121",
+          "lat": 38.3510617522751,
+          "lng": 38.6623497659467,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6523": {
+      "primary_kapi": "11",
+      "doors": [
+        {
+          "diskapi_id": 311338,
+          "kapi_no": "11",
+          "lat": 38.3533244102115,
+          "lng": 38.6606299297871,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6524": {
+      "primary_kapi": "43",
+      "doors": [
+        {
+          "diskapi_id": 323356,
+          "kapi_no": "43",
+          "lat": 38.3506877048402,
+          "lng": 38.6636930416056,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6525": {
+      "primary_kapi": "49",
+      "doors": [
+        {
+          "diskapi_id": 296187,
+          "kapi_no": "49",
+          "lat": 38.3519603987794,
+          "lng": 38.6588825953051,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6526": {
+      "primary_kapi": "96",
+      "doors": [
+        {
+          "diskapi_id": 305764,
+          "kapi_no": "96",
+          "lat": 38.3853494067927,
+          "lng": 38.6635490846196,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6527": {
+      "primary_kapi": "38",
+      "doors": [
+        {
+          "diskapi_id": 317299,
+          "kapi_no": "38",
+          "lat": 38.3513612900909,
+          "lng": 38.6601623606483,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6528": {
+      "primary_kapi": "22",
+      "doors": [
+        {
+          "diskapi_id": 317911,
+          "kapi_no": "22",
+          "lat": 38.3526021381614,
+          "lng": 38.6591818386133,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6529": {
+      "primary_kapi": "87",
+      "doors": [
+        {
+          "diskapi_id": 316936,
+          "kapi_no": "87",
+          "lat": 38.351611811806,
+          "lng": 38.662588809583,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6530": {
+      "primary_kapi": "149",
+      "doors": [
+        {
+          "diskapi_id": 308720,
+          "kapi_no": "149",
+          "lat": 38.3505416172924,
+          "lng": 38.6642669770202,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6531": {
+      "primary_kapi": "141",
+      "doors": [
+        {
+          "diskapi_id": 313932,
+          "kapi_no": "141",
+          "lat": 38.3512251468609,
+          "lng": 38.6648572139069,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6532": {
+      "primary_kapi": "64",
+      "doors": [
+        {
+          "diskapi_id": 311681,
+          "kapi_no": "64",
+          "lat": 38.3854197702287,
+          "lng": 38.6522512848915,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6533": {
+      "primary_kapi": "140",
+      "doors": [
+        {
+          "diskapi_id": 295483,
+          "kapi_no": "140",
+          "lat": 38.3513467419725,
+          "lng": 38.6646268569295,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6534": {
+      "primary_kapi": "57",
+      "doors": [
+        {
+          "diskapi_id": 306891,
+          "kapi_no": "57",
+          "lat": 38.3507186188525,
+          "lng": 38.6589050989745,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6535": {
+      "primary_kapi": "48",
+      "doors": [
+        {
+          "diskapi_id": 300642,
+          "kapi_no": "48",
+          "lat": 38.3874955425302,
+          "lng": 38.6433290471204,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355252,
+          "kapi_no": "48A",
+          "lat": 38.3874831513269,
+          "lng": 38.6432707907506,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355286,
+          "kapi_no": "48B",
+          "lat": 38.3874763351412,
+          "lng": 38.6432387429506,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6536": {
+      "primary_kapi": "18",
+      "doors": [
+        {
+          "diskapi_id": 316514,
+          "kapi_no": "18",
+          "lat": 38.3930154206006,
+          "lng": 38.6142099636835,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6537": {
+      "primary_kapi": "125",
+      "doors": [
+        {
+          "diskapi_id": 317700,
+          "kapi_no": "125",
+          "lat": 38.3510892006074,
+          "lng": 38.6631267511757,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6538": {
+      "primary_kapi": "56",
+      "doors": [
+        {
+          "diskapi_id": 291215,
+          "kapi_no": "56",
+          "lat": 38.3505351923268,
+          "lng": 38.6623505922125,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6539": {
+      "primary_kapi": "29",
+      "doors": [
+        {
+          "diskapi_id": 319028,
+          "kapi_no": "29",
+          "lat": 38.3843300598078,
+          "lng": 38.6321879450911,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6540": {
+      "primary_kapi": "134",
+      "doors": [
+        {
+          "diskapi_id": 289128,
+          "kapi_no": "134",
+          "lat": 38.3514025288213,
+          "lng": 38.6635021710075,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6541": {
+      "primary_kapi": "94",
+      "doors": [
+        {
+          "diskapi_id": 299058,
+          "kapi_no": "94",
+          "lat": 38.3522090837788,
+          "lng": 38.6636399994962,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6542": {
+      "primary_kapi": "85",
+      "doors": [
+        {
+          "diskapi_id": 305224,
+          "kapi_no": "85",
+          "lat": 38.3892347794673,
+          "lng": 38.6537489071432,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6543": {
+      "primary_kapi": "49",
+      "doors": [
+        {
+          "diskapi_id": 325118,
+          "kapi_no": "49",
+          "lat": 38.3875366204909,
+          "lng": 38.6435945311249,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355291,
+          "kapi_no": "49A",
+          "lat": 38.3875213469324,
+          "lng": 38.6435348867201,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6544": {
+      "primary_kapi": "95",
+      "doors": [
+        {
+          "diskapi_id": 316554,
+          "kapi_no": "95",
+          "lat": 38.3524976442201,
+          "lng": 38.663448314999,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6545": {
+      "primary_kapi": "36",
+      "doors": [
+        {
+          "diskapi_id": 291089,
+          "kapi_no": "36",
+          "lat": 38.3521421697865,
+          "lng": 38.6600027962056,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6546": {
+      "primary_kapi": "157",
+      "doors": [
+        {
+          "diskapi_id": 321389,
+          "kapi_no": "157",
+          "lat": 38.350401978609,
+          "lng": 38.6647030763462,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6547": {
+      "primary_kapi": "14",
+      "doors": [
+        {
+          "diskapi_id": 326301,
+          "kapi_no": "14",
+          "lat": 38.3531016202869,
+          "lng": 38.6604454313892,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6548": {
+      "primary_kapi": "37",
+      "doors": [
+        {
+          "diskapi_id": 303560,
+          "kapi_no": "37",
+          "lat": 38.3509163072273,
+          "lng": 38.6625174366316,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6549": {
+      "primary_kapi": "87",
+      "doors": [
+        {
+          "diskapi_id": 287660,
+          "kapi_no": "87",
+          "lat": 38.3875447218427,
+          "lng": 38.6543717321162,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6550": {
+      "primary_kapi": "129",
+      "doors": [
+        {
+          "diskapi_id": 302618,
+          "kapi_no": "129",
+          "lat": 38.3867152858401,
+          "lng": 38.6711530178225,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6551": {
+      "primary_kapi": "98",
+      "doors": [
+        {
+          "diskapi_id": 323898,
+          "kapi_no": "98",
+          "lat": 38.3849726751125,
+          "lng": 38.6638938895876,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6552": {
+      "primary_kapi": "33",
+      "doors": [
+        {
+          "diskapi_id": 303438,
+          "kapi_no": "33",
+          "lat": 38.3794514303895,
+          "lng": 38.6356296579791,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6553": {
+      "primary_kapi": "143",
+      "doors": [
+        {
+          "diskapi_id": 326423,
+          "kapi_no": "143",
+          "lat": 38.351071281352,
+          "lng": 38.6646586287724,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6554": {
+      "primary_kapi": "63",
+      "doors": [
+        {
+          "diskapi_id": 291961,
+          "kapi_no": "63",
+          "lat": 38.3509441982523,
+          "lng": 38.6595558495997,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6555": {
+      "primary_kapi": "40/1",
+      "doors": [
+        {
+          "diskapi_id": 355370,
+          "kapi_no": "40/1",
+          "lat": 38.3806698456077,
+          "lng": 38.646981522658,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355367,
+          "kapi_no": "40A",
+          "lat": 38.3807786128734,
+          "lng": 38.6468586502934,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 291723,
+          "kapi_no": "40",
+          "lat": 38.3807733074897,
+          "lng": 38.6468173229837,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6556": {
+      "primary_kapi": "161",
+      "doors": [
+        {
+          "diskapi_id": 292461,
+          "kapi_no": "161",
+          "lat": 38.3501579173935,
+          "lng": 38.6651663337936,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 325830,
+          "kapi_no": "161A",
+          "lat": 38.3501665594039,
+          "lng": 38.6650685253763,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6557": {
+      "primary_kapi": "2",
+      "doors": [
+        {
+          "diskapi_id": 312985,
+          "kapi_no": "2",
+          "lat": 38.3827653215278,
+          "lng": 38.6697052437143,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6558": {
+      "primary_kapi": "34",
+      "doors": [
+        {
+          "diskapi_id": 298624,
+          "kapi_no": "34",
+          "lat": 38.3515376995071,
+          "lng": 38.6600541377449,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6559": {
+      "primary_kapi": "136",
+      "doors": [
+        {
+          "diskapi_id": 301714,
+          "kapi_no": "136",
+          "lat": 38.3512632984453,
+          "lng": 38.6639807222433,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6560": {
+      "primary_kapi": "96",
+      "doors": [
+        {
+          "diskapi_id": 328031,
+          "kapi_no": "96",
+          "lat": 38.352662203136,
+          "lng": 38.6634512428105,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6561": {
+      "primary_kapi": "42",
+      "doors": [
+        {
+          "diskapi_id": 304068,
+          "kapi_no": "42",
+          "lat": 38.388932346069,
+          "lng": 38.6292858310971,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6562": {
+      "primary_kapi": "67",
+      "doors": [
+        {
+          "diskapi_id": 310138,
+          "kapi_no": "67",
+          "lat": 38.3853133426886,
+          "lng": 38.6529227517907,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 298070,
+          "kapi_no": "67A",
+          "lat": 38.3853740567831,
+          "lng": 38.6527573340174,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355472,
+          "kapi_no": "67B",
+          "lat": 38.385276863088,
+          "lng": 38.6526587685234,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6563": {
+      "primary_kapi": "91",
+      "doors": [
+        {
+          "diskapi_id": 297707,
+          "kapi_no": "91",
+          "lat": 38.3865991829513,
+          "lng": 38.6602218863601,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6564": {
+      "primary_kapi": "34",
+      "doors": [
+        {
+          "diskapi_id": 308038,
+          "kapi_no": "34",
+          "lat": 38.3789277808761,
+          "lng": 38.6445693561283,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6565": {
+      "primary_kapi": "142",
+      "doors": [
+        {
+          "diskapi_id": 287048,
+          "kapi_no": "142",
+          "lat": 38.3512204258917,
+          "lng": 38.665086303083,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6566": {
+      "primary_kapi": "90",
+      "doors": [
+        {
+          "diskapi_id": 319882,
+          "kapi_no": "90",
+          "lat": 38.3519552686106,
+          "lng": 38.6627514587657,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6567": {
+      "primary_kapi": "3",
+      "doors": [
+        {
+          "diskapi_id": 355237,
+          "kapi_no": "3",
+          "lat": 38.3827043204533,
+          "lng": 38.6705232893891,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355274,
+          "kapi_no": "3A",
+          "lat": 38.3827153115078,
+          "lng": 38.6705000599655,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6568": {
+      "primary_kapi": "1",
+      "doors": [
+        {
+          "diskapi_id": 330060,
+          "kapi_no": "1",
+          "lat": 38.3830276674304,
+          "lng": 38.6706142036471,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6569": {
+      "primary_kapi": "126B",
+      "doors": [
+        {
+          "diskapi_id": 355478,
+          "kapi_no": "126B",
+          "lat": 38.3876736502116,
+          "lng": 38.6718223346562,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355454,
+          "kapi_no": "126A",
+          "lat": 38.3876432169204,
+          "lng": 38.6719455257761,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 331134,
+          "kapi_no": "126",
+          "lat": 38.3876433679938,
+          "lng": 38.6719219296167,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6570": {
+      "primary_kapi": "125",
+      "doors": [
+        {
+          "diskapi_id": 355465,
+          "kapi_no": "125",
+          "lat": 38.3876768286132,
+          "lng": 38.6714602465891,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6571": {
+      "primary_kapi": "128",
+      "doors": [
+        {
+          "diskapi_id": 331173,
+          "kapi_no": "128",
+          "lat": 38.3871200297163,
+          "lng": 38.6713566318995,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 352462,
+          "kapi_no": "128A",
+          "lat": 38.3871101888897,
+          "lng": 38.6712934195024,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6572": {
+      "primary_kapi": "17",
+      "doors": [
+        {
+          "diskapi_id": 331962,
+          "kapi_no": "17",
+          "lat": 38.3901650466275,
+          "lng": 38.6148036382907,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6573": {
+      "primary_kapi": "11",
+      "doors": [
+        {
+          "diskapi_id": 342958,
+          "kapi_no": "11",
+          "lat": 38.3587594171534,
+          "lng": 38.6596852044502,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6574": {
+      "primary_kapi": "23",
+      "doors": [
+        {
+          "diskapi_id": 345774,
+          "kapi_no": "23",
+          "lat": 38.3881603636082,
+          "lng": 38.6258047546339,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6575": {
+      "primary_kapi": "24",
+      "doors": [
+        {
+          "diskapi_id": 345698,
+          "kapi_no": "24",
+          "lat": 38.3883091450236,
+          "lng": 38.6258377452875,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6576": {
+      "primary_kapi": "57",
+      "doors": [
+        {
+          "diskapi_id": 350969,
+          "kapi_no": "57",
+          "lat": 38.3928855867269,
+          "lng": 38.6402758712608,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6577": {
+      "primary_kapi": "56",
+      "doors": [
+        {
+          "diskapi_id": 350970,
+          "kapi_no": "56",
+          "lat": 38.3929239573806,
+          "lng": 38.6400088676752,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6578": {
+      "primary_kapi": "102",
+      "doors": [
+        {
+          "diskapi_id": 351919,
+          "kapi_no": "102",
+          "lat": 38.385672133662,
+          "lng": 38.6671353421028,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6579": {
+      "primary_kapi": "22/22",
+      "doors": [
+        {
+          "diskapi_id": 363484,
+          "kapi_no": "22/22",
+          "lat": 38.348940403061,
+          "lng": 38.6444635705248,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6580": {
+      "primary_kapi": "23/23",
+      "doors": [
+        {
+          "diskapi_id": 363447,
+          "kapi_no": "23/23",
+          "lat": 38.348654880226,
+          "lng": 38.6405286355366,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6581": {
+      "primary_kapi": "26",
+      "doors": [
+        {
+          "diskapi_id": 352364,
+          "kapi_no": "26",
+          "lat": 38.3944260556675,
+          "lng": 38.6332938747803,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 352495,
+          "kapi_no": "26A",
+          "lat": 38.3944705710713,
+          "lng": 38.6332098246823,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6582": {
+      "primary_kapi": "103",
+      "doors": [
+        {
+          "diskapi_id": 355354,
+          "kapi_no": "103",
+          "lat": 38.3525629383086,
+          "lng": 38.6647877203174,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6583": {
+      "primary_kapi": "43/1",
+      "doors": [
+        {
+          "diskapi_id": 355365,
+          "kapi_no": "43/1",
+          "lat": 38.3829824493342,
+          "lng": 38.6492520700952,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6584": {
+      "primary_kapi": "169",
+      "doors": [
+        {
+          "diskapi_id": 355402,
+          "kapi_no": "169",
+          "lat": 38.3465533778807,
+          "lng": 38.6633703379419,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6585": {
+      "primary_kapi": "93",
+      "doors": [
+        {
+          "diskapi_id": 355436,
+          "kapi_no": "93",
+          "lat": 38.3859681085375,
+          "lng": 38.6644027125242,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6586": {
+      "primary_kapi": "119",
+      "doors": [
+        {
+          "diskapi_id": 355423,
+          "kapi_no": "119",
+          "lat": 38.3875427796719,
+          "lng": 38.6706701292536,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6587": {
+      "primary_kapi": "173",
+      "doors": [
+        {
+          "diskapi_id": 355404,
+          "kapi_no": "173",
+          "lat": 38.3501476664836,
+          "lng": 38.6723715554699,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6588": {
+      "primary_kapi": "52",
+      "doors": [
+        {
+          "diskapi_id": 355315,
+          "kapi_no": "52",
+          "lat": 38.3504748745445,
+          "lng": 38.6621448255076,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6589": {
+      "primary_kapi": "162",
+      "doors": [
+        {
+          "diskapi_id": 355326,
+          "kapi_no": "162",
+          "lat": 38.3498257990028,
+          "lng": 38.6653518314217,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6590": {
+      "primary_kapi": "6",
+      "doors": [
+        {
+          "diskapi_id": 355461,
+          "kapi_no": "6",
+          "lat": 38.3622017927621,
+          "lng": 38.6564334986107,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355488,
+          "kapi_no": "6/2",
+          "lat": 38.3623694230603,
+          "lng": 38.6564270460137,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355462,
+          "kapi_no": "6/1",
+          "lat": 38.3623578949364,
+          "lng": 38.6565258534818,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6591": {
+      "primary_kapi": "106",
+      "doors": [
+        {
+          "diskapi_id": 355397,
+          "kapi_no": "106",
+          "lat": 38.3870211435331,
+          "lng": 38.6687270756715,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6592": {
+      "primary_kapi": "127",
+      "doors": [
+        {
+          "diskapi_id": 355470,
+          "kapi_no": "127",
+          "lat": 38.3869295795685,
+          "lng": 38.6709633129703,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6593": {
+      "primary_kapi": "60",
+      "doors": [
+        {
+          "diskapi_id": 355319,
+          "kapi_no": "60",
+          "lat": 38.3504612236676,
+          "lng": 38.6634377100739,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6594": {
+      "primary_kapi": "130",
+      "doors": [
+        {
+          "diskapi_id": 355323,
+          "kapi_no": "130",
+          "lat": 38.3508897287336,
+          "lng": 38.6635299739902,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6595": {
+      "primary_kapi": "37",
+      "doors": [
+        {
+          "diskapi_id": 355382,
+          "kapi_no": "37",
+          "lat": 38.3520520029501,
+          "lng": 38.6602024976161,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6596": {
+      "primary_kapi": "5",
+      "doors": [
+        {
+          "diskapi_id": 355359,
+          "kapi_no": "5",
+          "lat": 38.3540186876968,
+          "lng": 38.6606573931781,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6597": {
+      "primary_kapi": "4",
+      "doors": [
+        {
+          "diskapi_id": 355322,
+          "kapi_no": "4",
+          "lat": 38.3542642492018,
+          "lng": 38.6604897142852,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6598": {
+      "primary_kapi": "105",
+      "doors": [
+        {
+          "diskapi_id": 355430,
+          "kapi_no": "105",
+          "lat": 38.3870244962282,
+          "lng": 38.6686058414452,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6599": {
+      "primary_kapi": "163",
+      "doors": [
+        {
+          "diskapi_id": 355357,
+          "kapi_no": "163",
+          "lat": 38.349806179243,
+          "lng": 38.6653904624671,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6600": {
+      "primary_kapi": "179",
+      "doors": [
+        {
+          "diskapi_id": 352484,
+          "kapi_no": "179",
+          "lat": 38.3453185158427,
+          "lng": 38.668914881057,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6601": {
+      "primary_kapi": "156",
+      "doors": [
+        {
+          "diskapi_id": 355338,
+          "kapi_no": "156",
+          "lat": 38.3503783297104,
+          "lng": 38.664802611942,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6602": {
+      "primary_kapi": "41",
+      "doors": [
+        {
+          "diskapi_id": 355337,
+          "kapi_no": "41",
+          "lat": 38.3521452617261,
+          "lng": 38.660921579814,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6603": {
+      "primary_kapi": "39",
+      "doors": [
+        {
+          "diskapi_id": 355388,
+          "kapi_no": "39",
+          "lat": 38.3520025590686,
+          "lng": 38.6610337251051,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6604": {
+      "primary_kapi": "40",
+      "doors": [
+        {
+          "diskapi_id": 355344,
+          "kapi_no": "40",
+          "lat": 38.3521683865144,
+          "lng": 38.6607986523719,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6605": {
+      "primary_kapi": "158",
+      "doors": [
+        {
+          "diskapi_id": 355395,
+          "kapi_no": "158",
+          "lat": 38.3504836331459,
+          "lng": 38.664699120286,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6606": {
+      "primary_kapi": "7",
+      "doors": [
+        {
+          "diskapi_id": 355292,
+          "kapi_no": "7",
+          "lat": 38.3740069902218,
+          "lng": 38.6650963811335,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6607": {
+      "primary_kapi": "90",
+      "doors": [
+        {
+          "diskapi_id": 355428,
+          "kapi_no": "90",
+          "lat": 38.3875659749001,
+          "lng": 38.6591842258198,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6608": {
+      "primary_kapi": "60",
+      "doors": [
+        {
+          "diskapi_id": 355374,
+          "kapi_no": "60",
+          "lat": 38.3865475830722,
+          "lng": 38.648293213346,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6609": {
+      "primary_kapi": "75",
+      "doors": [
+        {
+          "diskapi_id": 355407,
+          "kapi_no": "75",
+          "lat": 38.3909658006135,
+          "lng": 38.6504106199522,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355410,
+          "kapi_no": "75A",
+          "lat": 38.3910294178281,
+          "lng": 38.650429616719,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6610": {
+      "primary_kapi": "177",
+      "doors": [
+        {
+          "diskapi_id": 355324,
+          "kapi_no": "177",
+          "lat": 38.3468243092673,
+          "lng": 38.6707713319814,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6611": {
+      "primary_kapi": "175",
+      "doors": [
+        {
+          "diskapi_id": 355403,
+          "kapi_no": "175",
+          "lat": 38.3488610430704,
+          "lng": 38.6689983974356,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6612": {
+      "primary_kapi": "150",
+      "doors": [
+        {
+          "diskapi_id": 355392,
+          "kapi_no": "150",
+          "lat": 38.3501859779381,
+          "lng": 38.6641696560151,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6613": {
+      "primary_kapi": "33",
+      "doors": [
+        {
+          "diskapi_id": 355328,
+          "kapi_no": "33",
+          "lat": 38.3522994079393,
+          "lng": 38.6606079586095,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6614": {
+      "primary_kapi": "124B",
+      "doors": [
+        {
+          "diskapi_id": 366039,
+          "kapi_no": "124B",
+          "lat": 38.3879106835961,
+          "lng": 38.6712157130582,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355485,
+          "kapi_no": "124A",
+          "lat": 38.3878573313208,
+          "lng": 38.6710630843153,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355467,
+          "kapi_no": "124",
+          "lat": 38.3878609372543,
+          "lng": 38.6710219088319,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6615": {
+      "primary_kapi": "39",
+      "doors": [
+        {
+          "diskapi_id": 355469,
+          "kapi_no": "39",
+          "lat": 38.3843596417978,
+          "lng": 38.6435291638765,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6616": {
+      "primary_kapi": "176",
+      "doors": [
+        {
+          "diskapi_id": 355339,
+          "kapi_no": "176",
+          "lat": 38.3482106329215,
+          "lng": 38.6702687913604,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6617": {
+      "primary_kapi": "171",
+      "doors": [
+        {
+          "diskapi_id": 355389,
+          "kapi_no": "171",
+          "lat": 38.3498049402941,
+          "lng": 38.6684531736668,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6618": {
+      "primary_kapi": "168",
+      "doors": [
+        {
+          "diskapi_id": 355342,
+          "kapi_no": "168",
+          "lat": 38.3472185421016,
+          "lng": 38.6635359320817,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6619": {
+      "primary_kapi": "38",
+      "doors": [
+        {
+          "diskapi_id": 355267,
+          "kapi_no": "38",
+          "lat": 38.381564014402,
+          "lng": 38.6443161028353,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6620": {
+      "primary_kapi": "49",
+      "doors": [
+        {
+          "diskapi_id": 355331,
+          "kapi_no": "49",
+          "lat": 38.349553651606,
+          "lng": 38.6646293277729,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6621": {
+      "primary_kapi": "167",
+      "doors": [
+        {
+          "diskapi_id": 355341,
+          "kapi_no": "167",
+          "lat": 38.3473698764847,
+          "lng": 38.6635241482621,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6622": {
+      "primary_kapi": "166",
+      "doors": [
+        {
+          "diskapi_id": 355347,
+          "kapi_no": "166",
+          "lat": 38.3473998324709,
+          "lng": 38.663143588743,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355393,
+          "kapi_no": "166A",
+          "lat": 38.347500855725,
+          "lng": 38.6632192881515,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6623": {
+      "primary_kapi": "17",
+      "doors": [
+        {
+          "diskapi_id": 355399,
+          "kapi_no": "17",
+          "lat": 38.3519822087494,
+          "lng": 38.6598327265337,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6624": {
+      "primary_kapi": "101",
+      "doors": [
+        {
+          "diskapi_id": 355431,
+          "kapi_no": "101",
+          "lat": 38.3527067376748,
+          "lng": 38.664979525166,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6625": {
+      "primary_kapi": "8",
+      "doors": [
+        {
+          "diskapi_id": 355433,
+          "kapi_no": "8",
+          "lat": 38.3549681098445,
+          "lng": 38.6587722330837,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6626": {
+      "primary_kapi": "97",
+      "doors": [
+        {
+          "diskapi_id": 355414,
+          "kapi_no": "97",
+          "lat": 38.3850151768886,
+          "lng": 38.6640232944794,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6627": {
+      "primary_kapi": "165",
+      "doors": [
+        {
+          "diskapi_id": 355379,
+          "kapi_no": "165",
+          "lat": 38.3475742533081,
+          "lng": 38.663511728885,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355375,
+          "kapi_no": "165A",
+          "lat": 38.3476178468338,
+          "lng": 38.6636836112217,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6628": {
+      "primary_kapi": "21",
+      "doors": [
+        {
+          "diskapi_id": 355335,
+          "kapi_no": "21",
+          "lat": 38.3525672994897,
+          "lng": 38.6608381410962,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6629": {
+      "primary_kapi": "7A",
+      "doors": [
+        {
+          "diskapi_id": 355327,
+          "kapi_no": "7A",
+          "lat": 38.3537008445484,
+          "lng": 38.6601809971675,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355351,
+          "kapi_no": "7",
+          "lat": 38.3536752774345,
+          "lng": 38.6602035582045,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6630": {
+      "primary_kapi": "12",
+      "doors": [
+        {
+          "diskapi_id": 355316,
+          "kapi_no": "12",
+          "lat": 38.3874404808518,
+          "lng": 38.6176515423437,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6631": {
+      "primary_kapi": "51",
+      "doors": [
+        {
+          "diskapi_id": 355386,
+          "kapi_no": "51",
+          "lat": 38.3494958603797,
+          "lng": 38.6653241909346,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6632": {
+      "primary_kapi": "117",
+      "doors": [
+        {
+          "diskapi_id": 355297,
+          "kapi_no": "117",
+          "lat": 38.3515312083275,
+          "lng": 38.663107748079,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6633": {
+      "primary_kapi": "36",
+      "doors": [
+        {
+          "diskapi_id": 355435,
+          "kapi_no": "36",
+          "lat": 38.3514031555132,
+          "lng": 38.6600616994308,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6634": {
+      "primary_kapi": "81",
+      "doors": [
+        {
+          "diskapi_id": 355320,
+          "kapi_no": "81",
+          "lat": 38.3893343502779,
+          "lng": 38.653207331015,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6635": {
+      "primary_kapi": "47",
+      "doors": [
+        {
+          "diskapi_id": 355381,
+          "kapi_no": "47",
+          "lat": 38.3783894711335,
+          "lng": 38.6538636029009,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6636": {
+      "primary_kapi": "147",
+      "doors": [
+        {
+          "diskapi_id": 355508,
+          "kapi_no": "147",
+          "lat": 38.3507524795179,
+          "lng": 38.6644623007587,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6637": {
+      "primary_kapi": "126",
+      "doors": [
+        {
+          "diskapi_id": 355343,
+          "kapi_no": "126",
+          "lat": 38.351032905649,
+          "lng": 38.6631435542353,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6638": {
+      "primary_kapi": "135",
+      "doors": [
+        {
+          "diskapi_id": 355377,
+          "kapi_no": "135",
+          "lat": 38.3512639419301,
+          "lng": 38.6638758277413,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6639": {
+      "primary_kapi": "83",
+      "doors": [
+        {
+          "diskapi_id": 355358,
+          "kapi_no": "83",
+          "lat": 38.3520841122224,
+          "lng": 38.662308541552,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6640": {
+      "primary_kapi": "70",
+      "doors": [
+        {
+          "diskapi_id": 355356,
+          "kapi_no": "70",
+          "lat": 38.3524545667685,
+          "lng": 38.6621058607392,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6641": {
+      "primary_kapi": "28",
+      "doors": [
+        {
+          "diskapi_id": 355384,
+          "kapi_no": "28",
+          "lat": 38.3525993482209,
+          "lng": 38.6613232004508,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6642": {
+      "primary_kapi": "50",
+      "doors": [
+        {
+          "diskapi_id": 355390,
+          "kapi_no": "50",
+          "lat": 38.3516270037039,
+          "lng": 38.6589214495072,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6643": {
+      "primary_kapi": "107",
+      "doors": [
+        {
+          "diskapi_id": 355321,
+          "kapi_no": "107",
+          "lat": 38.3523997828103,
+          "lng": 38.6641981612654,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6644": {
+      "primary_kapi": "10",
+      "doors": [
+        {
+          "diskapi_id": 355333,
+          "kapi_no": "10",
+          "lat": 38.353435824829,
+          "lng": 38.6610673158826,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6645": {
+      "primary_kapi": "54",
+      "doors": [
+        {
+          "diskapi_id": 355383,
+          "kapi_no": "54",
+          "lat": 38.3513611294112,
+          "lng": 38.6593109758263,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6646": {
+      "primary_kapi": "59",
+      "doors": [
+        {
+          "diskapi_id": 355296,
+          "kapi_no": "59",
+          "lat": 38.3504042410626,
+          "lng": 38.658821305095,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6647": {
+      "primary_kapi": "62",
+      "doors": [
+        {
+          "diskapi_id": 355348,
+          "kapi_no": "62",
+          "lat": 38.3502687481376,
+          "lng": 38.6636400013808,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6648": {
+      "primary_kapi": "13",
+      "doors": [
+        {
+          "diskapi_id": 355363,
+          "kapi_no": "13",
+          "lat": 38.3538680625635,
+          "lng": 38.6599821309621,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6649": {
+      "primary_kapi": "92",
+      "doors": [
+        {
+          "diskapi_id": 355432,
+          "kapi_no": "92",
+          "lat": 38.3870159568017,
+          "lng": 38.6628026115195,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355434,
+          "kapi_no": "92/1",
+          "lat": 38.3870158384476,
+          "lng": 38.6628206584718,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6650": {
+      "primary_kapi": "108",
+      "doors": [
+        {
+          "diskapi_id": 355362,
+          "kapi_no": "108",
+          "lat": 38.3869642597819,
+          "lng": 38.6691671763402,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6651": {
+      "primary_kapi": "79",
+      "doors": [
+        {
+          "diskapi_id": 355412,
+          "kapi_no": "79",
+          "lat": 38.3900869064737,
+          "lng": 38.6532246868422,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6652": {
+      "primary_kapi": "29",
+      "doors": [
+        {
+          "diskapi_id": 355385,
+          "kapi_no": "29",
+          "lat": 38.3525011476824,
+          "lng": 38.6614158055807,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6653": {
+      "primary_kapi": "18",
+      "doors": [
+        {
+          "diskapi_id": 355409,
+          "kapi_no": "18",
+          "lat": 38.3530023081659,
+          "lng": 38.6594674787769,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6654": {
+      "primary_kapi": "51",
+      "doors": [
+        {
+          "diskapi_id": 355391,
+          "kapi_no": "51",
+          "lat": 38.3514160364248,
+          "lng": 38.6585090760948,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6655": {
+      "primary_kapi": "32",
+      "doors": [
+        {
+          "diskapi_id": 355329,
+          "kapi_no": "32",
+          "lat": 38.3524451580367,
+          "lng": 38.6605696353555,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6656": {
+      "primary_kapi": "34",
+      "doors": [
+        {
+          "diskapi_id": 355330,
+          "kapi_no": "34",
+          "lat": 38.3523501946285,
+          "lng": 38.6601896009749,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6657": {
+      "primary_kapi": "16",
+      "doors": [
+        {
+          "diskapi_id": 355355,
+          "kapi_no": "16",
+          "lat": 38.352951150105,
+          "lng": 38.6604979026441,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6658": {
+      "primary_kapi": "56",
+      "doors": [
+        {
+          "diskapi_id": 355371,
+          "kapi_no": "56",
+          "lat": 38.3511678802562,
+          "lng": 38.65945968648,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6659": {
+      "primary_kapi": "132",
+      "doors": [
+        {
+          "diskapi_id": 355466,
+          "kapi_no": "132",
+          "lat": 38.3847810146274,
+          "lng": 38.6712713777407,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6660": {
+      "primary_kapi": "26",
+      "doors": [
+        {
+          "diskapi_id": 355336,
+          "kapi_no": "26",
+          "lat": 38.352611262951,
+          "lng": 38.6617610220922,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6661": {
+      "primary_kapi": "12",
+      "doors": [
+        {
+          "diskapi_id": 355376,
+          "kapi_no": "12",
+          "lat": 38.3537669514154,
+          "lng": 38.6594996684068,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6662": {
+      "primary_kapi": "46",
+      "doors": [
+        {
+          "diskapi_id": 355369,
+          "kapi_no": "46",
+          "lat": 38.3524600386846,
+          "lng": 38.6585904872979,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355426,
+          "kapi_no": "46A",
+          "lat": 38.3524818558043,
+          "lng": 38.6584858576742,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6663": {
+      "primary_kapi": "24",
+      "doors": [
+        {
+          "diskapi_id": 355349,
+          "kapi_no": "24",
+          "lat": 38.3518796399099,
+          "lng": 38.659317581855,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6664": {
+      "primary_kapi": "16",
+      "doors": [
+        {
+          "diskapi_id": 355307,
+          "kapi_no": "16",
+          "lat": 38.3890539245584,
+          "lng": 38.6168846566312,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6665": {
+      "primary_kapi": "77",
+      "doors": [
+        {
+          "diskapi_id": 355350,
+          "kapi_no": "77",
+          "lat": 38.3907047845252,
+          "lng": 38.6519184387714,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6666": {
+      "primary_kapi": "130",
+      "doors": [
+        {
+          "diskapi_id": 355473,
+          "kapi_no": "130",
+          "lat": 38.3869316996381,
+          "lng": 38.6718684863428,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6667": {
+      "primary_kapi": "122",
+      "doors": [
+        {
+          "diskapi_id": 355419,
+          "kapi_no": "122",
+          "lat": 38.3877399921834,
+          "lng": 38.6709104825121,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6668": {
+      "primary_kapi": "80",
+      "doors": [
+        {
+          "diskapi_id": 355332,
+          "kapi_no": "80",
+          "lat": 38.3902642897254,
+          "lng": 38.6542236398217,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6669": {
+      "primary_kapi": "84",
+      "doors": [
+        {
+          "diskapi_id": 355413,
+          "kapi_no": "84",
+          "lat": 38.3893421838355,
+          "lng": 38.653620069981,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6670": {
+      "primary_kapi": "46",
+      "doors": [
+        {
+          "diskapi_id": 355372,
+          "kapi_no": "46",
+          "lat": 38.3781662221053,
+          "lng": 38.6537230894203,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6671": {
+      "primary_kapi": "41",
+      "doors": [
+        {
+          "diskapi_id": 355364,
+          "kapi_no": "41",
+          "lat": 38.3808450325262,
+          "lng": 38.6470586577442,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6672": {
+      "primary_kapi": "133",
+      "doors": [
+        {
+          "diskapi_id": 355476,
+          "kapi_no": "133",
+          "lat": 38.3900989857395,
+          "lng": 38.6765600912995,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6673": {
+      "primary_kapi": "89/1",
+      "doors": [
+        {
+          "diskapi_id": 355405,
+          "kapi_no": "89/1",
+          "lat": 38.387751093378,
+          "lng": 38.6579335793246,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6674": {
+      "primary_kapi": "136",
+      "doors": [
+        {
+          "diskapi_id": 355471,
+          "kapi_no": "136",
+          "lat": 38.3869439019905,
+          "lng": 38.6802213724523,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6675": {
+      "primary_kapi": "134",
+      "doors": [
+        {
+          "diskapi_id": 355480,
+          "kapi_no": "134",
+          "lat": 38.3901059393326,
+          "lng": 38.6767732967534,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6676": {
+      "primary_kapi": "123A",
+      "doors": [
+        {
+          "diskapi_id": 366041,
+          "kapi_no": "123A",
+          "lat": 38.3877875044146,
+          "lng": 38.6709225474038,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 366042,
+          "kapi_no": "123B",
+          "lat": 38.3878273636866,
+          "lng": 38.6709284799872,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 366043,
+          "kapi_no": "123C",
+          "lat": 38.3878469837453,
+          "lng": 38.670931400184,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355464,
+          "kapi_no": "123",
+          "lat": 38.3878039484921,
+          "lng": 38.670924994398,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6677": {
+      "primary_kapi": "117",
+      "doors": [
+        {
+          "diskapi_id": 355479,
+          "kapi_no": "117",
+          "lat": 38.3908218991421,
+          "lng": 38.6671846934627,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6678": {
+      "primary_kapi": "55",
+      "doors": [
+        {
+          "diskapi_id": 355387,
+          "kapi_no": "55",
+          "lat": 38.3915490398271,
+          "lng": 38.6423399364993,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6679": {
+      "primary_kapi": "6",
+      "doors": [
+        {
+          "diskapi_id": 355312,
+          "kapi_no": "6",
+          "lat": 38.3802262743459,
+          "lng": 38.619030923766,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6680": {
+      "primary_kapi": "89",
+      "doors": [
+        {
+          "diskapi_id": 355415,
+          "kapi_no": "89",
+          "lat": 38.3876877640736,
+          "lng": 38.6578729997939,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6681": {
+      "primary_kapi": "13",
+      "doors": [
+        {
+          "diskapi_id": 355284,
+          "kapi_no": "13",
+          "lat": 38.3877408993368,
+          "lng": 38.6159277174868,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6682": {
+      "primary_kapi": "180",
+      "doors": [
+        {
+          "diskapi_id": 355477,
+          "kapi_no": "180",
+          "lat": 38.3465626668137,
+          "lng": 38.6510589749847,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6683": {
+      "primary_kapi": "45",
+      "doors": [
+        {
+          "diskapi_id": 355360,
+          "kapi_no": "45",
+          "lat": 38.3816183115113,
+          "lng": 38.6507643455164,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6684": {
+      "primary_kapi": "65",
+      "doors": [
+        {
+          "diskapi_id": 355288,
+          "kapi_no": "65",
+          "lat": 38.3853747383304,
+          "lng": 38.6524209899848,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6685": {
+      "primary_kapi": "74",
+      "doors": [
+        {
+          "diskapi_id": 355380,
+          "kapi_no": "74",
+          "lat": 38.3902698412595,
+          "lng": 38.6515409417867,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6686": {
+      "primary_kapi": "54",
+      "doors": [
+        {
+          "diskapi_id": 355408,
+          "kapi_no": "54",
+          "lat": 38.3916005849146,
+          "lng": 38.6458406077194,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6687": {
+      "primary_kapi": "76",
+      "doors": [
+        {
+          "diskapi_id": 355353,
+          "kapi_no": "76",
+          "lat": 38.3936166148946,
+          "lng": 38.6487355038597,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6688": {
+      "primary_kapi": "9",
+      "doors": [
+        {
+          "diskapi_id": 355309,
+          "kapi_no": "9",
+          "lat": 38.3837964985355,
+          "lng": 38.6134879318526,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6690": {
+      "primary_kapi": "19",
+      "doors": [
+        {
+          "diskapi_id": 355314,
+          "kapi_no": "19",
+          "lat": 38.384620004287,
+          "lng": 38.6223158283161,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6691": {
+      "primary_kapi": "15",
+      "doors": [
+        {
+          "diskapi_id": 355306,
+          "kapi_no": "15",
+          "lat": 38.3881563619912,
+          "lng": 38.6104185019273,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6692": {
+      "primary_kapi": "28",
+      "doors": [
+        {
+          "diskapi_id": 355334,
+          "kapi_no": "28",
+          "lat": 38.3810794794678,
+          "lng": 38.6287612847119,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6693": {
+      "primary_kapi": "7/1",
+      "doors": [
+        {
+          "diskapi_id": 355313,
+          "kapi_no": "7/1",
+          "lat": 38.3807896366365,
+          "lng": 38.6229921874636,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6694": {
+      "primary_kapi": "4",
+      "doors": [
+        {
+          "diskapi_id": 355311,
+          "kapi_no": "4",
+          "lat": 38.3780434963698,
+          "lng": 38.6125366355254,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6695": {
+      "primary_kapi": "22",
+      "doors": [
+        {
+          "diskapi_id": 355318,
+          "kapi_no": "22",
+          "lat": 38.3874811683584,
+          "lng": 38.6256553644659,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 355232,
+          "kapi_no": "22A",
+          "lat": 38.3874920423479,
+          "lng": 38.6256831822321,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6696": {
+      "primary_kapi": "5",
+      "doors": [
+        {
+          "diskapi_id": 355310,
+          "kapi_no": "5",
+          "lat": 38.3783313524691,
+          "lng": 38.6127483360335,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6697": {
+      "primary_kapi": "17/1",
+      "doors": [
+        {
+          "diskapi_id": 355481,
+          "kapi_no": "17/1",
+          "lat": 38.3912225985986,
+          "lng": 38.6141089865643,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6698": {
+      "primary_kapi": "4/1",
+      "doors": [
+        {
+          "diskapi_id": 355534,
+          "kapi_no": "4/1",
+          "lat": 38.3813029392939,
+          "lng": 38.6668425108651,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6699": {
+      "primary_kapi": "61",
+      "doors": [
+        {
+          "diskapi_id": 355572,
+          "kapi_no": "61",
+          "lat": 38.34948910622,
+          "lng": 38.6588596033888,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6700": {
+      "primary_kapi": "132/1",
+      "doors": [
+        {
+          "diskapi_id": 355783,
+          "kapi_no": "132/1",
+          "lat": 38.384734358847,
+          "lng": 38.6714500890146,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6701": {
+      "primary_kapi": "44",
+      "doors": [
+        {
+          "diskapi_id": 355774,
+          "kapi_no": "44",
+          "lat": 38.3834006965685,
+          "lng": 38.6772087389439,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6702": {
+      "primary_kapi": "32",
+      "doors": [
+        {
+          "diskapi_id": 355926,
+          "kapi_no": "32",
+          "lat": 38.3826631435797,
+          "lng": 38.6192302991327,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6703": {
+      "primary_kapi": "142",
+      "doors": [
+        {
+          "diskapi_id": 396558,
+          "kapi_no": "142",
+          "lat": 38.3926534821858,
+          "lng": 38.6183227280283,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6704": {
+      "primary_kapi": "25",
+      "doors": [
+        {
+          "diskapi_id": 355905,
+          "kapi_no": "25",
+          "lat": 38.3907476318783,
+          "lng": 38.6336162968375,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6705": {
+      "primary_kapi": "90/1",
+      "doors": [
+        {
+          "diskapi_id": 355884,
+          "kapi_no": "90/1",
+          "lat": 38.3877096010742,
+          "lng": 38.6593590935188,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6706": {
+      "primary_kapi": "15",
+      "doors": [
+        {
+          "diskapi_id": 355916,
+          "kapi_no": "15",
+          "lat": 38.353314828706,
+          "lng": 38.6594436343073,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6707": {
+      "primary_kapi": "178",
+      "doors": [
+        {
+          "diskapi_id": 355930,
+          "kapi_no": "178",
+          "lat": 38.3497255791264,
+          "lng": 38.6582987523337,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6708": {
+      "primary_kapi": "56/3",
+      "doors": [
+        {
+          "diskapi_id": 359095,
+          "kapi_no": "56/3",
+          "lat": 38.3601050811649,
+          "lng": 38.6589489648428,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6709": {
+      "primary_kapi": "56/4",
+      "doors": [
+        {
+          "diskapi_id": 359129,
+          "kapi_no": "56/4",
+          "lat": 38.3599635125338,
+          "lng": 38.6590231504472,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6710": {
+      "primary_kapi": "56/1",
+      "doors": [
+        {
+          "diskapi_id": 359094,
+          "kapi_no": "56/1",
+          "lat": 38.3601390595926,
+          "lng": 38.6585717308659,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6711": {
+      "primary_kapi": "56/6",
+      "doors": [
+        {
+          "diskapi_id": 359096,
+          "kapi_no": "56/6",
+          "lat": 38.3596821432255,
+          "lng": 38.6591769963442,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6712": {
+      "primary_kapi": "56/8",
+      "doors": [
+        {
+          "diskapi_id": 359088,
+          "kapi_no": "56/8",
+          "lat": 38.3594037544627,
+          "lng": 38.6593394492604,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6713": {
+      "primary_kapi": "56/9",
+      "doors": [
+        {
+          "diskapi_id": 359139,
+          "kapi_no": "56/9",
+          "lat": 38.3592623291026,
+          "lng": 38.6594140480271,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6714": {
+      "primary_kapi": "56/7",
+      "doors": [
+        {
+          "diskapi_id": 359118,
+          "kapi_no": "56/7",
+          "lat": 38.3595440459538,
+          "lng": 38.6592612606436,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6715": {
+      "primary_kapi": "56/5",
+      "doors": [
+        {
+          "diskapi_id": 359102,
+          "kapi_no": "56/5",
+          "lat": 38.3598233013295,
+          "lng": 38.6591016279271,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6716": {
+      "primary_kapi": "56/2",
+      "doors": [
+        {
+          "diskapi_id": 359092,
+          "kapi_no": "56/2",
+          "lat": 38.3602464683499,
+          "lng": 38.6588740498338,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6717": {
+      "primary_kapi": "78",
+      "doors": [
+        {
+          "diskapi_id": 365756,
+          "kapi_no": "78",
+          "lat": 38.3499517536636,
+          "lng": 38.6697928342601,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6719": {
+      "primary_kapi": "138",
+      "doors": [
+        {
+          "diskapi_id": 379057,
+          "kapi_no": "138",
+          "lat": 38.3780898456863,
+          "lng": 38.6695720703324,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6720": {
+      "primary_kapi": "70",
+      "doors": [
+        {
+          "diskapi_id": 369132,
+          "kapi_no": "70",
+          "lat": 38.3747847051782,
+          "lng": 38.6654752876299,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6721": {
+      "primary_kapi": "192/1",
+      "doors": [
+        {
+          "diskapi_id": 383221,
+          "kapi_no": "192/1",
+          "lat": 38.3516040347813,
+          "lng": 38.6602401823107,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6722": {
+      "primary_kapi": "140",
+      "doors": [
+        {
+          "diskapi_id": 386885,
+          "kapi_no": "140",
+          "lat": 38.3900848350482,
+          "lng": 38.6700339225064,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6723": {
+      "primary_kapi": "194",
+      "doors": [
+        {
+          "diskapi_id": 386907,
+          "kapi_no": "194",
+          "lat": 38.3509892089767,
+          "lng": 38.6618056214285,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6724": {
+      "primary_kapi": "182",
+      "doors": [
+        {
+          "diskapi_id": 387551,
+          "kapi_no": "182",
+          "lat": 38.353344503548,
+          "lng": 38.6608657457129,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6725": {
+      "primary_kapi": "184",
+      "doors": [
+        {
+          "diskapi_id": 391028,
+          "kapi_no": "184",
+          "lat": 38.353019902303,
+          "lng": 38.664078011137,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6726": {
+      "primary_kapi": "198",
+      "doors": [
+        {
+          "diskapi_id": 392984,
+          "kapi_no": "198",
+          "lat": 38.3817817859148,
+          "lng": 38.6761710259632,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6727": {
+      "primary_kapi": "141",
+      "doors": [
+        {
+          "diskapi_id": 393485,
+          "kapi_no": "141",
+          "lat": 38.3839993499998,
+          "lng": 38.6749939131404,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6728": {
+      "primary_kapi": "52/1",
+      "doors": [
+        {
+          "diskapi_id": 396026,
+          "kapi_no": "52/1",
+          "lat": 38.389219644033,
+          "lng": 38.6436102639748,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6729": {
+      "primary_kapi": "16/4",
+      "doors": [
+        {
+          "diskapi_id": 397991,
+          "kapi_no": "16/4",
+          "lat": 38.3814937511192,
+          "lng": 38.6298924303083,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6730": {
+      "primary_kapi": "16/9",
+      "doors": [
+        {
+          "diskapi_id": 397992,
+          "kapi_no": "16/9",
+          "lat": 38.3822620643381,
+          "lng": 38.6278414150923,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6731": {
+      "primary_kapi": "16/3",
+      "doors": [
+        {
+          "diskapi_id": 398021,
+          "kapi_no": "16/3",
+          "lat": 38.3816603695167,
+          "lng": 38.6295956410095,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6732": {
+      "primary_kapi": "16/5",
+      "doors": [
+        {
+          "diskapi_id": 398070,
+          "kapi_no": "16/5",
+          "lat": 38.3814208545542,
+          "lng": 38.6287148686726,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6733": {
+      "primary_kapi": "16/6",
+      "doors": [
+        {
+          "diskapi_id": 398071,
+          "kapi_no": "16/6",
+          "lat": 38.3813369010002,
+          "lng": 38.6288482952456,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6734": {
+      "primary_kapi": "144",
+      "doors": [
+        {
+          "diskapi_id": 398096,
+          "kapi_no": "144",
+          "lat": 38.3818333633482,
+          "lng": 38.6280039517295,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6735": {
+      "primary_kapi": "260",
+      "doors": [
+        {
+          "diskapi_id": 398103,
+          "kapi_no": "260",
+          "lat": 38.3809980939188,
+          "lng": 38.6295634217126,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6736": {
+      "primary_kapi": "260/1",
+      "doors": [
+        {
+          "diskapi_id": 398113,
+          "kapi_no": "260/1",
+          "lat": 38.3811495013101,
+          "lng": 38.6293170705008,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6737": {
+      "primary_kapi": "16/11",
+      "doors": [
+        {
+          "diskapi_id": 398307,
+          "kapi_no": "16/11",
+          "lat": 38.3821714394273,
+          "lng": 38.6281856489289,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6738": {
+      "primary_kapi": "143",
+      "doors": [
+        {
+          "diskapi_id": 401880,
+          "kapi_no": "143",
+          "lat": 38.3757755127601,
+          "lng": 38.6703282558495,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6739": {
+      "primary_kapi": "181",
+      "doors": [
+        {
+          "diskapi_id": 402387,
+          "kapi_no": "181",
+          "lat": 38.3480795233602,
+          "lng": 38.6415435623961,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6740": {
+      "primary_kapi": "190",
+      "doors": [
+        {
+          "diskapi_id": 402547,
+          "kapi_no": "190",
+          "lat": 38.350580688318,
+          "lng": 38.6645945899362,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6741": {
+      "primary_kapi": "145",
+      "doors": [
+        {
+          "diskapi_id": 405619,
+          "kapi_no": "145",
+          "lat": 38.3928906457541,
+          "lng": 38.6131443823717,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6742": {
+      "primary_kapi": "264",
+      "doors": [
+        {
+          "diskapi_id": 405985,
+          "kapi_no": "264",
+          "lat": 38.3852111250964,
+          "lng": 38.6638437604299,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6743": {
+      "primary_kapi": "192",
+      "doors": [
+        {
+          "diskapi_id": 406214,
+          "kapi_no": "192",
+          "lat": 38.3528374306517,
+          "lng": 38.6623037678142,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6744": {
+      "primary_kapi": "71",
+      "doors": [
+        {
+          "diskapi_id": 406326,
+          "kapi_no": "71",
+          "lat": 38.3515605289207,
+          "lng": 38.6595402773168,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6745": {
+      "primary_kapi": "262",
+      "doors": [
+        {
+          "diskapi_id": 405601,
+          "kapi_no": "262",
+          "lat": 38.3798480252446,
+          "lng": 38.6669056732914,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6746": {
+      "primary_kapi": "14/1",
+      "doors": [
+        {
+          "diskapi_id": 409441,
+          "kapi_no": "14/1",
+          "lat": 38.3882243881191,
+          "lng": 38.6135403839324,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6747": {
+      "primary_kapi": "194",
+      "doors": [
+        {
+          "diskapi_id": 410991,
+          "kapi_no": "194",
+          "lat": 38.3526882698304,
+          "lng": 38.6604428334257,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6748": {
+      "primary_kapi": "183",
+      "doors": [
+        {
+          "diskapi_id": 417549,
+          "kapi_no": "183",
+          "lat": 38.3517005402103,
+          "lng": 38.6607232187443,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6749": {
+      "primary_kapi": "81/1",
+      "doors": [
+        {
+          "diskapi_id": 418298,
+          "kapi_no": "81/1",
+          "lat": 38.3521613332437,
+          "lng": 38.6629960800956,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6750": {
+      "primary_kapi": "307",
+      "doors": [
+        {
+          "diskapi_id": 418314,
+          "kapi_no": "307",
+          "lat": 38.3875409700604,
+          "lng": 38.6623151265597,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6751": {
+      "primary_kapi": "266",
+      "doors": [
+        {
+          "diskapi_id": 418915,
+          "kapi_no": "266",
+          "lat": 38.3925682403558,
+          "lng": 38.6123546750176,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6752": {
+      "primary_kapi": "21",
+      "doors": [
+        {
+          "diskapi_id": 420834,
+          "kapi_no": "21",
+          "lat": 38.3871296177649,
+          "lng": 38.6237369268405,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6753": {
+      "primary_kapi": "60/1",
+      "doors": [
+        {
+          "diskapi_id": 421653,
+          "kapi_no": "60/1",
+          "lat": 38.386334402353,
+          "lng": 38.6486869059107,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6754": {
+      "primary_kapi": "147",
+      "doors": [
+        {
+          "diskapi_id": 421906,
+          "kapi_no": "147",
+          "lat": 38.3856989156579,
+          "lng": 38.6505363727601,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        },
+        {
+          "diskapi_id": 421912,
+          "kapi_no": "147/1",
+          "lat": 38.3856842384847,
+          "lng": 38.6506194661884,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6755": {
+      "primary_kapi": "25/11",
+      "doors": [
+        {
+          "diskapi_id": 428509,
+          "kapi_no": "25/11",
+          "lat": 38.3611177232883,
+          "lng": 38.6563893265771,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6756": {
+      "primary_kapi": "25/10",
+      "doors": [
+        {
+          "diskapi_id": 428508,
+          "kapi_no": "25/10",
+          "lat": 38.3610628179242,
+          "lng": 38.6566185127008,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6757": {
+      "primary_kapi": "25/9",
+      "doors": [
+        {
+          "diskapi_id": 428507,
+          "kapi_no": "25/9",
+          "lat": 38.361011469475,
+          "lng": 38.6568321129264,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6758": {
+      "primary_kapi": "25/8",
+      "doors": [
+        {
+          "diskapi_id": 428505,
+          "kapi_no": "25/8",
+          "lat": 38.3609601044959,
+          "lng": 38.6570462015392,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6759": {
+      "primary_kapi": "25/12",
+      "doors": [
+        {
+          "diskapi_id": 428512,
+          "kapi_no": "25/12",
+          "lat": 38.3608357041235,
+          "lng": 38.6562333743351,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6760": {
+      "primary_kapi": "25/13",
+      "doors": [
+        {
+          "diskapi_id": 428513,
+          "kapi_no": "25/13",
+          "lat": 38.3607830760599,
+          "lng": 38.6564531288753,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6761": {
+      "primary_kapi": "25/14",
+      "doors": [
+        {
+          "diskapi_id": 428515,
+          "kapi_no": "25/14",
+          "lat": 38.3607296677111,
+          "lng": 38.6566752537942,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6762": {
+      "primary_kapi": "25/15",
+      "doors": [
+        {
+          "diskapi_id": 428516,
+          "kapi_no": "25/15",
+          "lat": 38.3606777973534,
+          "lng": 38.6568914356078,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6763": {
+      "primary_kapi": "25/7",
+      "doors": [
+        {
+          "diskapi_id": 428502,
+          "kapi_no": "25/7",
+          "lat": 38.3605995725187,
+          "lng": 38.6570644744975,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6764": {
+      "primary_kapi": "25/6",
+      "doors": [
+        {
+          "diskapi_id": 428501,
+          "kapi_no": "25/6",
+          "lat": 38.3604575114102,
+          "lng": 38.6571887987688,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6765": {
+      "primary_kapi": "25/5",
+      "doors": [
+        {
+          "diskapi_id": 428499,
+          "kapi_no": "25/5",
+          "lat": 38.3603106302232,
+          "lng": 38.6573172337805,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6766": {
+      "primary_kapi": "25/4",
+      "doors": [
+        {
+          "diskapi_id": 428498,
+          "kapi_no": "25/4",
+          "lat": 38.360162776638,
+          "lng": 38.6574462137309,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6767": {
+      "primary_kapi": "25/16",
+      "doors": [
+        {
+          "diskapi_id": 428518,
+          "kapi_no": "25/16",
+          "lat": 38.3605356370897,
+          "lng": 38.6561514861053,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6768": {
+      "primary_kapi": "25/17",
+      "doors": [
+        {
+          "diskapi_id": 428519,
+          "kapi_no": "25/17",
+          "lat": 38.3604835285304,
+          "lng": 38.6563690888631,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6769": {
+      "primary_kapi": "25/18",
+      "doors": [
+        {
+          "diskapi_id": 428521,
+          "kapi_no": "25/18",
+          "lat": 38.3604299743008,
+          "lng": 38.656592677134,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6770": {
+      "primary_kapi": "25/19",
+      "doors": [
+        {
+          "diskapi_id": 428522,
+          "kapi_no": "25/19",
+          "lat": 38.3603779549231,
+          "lng": 38.6568099256092,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6771": {
+      "primary_kapi": "25/20",
+      "doors": [
+        {
+          "diskapi_id": 428523,
+          "kapi_no": "25/20",
+          "lat": 38.3602301018763,
+          "lng": 38.6560923851511,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6772": {
+      "primary_kapi": "25/21",
+      "doors": [
+        {
+          "diskapi_id": 428525,
+          "kapi_no": "25/21",
+          "lat": 38.3601802916433,
+          "lng": 38.6563004821101,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6773": {
+      "primary_kapi": "25/22",
+      "doors": [
+        {
+          "diskapi_id": 428526,
+          "kapi_no": "25/22",
+          "lat": 38.3601257208728,
+          "lng": 38.656528280188,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6774": {
+      "primary_kapi": "25/23",
+      "doors": [
+        {
+          "diskapi_id": 428528,
+          "kapi_no": "25/23",
+          "lat": 38.3600735258835,
+          "lng": 38.6567462364725,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6775": {
+      "primary_kapi": "25/24",
+      "doors": [
+        {
+          "diskapi_id": 428529,
+          "kapi_no": "25/24",
+          "lat": 38.3600295272586,
+          "lng": 38.6569664322184,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6776": {
+      "primary_kapi": "25/3",
+      "doors": [
+        {
+          "diskapi_id": 428497,
+          "kapi_no": "25/3",
+          "lat": 38.3599154471649,
+          "lng": 38.6575945074939,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6777": {
+      "primary_kapi": "25/2",
+      "doors": [
+        {
+          "diskapi_id": 428495,
+          "kapi_no": "25/2",
+          "lat": 38.3597558828444,
+          "lng": 38.657640346285,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6778": {
+      "primary_kapi": "25/1",
+      "doors": [
+        {
+          "diskapi_id": 428494,
+          "kapi_no": "25/1",
+          "lat": 38.3595812001942,
+          "lng": 38.6576905279661,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6779": {
+      "primary_kapi": "24/13",
+      "doors": [
+        {
+          "diskapi_id": 428490,
+          "kapi_no": "24/13",
+          "lat": 38.3593154516259,
+          "lng": 38.658728449281,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6780": {
+      "primary_kapi": "24/12",
+      "doors": [
+        {
+          "diskapi_id": 428489,
+          "kapi_no": "24/12",
+          "lat": 38.3592194136538,
+          "lng": 38.6589069104531,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6781": {
+      "primary_kapi": "24/14",
+      "doors": [
+        {
+          "diskapi_id": 428491,
+          "kapi_no": "24/14",
+          "lat": 38.3594070217136,
+          "lng": 38.6585582848927,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6782": {
+      "primary_kapi": "24/1",
+      "doors": [
+        {
+          "diskapi_id": 428475,
+          "kapi_no": "24/1",
+          "lat": 38.3579516038923,
+          "lng": 38.6591720985091,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6783": {
+      "primary_kapi": "24/2",
+      "doors": [
+        {
+          "diskapi_id": 428476,
+          "kapi_no": "24/2",
+          "lat": 38.3581256479917,
+          "lng": 38.6592545884793,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6784": {
+      "primary_kapi": "24/3",
+      "doors": [
+        {
+          "diskapi_id": 428477,
+          "kapi_no": "24/3",
+          "lat": 38.3585414176759,
+          "lng": 38.6593015991006,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6785": {
+      "primary_kapi": "24/4",
+      "doors": [
+        {
+          "diskapi_id": 428478,
+          "kapi_no": "24/4",
+          "lat": 38.358491353131,
+          "lng": 38.6590907916098,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6786": {
+      "primary_kapi": "24/5",
+      "doors": [
+        {
+          "diskapi_id": 428479,
+          "kapi_no": "24/5",
+          "lat": 38.358432239157,
+          "lng": 38.6588418914251,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6787": {
+      "primary_kapi": "24/6",
+      "doors": [
+        {
+          "diskapi_id": 428480,
+          "kapi_no": "24/6",
+          "lat": 38.3586544119933,
+          "lng": 38.6588218091882,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6788": {
+      "primary_kapi": "24/7",
+      "doors": [
+        {
+          "diskapi_id": 428481,
+          "kapi_no": "24/7",
+          "lat": 38.3587426955598,
+          "lng": 38.6591939042433,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6789": {
+      "primary_kapi": "24/8",
+      "doors": [
+        {
+          "diskapi_id": 428483,
+          "kapi_no": "24/8",
+          "lat": 38.3590146977947,
+          "lng": 38.6589589169752,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6790": {
+      "primary_kapi": "24/9",
+      "doors": [
+        {
+          "diskapi_id": 428484,
+          "kapi_no": "24/9",
+          "lat": 38.3591279909687,
+          "lng": 38.6587501128025,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6791": {
+      "primary_kapi": "34/1",
+      "doors": [
+        {
+          "diskapi_id": 428535,
+          "kapi_no": "34/1",
+          "lat": 38.3619273261724,
+          "lng": 38.6593768352476,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6792": {
+      "primary_kapi": "34/2",
+      "doors": [
+        {
+          "diskapi_id": 428536,
+          "kapi_no": "34/2",
+          "lat": 38.3620613958761,
+          "lng": 38.6595242418394,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6793": {
+      "primary_kapi": "34/3",
+      "doors": [
+        {
+          "diskapi_id": 428537,
+          "kapi_no": "34/3",
+          "lat": 38.3622688613547,
+          "lng": 38.6596585422835,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6794": {
+      "primary_kapi": "34/4",
+      "doors": [
+        {
+          "diskapi_id": 428538,
+          "kapi_no": "34/4",
+          "lat": 38.3621481951012,
+          "lng": 38.6598384073228,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6795": {
+      "primary_kapi": "34/5",
+      "doors": [
+        {
+          "diskapi_id": 428539,
+          "kapi_no": "34/5",
+          "lat": 38.3625197050103,
+          "lng": 38.6603046603977,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6796": {
+      "primary_kapi": "34/6",
+      "doors": [
+        {
+          "diskapi_id": 428540,
+          "kapi_no": "34/6",
+          "lat": 38.362634120325,
+          "lng": 38.6600799330051,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6797": {
+      "primary_kapi": "34/8",
+      "doors": [
+        {
+          "diskapi_id": 428543,
+          "kapi_no": "34/8",
+          "lat": 38.3626789292663,
+          "lng": 38.6604133470682,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6798": {
+      "primary_kapi": "34/11",
+      "doors": [
+        {
+          "diskapi_id": 428546,
+          "kapi_no": "34/11",
+          "lat": 38.3629233683047,
+          "lng": 38.6608244529739,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6799": {
+      "primary_kapi": "34/10",
+      "doors": [
+        {
+          "diskapi_id": 428545,
+          "kapi_no": "34/10",
+          "lat": 38.3630399083747,
+          "lng": 38.6606084734467,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6800": {
+      "primary_kapi": "34/21",
+      "doors": [
+        {
+          "diskapi_id": 428557,
+          "kapi_no": "34/21",
+          "lat": 38.3630790982729,
+          "lng": 38.6610330815543,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6801": {
+      "primary_kapi": "34/22",
+      "doors": [
+        {
+          "diskapi_id": 428558,
+          "kapi_no": "34/22",
+          "lat": 38.363290959128,
+          "lng": 38.6610950811955,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6802": {
+      "primary_kapi": "34/23",
+      "doors": [
+        {
+          "diskapi_id": 428559,
+          "kapi_no": "34/23",
+          "lat": 38.3634625541709,
+          "lng": 38.6611367910321,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6803": {
+      "primary_kapi": "34/24",
+      "doors": [
+        {
+          "diskapi_id": 428560,
+          "kapi_no": "34/24",
+          "lat": 38.363615322279,
+          "lng": 38.6611740717561,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6804": {
+      "primary_kapi": "34/12",
+      "doors": [
+        {
+          "diskapi_id": 428547,
+          "kapi_no": "34/12",
+          "lat": 38.3627658983908,
+          "lng": 38.6611588697995,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6805": {
+      "primary_kapi": "34/13",
+      "doors": [
+        {
+          "diskapi_id": 428549,
+          "kapi_no": "34/13",
+          "lat": 38.3626893164864,
+          "lng": 38.6613715458035,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6806": {
+      "primary_kapi": "34/14",
+      "doors": [
+        {
+          "diskapi_id": 428550,
+          "kapi_no": "34/14",
+          "lat": 38.3626021219861,
+          "lng": 38.6616136799248,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6807": {
+      "primary_kapi": "34/15",
+      "doors": [
+        {
+          "diskapi_id": 428551,
+          "kapi_no": "34/15",
+          "lat": 38.3625212323418,
+          "lng": 38.6618383226868,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6808": {
+      "primary_kapi": "34/16",
+      "doors": [
+        {
+          "diskapi_id": 428552,
+          "kapi_no": "34/16",
+          "lat": 38.3624429326017,
+          "lng": 38.6620557580643,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6809": {
+      "primary_kapi": "34/17",
+      "doors": [
+        {
+          "diskapi_id": 428553,
+          "kapi_no": "34/17",
+          "lat": 38.3623631813495,
+          "lng": 38.6622772243764,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6810": {
+      "primary_kapi": "34/18",
+      "doors": [
+        {
+          "diskapi_id": 428554,
+          "kapi_no": "34/18",
+          "lat": 38.3622853759104,
+          "lng": 38.6624932941569,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6811": {
+      "primary_kapi": "34/19",
+      "doors": [
+        {
+          "diskapi_id": 428555,
+          "kapi_no": "34/19",
+          "lat": 38.3622058991754,
+          "lng": 38.6627139897313,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6812": {
+      "primary_kapi": "24/11",
+      "doors": [
+        {
+          "diskapi_id": 428487,
+          "kapi_no": "24/11",
+          "lat": 38.3584531953442,
+          "lng": 38.6596498476215,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6813": {
+      "primary_kapi": "24/10",
+      "doors": [
+        {
+          "diskapi_id": 428486,
+          "kapi_no": "24/10",
+          "lat": 38.3582027000856,
+          "lng": 38.6595338406727,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6814": {
+      "primary_kapi": "34/20",
+      "doors": [
+        {
+          "diskapi_id": 428556,
+          "kapi_no": "34/20",
+          "lat": 38.3629105379428,
+          "lng": 38.6614391214818,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6815": {
+      "primary_kapi": "34/7",
+      "doors": [
+        {
+          "diskapi_id": 428541,
+          "kapi_no": "34/7",
+          "lat": 38.362789695989,
+          "lng": 38.6601957879389,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6816": {
+      "primary_kapi": "34/9",
+      "doors": [
+        {
+          "diskapi_id": 428544,
+          "kapi_no": "34/9",
+          "lat": 38.3631473152878,
+          "lng": 38.6604094296526,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6817": {
+      "primary_kapi": "311",
+      "doors": [
+        {
+          "diskapi_id": 424494,
+          "kapi_no": "311",
+          "lat": 38.3784544778203,
+          "lng": 38.615097671723,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6818": {
+      "primary_kapi": "268",
+      "doors": [
+        {
+          "diskapi_id": 427563,
+          "kapi_no": "268",
+          "lat": 38.3844535107668,
+          "lng": 38.6637324818629,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6819": {
+      "primary_kapi": "270",
+      "doors": [
+        {
+          "diskapi_id": 427565,
+          "kapi_no": "270",
+          "lat": 38.3841315392204,
+          "lng": 38.663424020083,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6820": {
+      "primary_kapi": "272",
+      "doors": [
+        {
+          "diskapi_id": 428302,
+          "kapi_no": "272",
+          "lat": 38.3923582325937,
+          "lng": 38.6198981637708,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6821": {
+      "primary_kapi": "321",
+      "doors": [
+        {
+          "diskapi_id": 429297,
+          "kapi_no": "321",
+          "lat": 38.3894934921146,
+          "lng": 38.6610533110081,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6822": {
+      "primary_kapi": "274",
+      "doors": [
+        {
+          "diskapi_id": 431044,
+          "kapi_no": "274",
+          "lat": 38.3824030985172,
+          "lng": 38.6490640261604,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6823": {
+      "primary_kapi": "276",
+      "doors": [
+        {
+          "diskapi_id": 432962,
+          "kapi_no": "276",
+          "lat": 38.3897586460874,
+          "lng": 38.6791666266907,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6824": {
+      "primary_kapi": "149",
+      "doors": [
+        {
+          "diskapi_id": 434605,
+          "kapi_no": "149",
+          "lat": 38.3898556759078,
+          "lng": 38.6418782324567,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6825": {
+      "primary_kapi": "278",
+      "doors": [
+        {
+          "diskapi_id": 435767,
+          "kapi_no": "278",
+          "lat": 38.392349094418,
+          "lng": 38.6186022945631,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6826": {
+      "primary_kapi": "196",
+      "doors": [
+        {
+          "diskapi_id": 435950,
+          "kapi_no": "196",
+          "lat": 38.3522230552716,
+          "lng": 38.6623512291404,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6827": {
+      "primary_kapi": "151",
+      "doors": [
+        {
+          "diskapi_id": 436325,
+          "kapi_no": "151",
+          "lat": 38.3677471825254,
+          "lng": 38.6326504629843,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6828": {
+      "primary_kapi": "73",
+      "doors": [
+        {
+          "diskapi_id": 436355,
+          "kapi_no": "73",
+          "lat": 38.3667988093746,
+          "lng": 38.6338227882637,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6829": {
+      "primary_kapi": "73/1",
+      "doors": [
+        {
+          "diskapi_id": 436563,
+          "kapi_no": "73/1",
+          "lat": 38.3669849529489,
+          "lng": 38.6336152272132,
+          "alignment": "on_edge",
+          "edge_distance_m": 0
+        }
+      ]
+    },
+    "6830": {
+      "primary_kapi": "280",
+      "doors": [
+        {
+          "diskapi_id": 440890,
+          "kapi_no": "280",
+          "lat": 38.3923751620411,
+          "lng": 38.6188970694643,
           "alignment": "on_edge",
           "edge_distance_m": 0
         }

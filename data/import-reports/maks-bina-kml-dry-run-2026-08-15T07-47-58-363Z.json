@@ -1,0 +1,189 @@
+{
+  "mode": "dry-run",
+  "at": "2026-08-15T07:47:58.370Z",
+  "before": {
+    "binalar": {
+      "n": 6241,
+      "max_id": 6337,
+      "sum_id": 19878087,
+      "kml_u": 2770,
+      "id2_u": 4615
+    },
+    "sayac": 24299,
+    "bina_bilgi": 2589
+  },
+  "stats": {
+    "kml_path": "C:/Users/Surface/Downloads/Maks_Bina.kml",
+    "kml_placemarks": 495,
+    "skip": {
+      "no_polygon": 0,
+      "outside_bbox": 0,
+      "tiny_area": 1,
+      "identity_pair": 0,
+      "identity_id": 0,
+      "identity_geom": 0,
+      "spatial_overlap": 0,
+      "kml_dup_id": 0,
+      "kml_dup_geom": 1
+    },
+    "insert": {
+      "named": 126,
+      "with_abone": 245,
+      "with_uavt": 493
+    }
+  },
+  "insert_count": 493,
+  "insert_bbox": {
+    "minLat": 38.34528474593532,
+    "maxLat": 38.39664398506178,
+    "minLng": 38.61036070179894,
+    "maxLng": 38.68044790293068
+  },
+  "spatial_skip_samples": [],
+  "samples": [
+    {
+      "kml_id": 123172,
+      "value": "UAVT 241865591",
+      "layer": "Maks_Bina",
+      "abone": 1,
+      "uavt": "241865591",
+      "area_m2": 154.2,
+      "centroid": {
+        "lat": 38.35179898205957,
+        "lng": 38.6624253349919
+      }
+    },
+    {
+      "kml_id": 123367,
+      "value": "UAVT 248111924",
+      "layer": "Maks_Bina",
+      "abone": 1,
+      "uavt": "248111924",
+      "area_m2": 258.8,
+      "centroid": {
+        "lat": 38.38872212884902,
+        "lng": 38.65203612533248
+      }
+    },
+    {
+      "kml_id": 123504,
+      "value": "UAVT 248613911",
+      "layer": "Maks_Bina",
+      "abone": 1,
+      "uavt": "248613911",
+      "area_m2": 118.1,
+      "centroid": {
+        "lat": 38.35190721367484,
+        "lng": 38.6636545585476
+      }
+    },
+    {
+      "kml_id": 123513,
+      "value": "UAVT 255673675",
+      "layer": "Maks_Bina",
+      "abone": 1,
+      "uavt": "255673675",
+      "area_m2": 97.2,
+      "centroid": {
+        "lat": 38.35138235223501,
+        "lng": 38.66338141469998
+      }
+    },
+    {
+      "kml_id": 123649,
+      "value": "UAVT 254573694",
+      "layer": "Maks_Bina",
+      "abone": 1,
+      "uavt": "254573694",
+      "area_m2": 200.2,
+      "centroid": {
+        "lat": 38.35247053042881,
+        "lng": 38.66257218834624
+      }
+    },
+    {
+      "kml_id": 123693,
+      "value": "UAVT 259491876",
+      "layer": "Maks_Bina",
+      "abone": 0,
+      "uavt": "259491876",
+      "area_m2": 128.5,
+      "centroid": {
+        "lat": 38.35055627028524,
+        "lng": 38.66551875198286
+      }
+    },
+    {
+      "kml_id": 123782,
+      "value": "UAVT 249150657",
+      "layer": "Maks_Bina",
+      "abone": 1,
+      "uavt": "249150657",
+      "area_m2": 460.8,
+      "centroid": {
+        "lat": 38.35131846406293,
+        "lng": 38.66257378193597
+      }
+    },
+    {
+      "kml_id": 123824,
+      "value": "UAVT 254397052",
+      "layer": "Maks_Bina",
+      "abone": 1,
+      "uavt": "254397052",
+      "area_m2": 149.9,
+      "centroid": {
+        "lat": 38.35080526077115,
+        "lng": 38.66200697343187
+      }
+    },
+    {
+      "kml_id": 123836,
+      "value": "UAVT 246041073",
+      "layer": "Maks_Bina",
+      "abone": 1,
+      "uavt": "246041073",
+      "area_m2": 121,
+      "centroid": {
+        "lat": 38.35090180372964,
+        "lng": 38.662709249986605
+      }
+    },
+    {
+      "kml_id": 123970,
+      "value": "UAVT 248403271",
+      "layer": "Maks_Bina",
+      "abone": 0,
+      "uavt": "248403271",
+      "area_m2": 189.7,
+      "centroid": {
+        "lat": 38.350982543442655,
+        "lng": 38.6637710842116
+      }
+    },
+    {
+      "kml_id": 124055,
+      "value": "UAVT 259653467",
+      "layer": "Maks_Bina",
+      "abone": 1,
+      "uavt": "259653467",
+      "area_m2": 128.3,
+      "centroid": {
+        "lat": 38.35259311788265,
+        "lng": 38.66208312001995
+      }
+    },
+    {
+      "kml_id": 124129,
+      "value": "UAVT 245093109",
+      "layer": "Maks_Bina",
+      "abone": 1,
+      "uavt": "245093109",
+      "area_m2": 161.4,
+      "centroid": {
+        "lat": 38.35032781743063,
+        "lng": 38.65898619345433
+      }
+    }
+  ]
+}

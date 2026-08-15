@@ -1,0 +1,68 @@
+{
+  "mode": "apply",
+  "mahalle": "Yakınca Mahallesi",
+  "buildings_in_mahalle": 209,
+  "buildings_with_meters": 68,
+  "meter_rows": 957,
+  "ikizce_lora_rows": 0,
+  "byKaynak": {
+    "meter-coord-import": 915,
+    "assign-nearest-forced": 24,
+    "place-remaining": 1,
+    "assign-nearest-safe": 17
+  },
+  "sample": [
+    {
+      "bina_id": 26,
+      "value": "A19",
+      "sayac_id": "1444738",
+      "kaynak": "meter-coord-import"
+    },
+    {
+      "bina_id": 26,
+      "value": "A19",
+      "sayac_id": "1444109",
+      "kaynak": "meter-coord-import"
+    },
+    {
+      "bina_id": 26,
+      "value": "A19",
+      "sayac_id": "1444107",
+      "kaynak": "meter-coord-import"
+    },
+    {
+      "bina_id": 26,
+      "value": "A19",
+      "sayac_id": "1444106",
+      "kaynak": "meter-coord-import"
+    },
+    {
+      "bina_id": 26,
+      "value": "A19",
+      "sayac_id": "1444150",
+      "kaynak": "meter-coord-import"
+    },
+    {
+      "bina_id": 26,
+      "value": "A19",
+      "sayac_id": "1444156",
+      "kaynak": "meter-coord-import"
+    },
+    {
+      "bina_id": 26,
+      "value": "A19",
+      "sayac_id": "1444104",
+      "kaynak": "meter-coord-import"
+    },
+    {
+      "bina_id": 26,
+      "value": "A19",
+      "sayac_id": "1444152",
+      "kaynak": "meter-coord-import"
+    }
+  ],
+  "backup": "C:/Users/Surface/Desktop/LoraLast/LoraSayacTakip/data/backups/binalar.before-remove-yakinca-sayac-2026-08-14T10-16-46-434Z.db",
+  "deleted_sayac": 957,
+  "updated_bina_bilgi": 104,
+  "leftover_meters": 0
+}

@@ -1,0 +1,541 @@
+{
+  "mode": "dry-run",
+  "generated_at": "2026-08-15T14:30:27.694Z",
+  "kml": "C:/Users/Surface/Downloads/Maks_Dış_Kapı_No.kml",
+  "doors_parsed": 554,
+  "doors_matched": 545,
+  "doors_skipped": 9,
+  "skipReasons": {
+    "NO_BUILDING_CANDIDATE": 9
+  },
+  "unique_buildings": 491,
+  "multi_door_buildings": 42,
+  "bina_bilgi": {
+    "insert_new": 245,
+    "update_empty": 246,
+    "keep_existing": 0
+  },
+  "samples": {
+    "update_empty": [
+      {
+        "bina_id": 6450,
+        "bina": "UAVT 245876768",
+        "kapi_no": "82"
+      },
+      {
+        "bina_id": 6376,
+        "bina": "UAVT 254855034",
+        "kapi_no": "170"
+      },
+      {
+        "bina_id": 6493,
+        "bina": "UAVT 244951612",
+        "kapi_no": "38"
+      },
+      {
+        "bina_id": 6374,
+        "bina": "UAVT 249781162",
+        "kapi_no": "30"
+      },
+      {
+        "bina_id": 6364,
+        "bina": "UAVT 253078778",
+        "kapi_no": "35"
+      },
+      {
+        "bina_id": 6484,
+        "bina": "UAVT 244207163",
+        "kapi_no": "118"
+      },
+      {
+        "bina_id": 6407,
+        "bina": "UAVT 719241887",
+        "kapi_no": "58"
+      },
+      {
+        "bina_id": 6565,
+        "bina": "UAVT 253057939",
+        "kapi_no": "142"
+      }
+    ],
+    "insert_new": [
+      {
+        "bina_id": 6383,
+        "bina": "UAVT 242277580",
+        "kapi_no": "48"
+      },
+      {
+        "bina_id": 6429,
+        "bina": "UAVT 251080289",
+        "kapi_no": "20"
+      },
+      {
+        "bina_id": 6424,
+        "bina": "UAVT 251419628",
+        "kapi_no": "95A"
+      },
+      {
+        "bina_id": 6540,
+        "bina": "UAVT 241076488",
+        "kapi_no": "134"
+      },
+      {
+        "bina_id": 6505,
+        "bina": "UAVT 250652484",
+        "kapi_no": "129"
+      },
+      {
+        "bina_id": 6343,
+        "bina": "UAVT 259491876",
+        "kapi_no": "160"
+      },
+      {
+        "bina_id": 6482,
+        "bina": "UAVT 255313306",
+        "kapi_no": "47"
+      },
+      {
+        "bina_id": 6555,
+        "bina": "MEHMET NURİ KURU",
+        "kapi_no": "40/1"
+      }
+    ],
+    "skipped": [
+      {
+        "diskapi_id": "355486",
+        "building_id": "",
+        "kapi_no": "66",
+        "national_code": "518984091",
+        "lat": 38.3473118792016,
+        "lng": 38.6658454239685,
+        "reason": "NO_BUILDING_CANDIDATE"
+      },
+      {
+        "diskapi_id": "385452",
+        "building_id": "",
+        "kapi_no": "21/1",
+        "national_code": "436910319",
+        "lat": 38.3869963587166,
+        "lng": 38.6235862175762,
+        "reason": "NO_BUILDING_CANDIDATE"
+      },
+      {
+        "diskapi_id": "389582",
+        "building_id": "",
+        "kapi_no": "196",
+        "national_code": "555731819",
+        "lat": 38.38164237471,
+        "lng": 38.6695484286165,
+        "reason": "NO_BUILDING_CANDIDATE"
+      },
+      {
+        "diskapi_id": "389757",
+        "building_id": "",
+        "kapi_no": "139",
+        "national_code": "484281068",
+        "lat": 38.3856578955192,
+        "lng": 38.6546074453339,
+        "reason": "NO_BUILDING_CANDIDATE"
+      },
+      {
+        "diskapi_id": "389987",
+        "building_id": "",
+        "kapi_no": "68",
+        "national_code": "580318871",
+        "lat": 38.350338055404,
+        "lng": 38.6625424269904,
+        "reason": "NO_BUILDING_CANDIDATE"
+      },
+      {
+        "diskapi_id": "396997",
+        "building_id": "",
+        "kapi_no": "89/2",
+        "national_code": "417066388",
+        "lat": 38.3877239532393,
+        "lng": 38.6582304827573,
+        "reason": "NO_BUILDING_CANDIDATE"
+      },
+      {
+        "diskapi_id": "397878",
+        "building_id": "",
+        "kapi_no": "258",
+        "national_code": "436476048",
+        "lat": 38.3812980829734,
+        "lng": 38.629754933015,
+        "reason": "NO_BUILDING_CANDIDATE"
+      },
+      {
+        "diskapi_id": "397879",
+        "building_id": "",
+        "kapi_no": "258/1",
+        "national_code": "514929892",
+        "lat": 38.3811988883353,
+        "lng": 38.6291731318799,
+        "reason": "NO_BUILDING_CANDIDATE"
+      },
+      {
+        "diskapi_id": "402136",
+        "building_id": "224441",
+        "kapi_no": "188",
+        "national_code": "481381630",
+        "lat": 38.351859610113,
+        "lng": 38.663610480742,
+        "reason": "NO_BUILDING_CANDIDATE"
+      }
+    ],
+    "multi": [
+      {
+        "bina_id": 6374,
+        "bina_value": "UAVT 249781162",
+        "bina_layer": "Maks_Bina",
+        "primary_kapi": "30",
+        "door_count": 2,
+        "doors": [
+          {
+            "diskapi_id": "286653",
+            "building_id": "127458",
+            "kapi_no": "30",
+            "national_code": "249781162",
+            "lat": 38.3525121123933,
+            "lng": 38.6611143120643,
+            "bina_id": 6374,
+            "bina_value": "UAVT 249781162",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0.000013331331933193766
+          },
+          {
+            "diskapi_id": "355325",
+            "building_id": "127458",
+            "kapi_no": "30A",
+            "national_code": "761348853",
+            "lat": 38.3525126909333,
+            "lng": 38.6611458592769,
+            "bina_id": 6374,
+            "bina_value": "UAVT 249781162",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0.000031600973963746326
+          }
+        ]
+      },
+      {
+        "bina_id": 6426,
+        "bina_value": "UAVT 256691254",
+        "bina_layer": "Maks_Bina",
+        "primary_kapi": "99",
+        "door_count": 3,
+        "doors": [
+          {
+            "diskapi_id": "327632",
+            "building_id": "134513",
+            "kapi_no": "99",
+            "national_code": "256691254",
+            "lat": 38.3847887698156,
+            "lng": 38.6642234596667,
+            "bina_id": 6426,
+            "bina_value": "UAVT 256691254",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0
+          },
+          {
+            "diskapi_id": "355429",
+            "building_id": "134513",
+            "kapi_no": "99B",
+            "national_code": "450138037",
+            "lat": 38.3847713006255,
+            "lng": 38.6641679401822,
+            "bina_id": 6426,
+            "bina_value": "UAVT 256691254",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0
+          },
+          {
+            "diskapi_id": "287253",
+            "building_id": "134513",
+            "kapi_no": "99/1",
+            "national_code": "254640055",
+            "lat": 38.3846660070445,
+            "lng": 38.6643710502429,
+            "bina_id": 6426,
+            "bina_value": "UAVT 256691254",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0.0001283427381665924
+          }
+        ]
+      },
+      {
+        "bina_id": 6503,
+        "bina_value": "UAVT 255106437",
+        "bina_layer": "Maks_Bina",
+        "primary_kapi": "58",
+        "door_count": 2,
+        "doors": [
+          {
+            "diskapi_id": "288106",
+            "building_id": "144522",
+            "kapi_no": "58",
+            "national_code": "255106437",
+            "lat": 38.3506341155224,
+            "lng": 38.6586305899449,
+            "bina_id": 6503,
+            "bina_value": "UAVT 255106437",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0
+          },
+          {
+            "diskapi_id": "355427",
+            "building_id": "144522",
+            "kapi_no": "58A",
+            "national_code": "502818644",
+            "lat": 38.350631290309,
+            "lng": 38.658666770606,
+            "bina_id": 6503,
+            "bina_value": "UAVT 255106437",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0.00009975760864224801
+          }
+        ]
+      },
+      {
+        "bina_id": 6424,
+        "bina_value": "UAVT 251419628",
+        "bina_layer": "Maks_Bina",
+        "primary_kapi": "95A",
+        "door_count": 3,
+        "doors": [
+          {
+            "diskapi_id": "355458",
+            "building_id": "134471",
+            "kapi_no": "95A",
+            "national_code": "397597402",
+            "lat": 38.3857514678025,
+            "lng": 38.6642462306718,
+            "bina_id": 6424,
+            "bina_value": "UAVT 251419628",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0
+          },
+          {
+            "diskapi_id": "355483",
+            "building_id": "134471",
+            "kapi_no": "95B",
+            "national_code": "454482621",
+            "lat": 38.3857426891402,
+            "lng": 38.6642765262362,
+            "bina_id": 6424,
+            "bina_value": "UAVT 251419628",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0
+          },
+          {
+            "diskapi_id": "288713",
+            "building_id": "134471",
+            "kapi_no": "95",
+            "national_code": "251419628",
+            "lat": 38.3857604302266,
+            "lng": 38.6642153036044,
+            "bina_id": 6424,
+            "bina_value": "UAVT 251419628",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0.00018787128006902943
+          }
+        ]
+      },
+      {
+        "bina_id": 6511,
+        "bina_value": "UAVT 654959378",
+        "bina_layer": "Maks_Bina",
+        "primary_kapi": "107",
+        "door_count": 3,
+        "doors": [
+          {
+            "diskapi_id": "291216",
+            "building_id": "145807",
+            "kapi_no": "107",
+            "national_code": "654959378",
+            "lat": 38.3869982813206,
+            "lng": 38.6689400867444,
+            "bina_id": 6511,
+            "bina_value": "UAVT 654959378",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0
+          },
+          {
+            "diskapi_id": "318817",
+            "building_id": "145807",
+            "kapi_no": "107A",
+            "national_code": "556491645",
+            "lat": 38.3869980730153,
+            "lng": 38.668972234026,
+            "bina_id": 6511,
+            "bina_value": "UAVT 654959378",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0.00010028144277377715
+          },
+          {
+            "diskapi_id": "355468",
+            "building_id": "145807",
+            "kapi_no": "107B",
+            "national_code": "521225987",
+            "lat": 38.386997958744,
+            "lng": 38.668989829988,
+            "bina_id": 6511,
+            "bina_value": "UAVT 654959378",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0.00014108593806706564
+          }
+        ]
+      },
+      {
+        "bina_id": 6555,
+        "bina_value": "MEHMET NURİ KURU",
+        "bina_layer": "Maks_Bina",
+        "primary_kapi": "40/1",
+        "door_count": 3,
+        "doors": [
+          {
+            "diskapi_id": "355370",
+            "building_id": "151497",
+            "kapi_no": "40/1",
+            "national_code": "514344894",
+            "lat": 38.3806698456077,
+            "lng": 38.646981522658,
+            "bina_id": 6555,
+            "bina_value": "MEHMET NURİ KURU",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0
+          },
+          {
+            "diskapi_id": "355367",
+            "building_id": "151497",
+            "kapi_no": "40A",
+            "national_code": "401936232",
+            "lat": 38.3807786128734,
+            "lng": 38.6468586502934,
+            "bina_id": 6555,
+            "bina_value": "MEHMET NURİ KURU",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0.00014352749045827605
+          },
+          {
+            "diskapi_id": "291723",
+            "building_id": "151497",
+            "kapi_no": "40",
+            "national_code": "251459145",
+            "lat": 38.3807733074897,
+            "lng": 38.6468173229837,
+            "bina_id": 6555,
+            "bina_value": "MEHMET NURİ KURU",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0.00019805205122198387
+          }
+        ]
+      },
+      {
+        "bina_id": 6423,
+        "bina_value": "UAVT 248515348",
+        "bina_layer": "Maks_Bina",
+        "primary_kapi": "118A",
+        "door_count": 2,
+        "doors": [
+          {
+            "diskapi_id": "355450",
+            "building_id": "134302",
+            "kapi_no": "118A",
+            "national_code": "766522825",
+            "lat": 38.3897433579714,
+            "lng": 38.6680736462698,
+            "bina_id": 6423,
+            "bina_value": "UAVT 248515348",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0
+          },
+          {
+            "diskapi_id": "292253",
+            "building_id": "134302",
+            "kapi_no": "118",
+            "national_code": "248515348",
+            "lat": 38.3897432901447,
+            "lng": 38.6680490569002,
+            "bina_id": 6423,
+            "bina_value": "UAVT 248515348",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0.0002005667312113687
+          }
+        ]
+      },
+      {
+        "bina_id": 6556,
+        "bina_value": "UAVT 253050041",
+        "bina_layer": "Maks_Bina",
+        "primary_kapi": "161",
+        "door_count": 2,
+        "doors": [
+          {
+            "diskapi_id": "292461",
+            "building_id": "151514",
+            "kapi_no": "161",
+            "national_code": "253050041",
+            "lat": 38.3501579173935,
+            "lng": 38.6651663337936,
+            "bina_id": 6556,
+            "bina_value": "UAVT 253050041",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0
+          },
+          {
+            "diskapi_id": "325830",
+            "building_id": "151514",
+            "kapi_no": "161A",
+            "national_code": "254981590",
+            "lat": 38.3501665594039,
+            "lng": 38.6650685253763,
+            "bina_id": 6556,
+            "bina_value": "UAVT 253050041",
+            "bina_layer": "Maks_Bina",
+            "method": "id_2",
+            "alignment": "on_edge",
+            "edge_distance_m": 0.000004245731624027944
+          }
+        ]
+      }
+    ]
+  }
+}

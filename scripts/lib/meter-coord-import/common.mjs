@@ -30,11 +30,12 @@ export const CONFIDENCE = {
   SKIP: "skip",
 };
 
+/** TOKİ/İkizce (~38.16–38.36) + Battalgazi doğu kümesi (~38.61–38.68). */
 export const EXPECTED_REGION = {
-  minLat: 38.25,
-  maxLat: 38.42,
-  minLng: 38.1,
-  maxLng: 38.4,
+  minLat: 38.2,
+  maxLat: 38.5,
+  minLng: 38.05,
+  maxLng: 38.75,
 };
 
 export const SKIP_BUILDING_LAYER = /KALDIRIM/i;

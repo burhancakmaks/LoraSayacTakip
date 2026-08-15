@@ -73,7 +73,21 @@ const SAYAC_MARKALARI = [
   "Baylan",
   "Polimeter",
   "Manas",
+  "Klepsan",
+  "Günal",
+  "Cem",
+  "Paksay",
+  "Paksan",
+  "Türkoğlu",
+  "Teksan",
+  "BRT Meter",
 ];
+
+function markaSelectOptions(current: string) {
+  const cur = String(current || "").trim();
+  if (cur && !SAYAC_MARKALARI.includes(cur)) return [...SAYAC_MARKALARI, cur];
+  return SAYAC_MARKALARI;
+}
 
 const NUM_INPUT_CLASS =
   "w-full min-w-[5.5rem] bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 rounded-md px-2 py-1 text-xs font-mono tabular-nums text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 transition outline-none";
@@ -150,6 +164,7 @@ function SayacUnitCard({
   const meta = SAYAC_DURUM[durum];
   const hasSayac = row.sayac_id.trim() !== "";
   const hasAbone = row.abone_no.trim() !== "";
+  const hasMarka = row.sayac_markasi.trim() !== "";
   const doorLabel = row.kapi_no || String(row.birim_no);
   const subLabel = [row.kat, row.blok_no].filter(Boolean).join(" · ");
 
@@ -200,6 +215,24 @@ function SayacUnitCard({
           >
             {hasSayac ? row.sayac_id : "— — —"}
           </p>
+        </div>
+
+        <div
+          className={`flex items-center justify-between gap-1 rounded-md border px-2 py-1 ${
+            hasMarka
+              ? "border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800/70"
+              : "border-gray-200 bg-gray-50/80 dark:border-gray-700 dark:bg-gray-800/50"
+          }`}
+        >
+          <span className="text-[7px] font-medium text-gray-500 dark:text-gray-400">Marka</span>
+          <span
+            className={`truncate text-[9px] font-semibold ${
+              hasMarka ? "text-gray-800 dark:text-gray-200" : "text-gray-400"
+            }`}
+            title={hasMarka ? row.sayac_markasi : undefined}
+          >
+            {hasMarka ? row.sayac_markasi : "—"}
+          </span>
         </div>
 
         <div
@@ -848,7 +881,7 @@ export default function SayacModal({
                               className="w-full bg-transparent border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:border-brand-400 focus:bg-white dark:focus:bg-gray-800 rounded-md px-2.5 py-1.5 text-gray-800 dark:text-gray-200 text-sm focus:outline-none focus:ring-1 focus:ring-brand-400 transition cursor-pointer"
                             >
                               <option value="" className="dark:bg-gray-900">Seçiniz</option>
-                              {SAYAC_MARKALARI.map((marka) => (
+                              {markaSelectOptions(row.sayac_markasi).map((marka) => (
                                 <option key={marka} value={marka} className="dark:bg-gray-900">
                                   {marka}
                                 </option>

@@ -13,6 +13,48 @@ import {
 const require = createRequire(import.meta.url);
 const XLSX = require("xlsx");
 
+export const EXCEL_SCHEMA = {
+  LORA_COORD: "lora-coord",
+  ABONE_LOCATION: "abone-location",
+};
+
+function foldKey(value) {
+  return unicodeFold(value).toLocaleLowerCase("tr-TR");
+}
+
+function rowLookup(row) {
+  const map = new Map();
+  for (const [key, value] of Object.entries(row || {})) {
+    map.set(foldKey(key), value);
+  }
+  return (aliases) => {
+    for (const alias of aliases) {
+      const key = foldKey(alias);
+      if (map.has(key)) return map.get(key);
+    }
+    return undefined;
+  };
+}
+
+export function detectExcelSchema(firstRow) {
+  const keys = new Set(Object.keys(firstRow || {}).map(foldKey));
+  if (keys.has("meter_number") && keys.has("installation_number") && keys.has("location")) {
+    return EXCEL_SCHEMA.LORA_COORD;
+  }
+  if (
+    keys.has("location") &&
+    (keys.has("sayac no") || keys.has("sayaç no") || keys.has("sayac_no")) &&
+    (keys.has("abone no") || keys.has("abone_no"))
+  ) {
+    return EXCEL_SCHEMA.ABONE_LOCATION;
+  }
+  return null;
+}
+
+export function emptyCsv() {
+  return { path: null, hash: null, header: [], rows: [] };
+}
+
 export function readCoordinateWorkbook(excelPath) {
   const buf = readFileSync(excelPath);
   const hash = fileSha256(buf);
@@ -24,38 +66,74 @@ export function readCoordinateWorkbook(excelPath) {
     ? XLSX.utils.sheet_to_json(wb.Sheets.Sayfa1, { defval: "" })
     : [];
   const rows = XLSX.utils.sheet_to_json(wb.Sheets.konum, { defval: "", raw: true });
-  const required = ["installation_number", "agreement_number", "location", "meter_number", "value"];
   const first = rows[0] || {};
-  const missing = required.filter((k) => !(k in first) && rows.length > 0);
-  if (rows.length && missing.length) {
-    throw new Error(`Excel beklenen sütunlar yok: ${missing.join(", ")}`);
+  const schema = detectExcelSchema(first);
+  if (rows.length && !schema) {
+    throw new Error(`Excel şeması tanınmadı. Sütunlar: ${Object.keys(first).join(", ")}`);
   }
+
   const parsed = [];
   for (let i = 0; i < rows.length; i++) {
     const row = rows[i];
+    const get = rowLookup(row);
+    const location = cleanText(get(["location"]));
+    const point = parseWktPoint(location);
+
+    if (schema === EXCEL_SCHEMA.ABONE_LOCATION) {
+      const meterRaw = get(["sayac no", "sayaç no", "sayac_no"]);
+      const meter = normalizeMeterNumber(meterRaw);
+      const abone = asIdentityString(get(["abone no", "abone_no"]));
+      const brand = cleanText(get(["sayaç marka", "sayac marka", "sayaç markası", "sayac_markasi"]));
+      parsed.push({
+        source_row: i + 2,
+        schema,
+        installation_number: "",
+        agreement_number: "",
+        abone_no: abone == null ? "" : abone,
+        location,
+        meter_raw: meterRaw,
+        meter_ok: meter.ok,
+        meter_reason: meter.reason,
+        meter_number: meter.normalized,
+        value: brand,
+        sayac_markasi: brand,
+        uretim_yili: asIdentityString(get(["üretim yılı", "uretim yili", "uretim_yili"])) || "",
+        damga_yili: asIdentityString(get(["damga yılı", "damga yili", "damga_yili"])) || "",
+        point,
+        identity_suspect: abone == null,
+        kaynak: "sayac-xlsx-import",
+      });
+      continue;
+    }
+
     const meter = normalizeMeterNumber(row.meter_number);
     const inst = asIdentityString(row.installation_number);
     const agr = asIdentityString(row.agreement_number);
-    const location = cleanText(row.location);
     const value = cleanText(row.value);
-    const point = parseWktPoint(location);
     parsed.push({
       source_row: i + 2,
+      schema: EXCEL_SCHEMA.LORA_COORD,
       installation_number: inst == null ? "" : inst,
       agreement_number: agr == null ? "" : agr,
+      abone_no: inst == null ? "" : inst,
       location,
       meter_raw: row.meter_number,
       meter_ok: meter.ok,
       meter_reason: meter.reason,
       meter_number: meter.normalized,
       value,
+      sayac_markasi: "",
+      uretim_yili: "",
+      damga_yili: "",
       point,
       identity_suspect: inst == null || agr == null,
+      kaynak: "meter-coord-import",
     });
   }
   return {
     path: excelPath,
     hash,
+    schema: schema || EXCEL_SCHEMA.LORA_COORD,
     sheetNames: wb.SheetNames,
     emptySheetRows: emptySheet.length,
     rows: parsed,

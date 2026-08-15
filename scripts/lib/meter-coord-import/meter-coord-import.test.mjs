@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { mkdtempSync, writeFileSync, rmSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
+import { createRequire } from "node:module";
 import { DatabaseSync } from "node:sqlite";
 import {
   asIdentityString,
@@ -12,11 +13,14 @@ import {
   REASON,
 } from "./common.mjs";
 import { projectPoint } from "./crs.mjs";
-import { parseCsvDevices } from "./parsers.mjs";
+import { parseCsvDevices, readCoordinateWorkbook, detectExcelSchema, EXCEL_SCHEMA } from "./parsers.mjs";
 import { matchPointToBuildings, resolveOverlayHits, BOUNDARY_EPS_M } from "./spatial.mjs";
 import { ensureMeterCoordTables } from "./schema.mjs";
 import { applyPlan, createDbBackup } from "./apply.mjs";
-import { MARKA_FROM_VALUE } from "./plan.mjs";
+import { MARKA_FROM_VALUE, resolveMarka } from "./plan.mjs";
+
+const require = createRequire(import.meta.url);
+const XLSX = require("xlsx");
 
 function tmp() {
   return mkdtempSync(join(tmpdir(), "meter-coord-"));
@@ -65,6 +69,12 @@ test("EPSG:5258 conversion lands in Malatya", () => {
   const wgs = projectPoint(442109.200110961, 4247790.01080629, "EPSG:5258");
   assert.ok(wgs.lat > 38.3 && wgs.lat < 38.4);
   assert.ok(wgs.lng > 38.2 && wgs.lng < 38.4);
+});
+
+test("EPSG:5258 eastern Battalgazi point is near lng 38.66", () => {
+  const wgs = projectPoint(470369.3662, 4246557.9417, "EPSG:5258");
+  assert.ok(wgs.lat > 38.34 && wgs.lat < 38.36);
+  assert.ok(wgs.lng > 38.65 && wgs.lng < 38.67);
 });
 
 function squareBuilding(id, value, lat, lng, half = 0.0002, extra = {}) {
@@ -351,3 +361,132 @@ test("normalization collision is detectable from distinct raw values sharing dig
   assert.equal(keptZero, "01435754");
   assert.notEqual(keptZero, a);
 });
+
+test("abone-location Excel schema is detected and parsed without guessing DevEUI", () => {
+  const dir = tmp();
+  const path = join(dir, "sayac.xlsx");
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet([
+    {
+      "abone no": 192210,
+      location: "POINT (470369.3662 4246557.9417)",
+      "sayac no": "3437138",
+      "sayaç marka": "GÜNAL",
+      "üretim yılı": 2000,
+      "damga yılı": 2000,
+    },
+    {
+      "abone no": 418647.0,
+      location: "POINT (470239.863934059 4246576.03303522)",
+      "sayac no": 23660451.0,
+      "sayaç marka": "KLEPSAN",
+      "üretim yılı": 2023,
+      "damga yılı": 2023,
+    },
+  ]);
+  XLSX.utils.book_append_sheet(wb, ws, "konum");
+  XLSX.writeFile(wb, path);
+  assert.equal(detectExcelSchema({
+    "abone no": 1,
+    location: "POINT (1 2)",
+    "sayac no": "3",
+  }), EXCEL_SCHEMA.ABONE_LOCATION);
+  const parsed = readCoordinateWorkbook(path);
+  assert.equal(parsed.schema, EXCEL_SCHEMA.ABONE_LOCATION);
+  assert.equal(parsed.rows.length, 2);
+  assert.equal(parsed.rows[0].meter_number, "3437138");
+  assert.equal(parsed.rows[0].abone_no, "192210");
+  assert.equal(parsed.rows[0].sayac_markasi, "GÜNAL");
+  assert.equal(parsed.rows[0].installation_number, "");
+  assert.equal(parsed.rows[1].meter_number, "23660451");
+  assert.ok(parsed.rows[0].point);
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("resolveMarka keeps explicit brands and maps LoRa codes", () => {
+  assert.equal(resolveMarka({ sayac_markasi: "GÜNAL", value: "GÜNAL" }), "GÜNAL");
+  assert.equal(resolveMarka({ value: "BAYLAN_LORA_W" }), "Baylan");
+  assert.equal(resolveMarka({ value: "unknown-code" }), "");
+});
+
+test("empty bina_bilgi is filled from unique abone counts without duplicating meters", () => {
+  const dir = tmp();
+  const dbPath = join(dir, "b.db");
+  const db = seedDb(dbPath);
+  ensureMeterCoordTables(db);
+  db.prepare(
+    "INSERT INTO sayac (bina_id, birim_no, sayac_id, abone_no, kaynak) VALUES (1,1,'3437138','192210','sayac-xlsx-import')"
+  ).run();
+  db.prepare(
+    "INSERT INTO sayac (bina_id, birim_no, sayac_id, abone_no, kaynak) VALUES (1,2,'23660451','418647','sayac-xlsx-import')"
+  ).run();
+  db.prepare(
+    "INSERT INTO bina_bilgi (bina_id, kat_sayisi, daire_sayisi, ortak_alan_sayisi, toplam_bagımsız_bolum, has_zemin) VALUES (1,0,0,0,0,0)"
+  ).run();
+  const applied = applyPlan(
+    db,
+    {
+      sayacPlan: [
+        { action: "unchanged", meter_number: "3437138", bina_id: 1, abone_no: "192210" },
+        { action: "unchanged", meter_number: "23660451", bina_id: 1, abone_no: "418647" },
+      ],
+      binaBilgiCreate: [],
+      devicePlan: [],
+    },
+    { csvName: "", csvHash: null, adaByBinaId: new Map([[1, "704"]]) }
+  );
+  assert.equal(applied.inserted, 0);
+  assert.equal(applied.bilgiFilled, 1);
+  const bilgi = db.prepare("SELECT daire_sayisi, toplam_bagımsız_bolum, has_zemin, ada_parsel FROM bina_bilgi WHERE bina_id=1").get();
+  assert.equal(bilgi.daire_sayisi, 2);
+  assert.equal(bilgi.toplam_bagımsız_bolum, 2);
+  assert.equal(bilgi.has_zemin, 1);
+  assert.equal(bilgi.ada_parsel, "704");
+  assert.equal(db.prepare("SELECT COUNT(*) c FROM sayac").get().c, 2);
+  db.close();
+  rmSync(dir, { recursive: true, force: true });
+});
+
+test("abone-location insert writes abone_no and brand, not tesisat", () => {
+  const dir = tmp();
+  const dbPath = join(dir, "b.db");
+  const db = seedDb(dbPath);
+  ensureMeterCoordTables(db);
+  const applied = applyPlan(
+    db,
+    {
+      sayacPlan: [
+        {
+          action: "insert",
+          meter_number: "3437138",
+          bina_id: 1,
+          value: "GÜNAL",
+          sayac_markasi: "GÜNAL",
+          abone_no: "192210",
+          installation_number: "",
+          agreement_number: "",
+          kaynak: "sayac-xlsx-import",
+        },
+      ],
+      binaBilgiCreate: [1],
+      devicePlan: [],
+    },
+    { csvName: "", csvHash: null }
+  );
+  assert.equal(applied.inserted, 1);
+  const row = db.prepare("SELECT sayac_id, sayac_markasi, abone_no, tesisat_no, sozlesme_no FROM sayac").get();
+  assert.equal(row.sayac_id, "3437138");
+  assert.equal(row.sayac_markasi, "GÜNAL");
+  assert.equal(row.abone_no, "192210");
+  assert.equal(row.tesisat_no, "");
+  const bilgi = db.prepare("SELECT daire_sayisi, ortak_alan_sayisi, toplam_bagımsız_bolum, has_zemin FROM bina_bilgi WHERE bina_id=1").get();
+  assert.equal(bilgi.daire_sayisi, 1);
+  assert.equal(bilgi.ortak_alan_sayisi, 0);
+  assert.equal(bilgi.toplam_bagımsız_bolum, 1);
+  assert.equal(bilgi.has_zemin, 1);
+  const blok = db.prepare("SELECT blok_no FROM sayac WHERE sayac_id='3437138'").get();
+  assert.equal(blok.blok_no, "A1");
+  db.close();
+  rmSync(dir, { recursive: true, force: true });
+});
+

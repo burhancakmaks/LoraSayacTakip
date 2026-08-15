@@ -1,0 +1,58 @@
+{
+  "mode": "apply",
+  "reason": "user-requested nearest building for skipped sayac.xlsx meter",
+  "meter": {
+    "sayac_id": "2440500318",
+    "abone_no": "420502",
+    "sayac_markasi": "KLEPSAN",
+    "kaynak": "sayac-xlsx-import",
+    "lat": 38.38565789468979,
+    "lng": 38.654607445337824
+  },
+  "nearest": {
+    "bina_id": 6357,
+    "value": "UAVT 255616146",
+    "layer": "Maks_Bina",
+    "kml_id": 125420,
+    "meters": 136.15547563883524,
+    "method": "nearest-global"
+  },
+  "backup": {
+    "backupPath": "C:\\Users\\Surface\\Desktop\\LoraLast\\LoraSayacTakip\\data\\backups\\binalar.before-nearest-one-meter-2026-08-15T15-57-07-970Z.db",
+    "size": 26562560,
+    "stamp": "2026-08-15T15-57-07-970Z"
+  },
+  "inserted": {
+    "id": 116322,
+    "bina_id": 6357,
+    "birim_no": 1,
+    "sayac_id": "2440500318",
+    "sayac_markasi": "KLEPSAN",
+    "abone_no": "420502",
+    "kaynak": "sayac-xlsx-import",
+    "blok_no": "UAVT 255616146"
+  },
+  "bilgiBefore": {
+    "daire_sayisi": 0,
+    "toplam": 0,
+    "dis_kapi_no": "68"
+  },
+  "bilgiAfter": {
+    "daire_sayisi": 1,
+    "toplam_bagımsız_bolum": 1,
+    "has_zemin": 1,
+    "dis_kapi_no": "68",
+    "ada_parsel": ""
+  },
+  "counts": {
+    "xlsxImport": 400,
+    "filledBefore": 24605,
+    "filledAfter": 24606,
+    "greenBefore": 1189,
+    "greenAfter": 1190
+  },
+  "verify": {
+    "integrity": "ok",
+    "foreignKeyViolations": 0
+  }
+}

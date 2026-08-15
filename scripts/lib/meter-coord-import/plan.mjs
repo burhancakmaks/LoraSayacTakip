@@ -4,6 +4,7 @@ import {
   EXPECTED_REGION,
   MATCH_METHOD,
   REASON,
+  cleanText,
   inExpectedRegion,
   median,
   meterDigits,
@@ -15,6 +16,14 @@ export const MARKA_FROM_VALUE = {
   POLIMETER_LORA_W: "Polimeter",
   "BRT METER LORA": "BRT Meter",
 };
+
+export function resolveMarka(row) {
+  const explicit = cleanText(row?.sayac_markasi);
+  if (explicit) return explicit;
+  const value = cleanText(row?.value);
+  if (!value) return "";
+  return MARKA_FROM_VALUE[value] || "";
+}
 
 export const EXPECTED_EXCEL_ROWS = 12740;
 export const EXPECTED_CSV_ROWS = 7000;
@@ -147,11 +156,11 @@ function classifySayacAction(row, building, existingRows) {
     }
   }
   const rec = existingRows.find((r) => r.bina_id === building.id) || existingRows[0];
-  const marka = MARKA_FROM_VALUE[row.value] || "";
+  const marka = resolveMarka(row);
+  const incomingAbone = cleanText(row.abone_no) || cleanText(row.installation_number);
   const wouldChangeId = rec.sayac_id && !fieldsEqual(rec.sayac_id, row.meter_number) && meterDigits(rec.sayac_id) === meterDigits(row.meter_number);
   const overwriteMarka = rec.sayac_markasi && marka && !fieldsEqual(rec.sayac_markasi, marka);
-  const overwriteAbone =
-    rec.abone_no && row.installation_number && !fieldsEqual(rec.abone_no, row.installation_number);
+  const overwriteAbone = rec.abone_no && incomingAbone && !fieldsEqual(rec.abone_no, incomingAbone);
   if (overwriteMarka || overwriteAbone) {
     return { action: "skip", reason: REASON.WOULD_OVERWRITE_HIGHER_QUALITY_DATA, existing: [rec] };
   }
@@ -159,12 +168,13 @@ function classifySayacAction(row, building, existingRows) {
     fieldsEqual(rec.sayac_id, row.meter_number) &&
     (!marka || fieldsEqual(rec.sayac_markasi, marka) || !rec.sayac_markasi) &&
     (!row.installation_number || fieldsEqual(rec.tesisat_no, row.installation_number) || !rec.tesisat_no) &&
-    (!row.agreement_number || fieldsEqual(rec.sozlesme_no, row.agreement_number) || !rec.sozlesme_no);
+    (!row.agreement_number || fieldsEqual(rec.sozlesme_no, row.agreement_number) || !rec.sozlesme_no) &&
+    (!incomingAbone || fieldsEqual(rec.abone_no, incomingAbone) || !rec.abone_no);
   const needsFill =
     (!rec.sayac_markasi && marka) ||
     (!rec.tesisat_no && row.installation_number) ||
     (!rec.sozlesme_no && row.agreement_number) ||
-    (!rec.abone_no && row.installation_number);
+    (!rec.abone_no && incomingAbone);
   if (wouldChangeId) {
     return { action: "skip", reason: REASON.WOULD_OVERWRITE_HIGHER_QUALITY_DATA, existing: [rec] };
   }
@@ -176,9 +186,11 @@ function classifySayacAction(row, building, existingRows) {
 export function buildImportPlan({
   db,
   excel,
-  csv,
+  csv = { rows: [] },
   crsCode = null,
   maxNearestMeters = DEFAULT_MAX_NEAREST_M,
+  expectExcelRows = null,
+  expectCsvRows = null,
 }) {
   const index = loadBuildingSpatialIndex(db);
   const uniquePoints = [];
@@ -198,14 +210,17 @@ export function buildImportPlan({
     : crsEval[0];
 
   const stopReasons = [];
+  if (!excel.rows.length) {
+    stopReasons.push("Excel boş.");
+  }
   if (!selected || selected.inRegionRatio < MIN_IN_REGION_RATIO) {
     stopReasons.push("CRS güvenilir biçimde belirlenemedi veya noktaların önemli kısmı beklenen bölge dışında.");
   }
-  if (excel.rows.length !== EXPECTED_EXCEL_ROWS) {
-    stopReasons.push(`Excel satır sayısı beklenen ${EXPECTED_EXCEL_ROWS} değil: ${excel.rows.length}`);
+  if (expectExcelRows != null && excel.rows.length !== expectExcelRows) {
+    stopReasons.push(`Excel satır sayısı beklenen ${expectExcelRows} değil: ${excel.rows.length}`);
   }
-  if (csv.rows.length !== EXPECTED_CSV_ROWS) {
-    stopReasons.push(`CSV satır sayısı beklenen ${EXPECTED_CSV_ROWS} değil: ${csv.rows.length}`);
+  if (csv.rows.length && expectCsvRows != null && csv.rows.length !== expectCsvRows) {
+    stopReasons.push(`CSV satır sayısı beklenen ${expectCsvRows} değil: ${csv.rows.length}`);
   }
 
   const spatialByKey = new Map();
@@ -286,7 +301,10 @@ export function buildImportPlan({
       meter_number: row.meter_number,
       installation_number: row.installation_number,
       agreement_number: row.agreement_number,
+      abone_no: row.abone_no || "",
       value: row.value,
+      sayac_markasi: resolveMarka(row),
+      kaynak: row.kaynak || "meter-coord-import",
       location: row.location,
       source_x: row.point?.x ?? null,
       source_y: row.point?.y ?? null,
@@ -380,9 +398,10 @@ export function buildImportPlan({
   const willBeGreen = willHaveSayac.size;
   const newlyGreen = [...willHaveSayac].filter((id) => !existing.filledByBina.has(id)).length;
 
+  const csvRows = csv?.rows || [];
   const deveuiSet = new Set();
   const duplicateDeveui = new Set();
-  for (const row of csv.rows) {
+  for (const row of csvRows) {
     if (!row.deveui) continue;
     if (deveuiSet.has(row.deveui)) duplicateDeveui.add(row.deveui);
     deveuiSet.add(row.deveui);
@@ -398,12 +417,12 @@ export function buildImportPlan({
 
   const devicePlan = [];
   const unitDeviceCount = new Map();
-  for (const row of csv.rows) {
+  for (const row of csvRows) {
     const unitKey = `${row.bolge}|${row.blok}|${row.daire}`;
     unitDeviceCount.set(unitKey, (unitDeviceCount.get(unitKey) || 0) + 1);
   }
 
-  for (const row of csv.rows) {
+  for (const row of csvRows) {
     const rec = {
       source_row: row.source_row,
       deveui: row.deveui,
@@ -453,6 +472,7 @@ export function buildImportPlan({
 
   const excelSummary = {
     rows: excel.rows.length,
+    schema: excel.schema || null,
     uniqueCoordinates: byWkt.size,
     uniqueRawMeters: new Set(excel.rows.map((r) => String(r.meter_raw ?? ""))).size,
     uniqueNormalizedMeters: meterGroups.size,
@@ -463,11 +483,11 @@ export function buildImportPlan({
   };
 
   const csvSummary = {
-    rows: csv.rows.length,
+    rows: csvRows.length,
     uniqueDeveui: deveuiSet.size,
     duplicateDeveui: duplicateDeveui.size,
-    durumDist: countBy(csv.rows, (r) => r.durum),
-    uniqueBlocks: new Set(csv.rows.map((r) => r.blok)).size,
+    durumDist: countBy(csvRows, (r) => r.durum),
+    uniqueBlocks: new Set(csvRows.map((r) => r.blok)).size,
     multiDeviceUnits: [...unitDeviceCount.values()].filter((n) => n > 1).length,
   };
 
@@ -498,8 +518,8 @@ export function buildImportPlan({
     stopReasons.push(`Reconcile hatası: excel ${excel.rows.length} != ${accounted}`);
   }
   const csvAccounted = devicePlan.length;
-  if (csvAccounted !== csv.rows.length) {
-    stopReasons.push(`CSV reconcile hatası: ${csv.rows.length} != ${csvAccounted}`);
+  if (csvAccounted !== csvRows.length) {
+    stopReasons.push(`CSV reconcile hatası: ${csvRows.length} != ${csvAccounted}`);
   }
 
   const provenMeters = sayacPlan.filter((p) => p.action !== "skip").length;

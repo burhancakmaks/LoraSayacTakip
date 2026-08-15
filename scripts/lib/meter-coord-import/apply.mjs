@@ -1,7 +1,7 @@
 import { copyFileSync, existsSync, mkdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { ensureMeterCoordTables } from "./schema.mjs";
-import { MARKA_FROM_VALUE } from "./plan.mjs";
+import { resolveMarka } from "./plan.mjs";
 import { stampIso } from "./common.mjs";
 
 export function createDbBackup(dbPath, backupDir, label = "meter-coord") {
@@ -50,15 +50,28 @@ export function applyPlan(db, plan, meta) {
       INSERT INTO bina_bilgi (
         bina_id, kat_sayisi, daire_sayisi, ortak_alan_sayisi, toplam_bagımsız_bolum,
         has_zemin, ada_parsel, sokak, dis_kapi_no, updated_at
-      ) VALUES (?, 0, ?, 0, ?, 1, '', '', '', datetime('now'))
+      ) VALUES (?, 0, ?, 0, ?, 1, ?, '', '', datetime('now'))
     `);
-    const bumpBilgi = db.prepare(`
+    const fillEmptyBilgi = db.prepare(`
       UPDATE bina_bilgi
-      SET daire_sayisi = CASE WHEN daire_sayisi < ? THEN ? ELSE daire_sayisi END,
-          toplam_bagımsız_bolum = CASE WHEN toplam_bagımsız_bolum < ? THEN ? ELSE toplam_bagımsız_bolum END,
-          has_zemin = CASE WHEN kat_sayisi = 0 AND has_zemin = 0 THEN 1 ELSE has_zemin END,
+      SET daire_sayisi = CASE WHEN COALESCE(daire_sayisi,0) = 0 THEN ? ELSE daire_sayisi END,
+          toplam_bagımsız_bolum = CASE
+            WHEN COALESCE(toplam_bagımsız_bolum,0) = 0 THEN ?
+            ELSE toplam_bagımsız_bolum
+          END,
+          has_zemin = CASE
+            WHEN COALESCE(kat_sayisi,0) = 0 AND COALESCE(has_zemin,0) = 0 THEN 1
+            ELSE has_zemin
+          END,
+          ada_parsel = CASE WHEN TRIM(COALESCE(ada_parsel,'')) = '' THEN ? ELSE ada_parsel END,
           updated_at = datetime('now')
       WHERE bina_id = ?
+    `);
+    const fillBlok = db.prepare(`
+      UPDATE sayac
+      SET blok_no = CASE WHEN TRIM(COALESCE(blok_no,'')) = '' THEN ? ELSE blok_no END,
+          updated_at = datetime('now')
+      WHERE bina_id = ? AND TRIM(COALESCE(blok_no,'')) = ''
     `);
     const insertDevice = db.prepare(`
       INSERT INTO lora_devices (
@@ -78,6 +91,7 @@ export function applyPlan(db, plan, meta) {
     let unchanged = 0;
     let skipped = 0;
     let bilgiCreated = 0;
+    let bilgiFilled = 0;
     let deviceInserted = 0;
     let deviceUpdated = 0;
     let deviceUnchanged = 0;
@@ -91,7 +105,11 @@ export function applyPlan(db, plan, meta) {
         unchanged++;
         continue;
       }
-      const marka = MARKA_FROM_VALUE[row.value] || "";
+      const marka = resolveMarka(row);
+      const abone = String(row.abone_no || row.installation_number || "").trim();
+      const tesisat = String(row.installation_number || "").trim();
+      const sozlesme = String(row.agreement_number || "").trim();
+      const kaynak = String(row.kaynak || "meter-coord-import");
       if (row.action === "insert") {
         const birim = nextBirim(row.bina_id);
         insertSayac.run(
@@ -99,48 +117,58 @@ export function applyPlan(db, plan, meta) {
           birim,
           row.meter_number,
           marka,
-          row.installation_number || "",
-          row.installation_number || "",
-          row.agreement_number || "",
-          "meter-coord-import"
+          abone,
+          tesisat,
+          sozlesme,
+          kaynak
         );
         inserted++;
       } else if (row.action === "update") {
         updateSayac.run(
           marka,
-          row.installation_number || "",
-          row.installation_number || "",
-          row.agreement_number || "",
-          "meter-coord-import",
+          abone,
+          tesisat,
+          sozlesme,
+          kaynak,
           row.existing_id
         );
         updated++;
       }
     }
 
-    const meterCounts = db
-      .prepare(
-        `SELECT bina_id,
-                SUM(CASE WHEN TRIM(COALESCE(sayac_id,'')) != '' THEN 1 ELSE 0 END) AS sayac_count,
-                MAX(birim_no) AS max_birim
-         FROM sayac
-         GROUP BY bina_id`
-      )
-      .all();
-    const countByBina = new Map(
-      meterCounts.map((r) => [r.bina_id, Math.max(Number(r.sayac_count) || 0, Number(r.max_birim) || 0)])
+    const adaByBina = meta.adaByBinaId instanceof Map ? meta.adaByBinaId : new Map();
+    const binaNameById = new Map(
+      db.prepare("SELECT id, value FROM binalar").all().map((r) => [r.id, String(r.value || "").trim()])
     );
+    const plannedBinaIds = [
+      ...new Set(
+        plan.sayacPlan
+          .filter((r) => r.action !== "skip" && r.bina_id)
+          .map((r) => r.bina_id)
+      ),
+    ];
+    const unitCounts = uniqueUnitsByBina(db, plannedBinaIds);
 
-    for (const binaId of plan.binaBilgiCreate) {
-      const exists = db.prepare("SELECT 1 FROM bina_bilgi WHERE bina_id=?").get(binaId);
-      if (exists) continue;
-      const n = countByBina.get(binaId) || 0;
-      insertBilgi.run(binaId, n, n);
-      bilgiCreated++;
-    }
-    for (const [binaId, n] of countByBina) {
+    for (const binaId of plannedBinaIds) {
+      const n = unitCounts.get(binaId) || 0;
       if (n <= 0) continue;
-      bumpBilgi.run(n, n, n, n, binaId);
+      const ada = adaByBina.get(binaId) || "";
+      const exists = db.prepare("SELECT daire_sayisi, toplam_bagımsız_bolum, has_zemin, kat_sayisi, ada_parsel FROM bina_bilgi WHERE bina_id=?").get(binaId);
+      if (!exists) {
+        insertBilgi.run(binaId, n, n, ada);
+        bilgiCreated++;
+      } else {
+        const needDaire = !(Number(exists.daire_sayisi) > 0);
+        const needToplam = !(Number(exists.toplam_bagımsız_bolum) > 0);
+        const needZemin = Number(exists.kat_sayisi) === 0 && Number(exists.has_zemin) !== 1;
+        const needAda = !String(exists.ada_parsel || "").trim() && !!ada;
+        if (needDaire || needToplam || needZemin || needAda) {
+          fillEmptyBilgi.run(n, n, ada, binaId);
+          bilgiFilled++;
+        }
+      }
+      const blok = binaNameById.get(binaId) || "";
+      if (blok) fillBlok.run(blok, binaId);
     }
 
     const sourceFile = basenameSafe(meta.csvName);
@@ -194,6 +222,7 @@ export function applyPlan(db, plan, meta) {
       unchanged,
       skipped,
       bilgiCreated,
+      bilgiFilled,
       deviceInserted,
       deviceUpdated,
       deviceUnchanged,
@@ -206,6 +235,30 @@ export function applyPlan(db, plan, meta) {
     }
     throw err;
   }
+}
+
+function uniqueUnitsByBina(db, binaIds) {
+  const out = new Map();
+  if (!binaIds.length) return out;
+  const chunk = 400;
+  for (let i = 0; i < binaIds.length; i += chunk) {
+    const ids = binaIds.slice(i, i + chunk);
+    const rows = db
+      .prepare(
+        `SELECT bina_id,
+                COUNT(DISTINCT CASE WHEN TRIM(COALESCE(abone_no,'')) != '' THEN TRIM(abone_no) END) AS abones,
+                SUM(CASE WHEN TRIM(COALESCE(sayac_id,'')) != '' THEN 1 ELSE 0 END) AS meters
+         FROM sayac
+         WHERE bina_id IN (${ids.map(() => "?").join(",")})
+         GROUP BY bina_id`
+      )
+      .all(...ids);
+    for (const row of rows) {
+      const n = Number(row.abones) > 0 ? Number(row.abones) : Number(row.meters) || 0;
+      out.set(row.bina_id, n);
+    }
+  }
+  return out;
 }
 
 function basenameSafe(name) {

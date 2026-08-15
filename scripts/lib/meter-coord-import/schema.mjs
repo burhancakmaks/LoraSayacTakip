@@ -13,6 +13,7 @@ export function ensureMeterCoordTables(db) {
     ["kullanilis_sekli", "TEXT DEFAULT 'DAİRE'"],
     ["sayac_durum", "TEXT DEFAULT 'gecerli'"],
     ["updated_at", "TEXT DEFAULT (datetime('now'))"],
+    ["blok_no", "TEXT DEFAULT ''"],
   ];
   for (const [name, spec] of addSayac) {
     if (!sayacCols.has(name)) {
