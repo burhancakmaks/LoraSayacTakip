@@ -9,15 +9,19 @@ export const metadata: Metadata = {
 
 export default function MaskiAramaPage() {
   return (
-    <div>
-      <PageBreadcrumb pageTitle="MASKİ Arama" />
-      <div className="mb-6 rounded-xl border border-dashed border-blue-light-300/60 bg-blue-light-50/50 px-4 py-3 dark:border-blue-light-800/50 dark:bg-blue-light-950/20">
-        <p className="max-w-3xl text-sm text-gray-600 dark:text-gray-400">
-          Tüm MASKİ Excel dosyalarında sayaç numarası, abone numarası ve adres bilgilerinde hızlı arama yapın.
-          Sonuçlardan doğrudan haritaya gidebilir veya paylaşım linki kopyalayabilirsiniz.
-        </p>
+    <div className="flex h-[calc(100dvh-5rem)] max-h-[calc(100dvh-5rem)] flex-col overflow-hidden md:h-[calc(100dvh-6rem)] md:max-h-[calc(100dvh-6rem)]">
+      <div className="shrink-0">
+        <PageBreadcrumb pageTitle="MASKİ Arama" />
+        <div className="mb-4 rounded-xl border border-dashed border-blue-light-300/60 bg-blue-light-50/50 px-4 py-3 dark:border-blue-light-800/50 dark:bg-blue-light-950/20">
+          <p className="max-w-3xl text-sm text-gray-600 dark:text-gray-400">
+            Tüm MASKİ Excel dosyalarında sayaç numarası, abone numarası ve adres bilgilerinde hızlı arama yapın.
+            Sonuçlardan doğrudan haritaya gidebilir veya paylaşım linki kopyalayabilirsiniz.
+          </p>
+        </div>
       </div>
-      <MaskiAramaPanel />
+      <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain pr-1 [-webkit-overflow-scrolling:touch]">
+        <MaskiAramaPanel />
+      </div>
     </div>
   );
 }

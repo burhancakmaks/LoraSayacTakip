@@ -506,6 +506,8 @@ export default function MapComponent() {
   const applyBinaFocusRef = useRef<(binaId: number) => boolean>(() => false);
 
   const searchParams = useSearchParams();
+  const searchParamsRef = useRef(searchParams);
+  searchParamsRef.current = searchParams;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState({ total: 0, rezervClassified: 0 });
@@ -1267,14 +1269,15 @@ export default function MapComponent() {
 
         if (cancelled || !mapRef.current) return;
 
-        const initialDeepLink =
-          typeof window !== "undefined"
-            ? parseSayacDeepLink(new URLSearchParams(window.location.search))
-            : null;
-        const initialBinaFocus =
-          typeof window !== "undefined"
-            ? parseBinaFocusId(new URLSearchParams(window.location.search))
-            : null;
+        const mapParams = (() => {
+          const fromWindow =
+            typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+          const fromNext = new URLSearchParams(searchParamsRef.current.toString());
+          if (fromWindow?.get("bina_id") || fromWindow?.get("sayac")) return fromWindow;
+          return fromNext;
+        })();
+        const initialDeepLink = parseSayacDeepLink(mapParams);
+        const initialBinaFocus = parseBinaFocusId(mapParams);
         const savedMapView =
           typeof window !== "undefined" && !initialDeepLink && !initialBinaFocus
             ? readSavedMapView()
@@ -1299,7 +1302,6 @@ export default function MapComponent() {
             if (cancelled || !mapRef.current) return;
             if (applySayacDeepLinkRef.current(initialDeepLink.binaId, initialDeepLink.sayac)) {
               lastDeepLinkKeyRef.current = key;
-              clearSayacUrlInBrowser();
             }
           }, 0);
         } else if (initialBinaFocus && mapRef.current) {
@@ -1836,7 +1838,6 @@ export default function MapComponent() {
 
         if (applySayacDeepLinkRef.current(sayacLink.binaId, sayacLink.sayac)) {
           lastDeepLinkKeyRef.current = key;
-          clearSayacUrlInBrowser();
         }
       }, 100);
 
@@ -1926,12 +1927,6 @@ export default function MapComponent() {
   const handleKapiSelect = (result: KapiSearchResult) => {
     navigateToKapi(result);
   };
-
-  useEffect(() => {
-    return () => {
-      clearSayacUrlInBrowser();
-    };
-  }, []);
 
   const clearSayacSearch = () => {
     setSayacSearch("");

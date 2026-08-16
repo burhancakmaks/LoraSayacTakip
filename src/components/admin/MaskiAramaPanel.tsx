@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { copySayacMapLink } from "@/lib/sayac-link";
 
 interface MaskiRecord {
@@ -68,8 +67,15 @@ function Detail({ label, value, mono, className = "" }: { label: string; value: 
   );
 }
 
+function meterKey(value: string) {
+  const digits = String(value || "")
+    .trim()
+    .replace(/^2025-/i, "")
+    .replace(/\D/g, "");
+  return digits.replace(/^0+/, "") || digits;
+}
+
 export default function MaskiAramaPanel() {
-  const router = useRouter();
   const [query, setQuery] = useState("");
   const [kaynak, setKaynak] = useState("");
   const [results, setResults] = useState<MaskiRecord[]>([]);
@@ -90,15 +96,21 @@ export default function MaskiAramaPanel() {
     if (!q) return null;
 
     const res = await fetch(`/api/sayac/search?q=${encodeURIComponent(q)}`);
-    const data: SayacHaritaMatch[] = await res.json();
-    if (!res.ok) throw new Error("Harita araması başarısız");
-    if (!Array.isArray(data) || data.length === 0) return null;
+    const data: unknown = await res.json();
+    if (!res.ok || !Array.isArray(data)) {
+      const err = data && typeof data === "object" && "error" in data ? String((data as { error?: string }).error || "") : "";
+      throw new Error(err || "Harita araması başarısız");
+    }
+    if (data.length === 0) return null;
 
-    const sayacDigits = q.replace(/^2025-/i, "").replace(/\D/g, "");
+    const rows = data as SayacHaritaMatch[];
+    const sayacKey = meterKey(item.sayac_no || q);
+    const abone = String(item.abone_no || "").trim();
     return (
-      data.find((r) => r.sayac_id && r.sayac_id.replace(/\D/g, "") === sayacDigits) ||
-      data.find((r) => r.sayac_id === item.sayac_no) ||
-      data[0]
+      rows.find((r) => meterKey(r.sayac_id) === sayacKey && sayacKey) ||
+      rows.find((r) => r.sayac_id === item.sayac_no) ||
+      rows.find((r) => abone && String(r.abone_no || "").trim() === abone) ||
+      rows[0]
     );
   }, []);
 
@@ -122,14 +134,13 @@ export default function MaskiAramaPanel() {
 
         const params = new URLSearchParams({ bina_id: String(match.bina_id) });
         if (match.sayac_id) params.set("sayac", match.sayac_id);
-        router.push(`/map?${params.toString()}`);
+        window.location.assign(`/map?${params.toString()}`);
       } catch (e: unknown) {
         setMapNavError(e instanceof Error ? e.message : "Haritaya yönlendirme başarısız");
-      } finally {
         setMapNavLoading(null);
       }
     },
-    [resolveHaritaMatch, router]
+    [resolveHaritaMatch]
   );
 
   const copyMapLink = useCallback(
@@ -212,7 +223,7 @@ export default function MaskiAramaPanel() {
   };
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 pb-6">
       {/* Üst başlık */}
       <div className={PANEL_CARD}>
         <div className="border-b border-gray-200 dark:border-gray-800">
@@ -251,8 +262,8 @@ export default function MaskiAramaPanel() {
       </div>
 
       {/* Arama formu + sonuçlar */}
-      <div className={PANEL_CARD}>
-        <form onSubmit={handleSubmit} className="space-y-3 border-b border-blue-light-100 p-4 dark:border-blue-light-900/30">
+      <div className={`${PANEL_CARD} flex max-h-[calc(100dvh-18rem)] flex-col`}>
+        <form onSubmit={handleSubmit} className="shrink-0 space-y-3 border-b border-blue-light-100 p-4 dark:border-blue-light-900/30">
           <div className="flex flex-col gap-2 sm:flex-row">
             <div className="relative flex flex-1 items-center gap-2 overflow-hidden rounded-xl border border-blue-light-200 bg-blue-light-50/50 px-3 py-2 dark:border-blue-light-900/50 dark:bg-blue-light-950/25">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-blue-light-500">
@@ -290,7 +301,7 @@ export default function MaskiAramaPanel() {
               ))}
             </select>
             {meta?.stats && (
-              <div className="ml-auto flex flex-wrap gap-1.5">
+              <div className="ml-auto flex max-h-24 flex-wrap gap-1.5 overflow-y-auto overscroll-y-contain pr-0.5 [-webkit-overflow-scrolling:touch]">
                 {Object.entries(meta.stats).map(([key, count]) => (
                   <span
                     key={key}
@@ -311,7 +322,7 @@ export default function MaskiAramaPanel() {
         )}
 
         {mapNavError && (
-          <div className="mx-4 mt-3 flex items-start justify-between gap-2 rounded-xl border border-warning-200 bg-warning-50/80 px-3 py-2 text-sm text-warning-800 dark:border-warning-800 dark:bg-warning-500/10 dark:text-warning-300">
+          <div className="shrink-0 mx-4 mt-3 flex items-start justify-between gap-2 rounded-xl border border-warning-200 bg-warning-50/80 px-3 py-2 text-sm text-warning-800 dark:border-warning-800 dark:bg-warning-500/10 dark:text-warning-300">
             <span>{mapNavError}</span>
             <button
               type="button"
@@ -324,7 +335,7 @@ export default function MaskiAramaPanel() {
           </div>
         )}
 
-        <div className="min-h-[360px] max-h-[65vh] overflow-y-auto">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain [-webkit-overflow-scrolling:touch]">
           {loading && (
             <div className="flex items-center justify-center gap-2 p-8 text-sm text-gray-500">
               <div className="h-5 w-5 animate-spin rounded-full border-2 border-blue-light-500 border-t-transparent" />
@@ -458,7 +469,7 @@ export default function MaskiAramaPanel() {
         </div>
 
         {searched && !loading && !searchError && (
-          <div className="border-t border-blue-light-100 px-4 py-2 text-[11px] text-gray-500 dark:border-blue-light-900/30 dark:text-gray-400">
+          <div className="shrink-0 border-t border-blue-light-100 px-4 py-2 text-[11px] text-gray-500 dark:border-blue-light-900/30 dark:text-gray-400">
             <strong className="text-blue-light-800 dark:text-blue-light-300">{results.length}</strong> sonuç gösteriliyor
             {results.length >= 100 ? " (en fazla 100)" : ""}
             {results.length > 0 ? " · Detay için satıra tıklayın" : ""}
