@@ -1,159 +1,235 @@
 {
   "mode": "dry-run",
-  "force": true,
-  "maxSafeMeters": null,
-  "alreadyInDb": 9049,
+  "force": false,
+  "maxSafeMeters": 25,
+  "alreadyInDb": 11738,
   "duplicateSource": 44,
-  "remainingRows": 3646,
-  "remainingPoints": 450,
-  "matchedRows": 3646,
-  "skippedRows": 0,
+  "remainingRows": 957,
+  "remainingPoints": 75,
+  "matchedRows": 933,
+  "skippedRows": 24,
   "methodDist": {
-    "force:nearest_forced": 3544,
-    "force:same_name_existing_sayac": 42,
-    "force:same_name_primary_layer": 34,
-    "force:nearest_forced_tiebreak": 22,
-    "force:existing_bina_bilgi": 3,
-    "force:smallest_nested": 1
+    "inside:existing_bina_bilgi": 827,
+    "inside": 90,
+    "inside:same_name_primary_layer": 16
   },
-  "skipReasons": {},
+  "skipReasons": {
+    "TOO_FAR_WRONG_SITE": 9,
+    "TOO_FAR_NEIGHBOR": 14,
+    "AMBIGUOUS_NEAREST": 1
+  },
   "distanceBucketsRows": {
-    "2-10km": 3100,
-    "25-50m": 46,
-    "50-137m": 13,
-    "500m-2km": 34,
-    "137-500m": 37,
-    "8-25m": 10,
-    "10km+": 395,
-    "0-8m": 11
+    "50-137m": 3,
+    "25-50m": 14,
+    "137-500m": 3,
+    "8-25m": 1,
+    "500m-2km": 3
   },
   "matchedDistanceBuckets": {
-    "2-10km": 3100,
-    "25-50m": 46,
-    "50-137m": 13,
-    "500m-2km": 34,
-    "137-500m": 37,
-    "8-25m": 10,
-    "10km+": 395,
-    "0-8m": 11
+    "0-8m": 933
   },
   "nearestOfUnmatchedPoints": {
-    "n": 450,
-    "min": 0.000013318543498170067,
-    "p10": 166.9001638585502,
-    "median": 3233.301075038447,
-    "p90": 17966.357923978318,
-    "max": 51989.41299840499
+    "n": 12,
+    "min": 22.34538987500291,
+    "p10": 26.654592578868222,
+    "median": 137.08482516619813,
+    "p90": 810.7883693343257,
+    "max": 842.0520589694795
   },
   "sampleMatched": [
     {
-      "meter": "640000397",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444543",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     },
     {
-      "meter": "640000128",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444540",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     },
     {
-      "meter": "640000328",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444541",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     },
     {
-      "meter": "640000321",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444552",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     },
     {
-      "meter": "640000135",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444539",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     },
     {
-      "meter": "640000977",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444556",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     },
     {
-      "meter": "640000980",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444536",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     },
     {
-      "meter": "640000324",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444535",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     },
     {
-      "meter": "640000509",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444558",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     },
     {
-      "meter": "640000729",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444551",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     },
     {
-      "meter": "640000131",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444554",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     },
     {
-      "meter": "6440000123",
-      "bina": "Bina #2874",
-      "method": "force:nearest_forced",
-      "m": 2911.0744196411456,
+      "meter": "1444516",
+      "bina": "A4",
+      "method": "inside:existing_bina_bilgi",
+      "m": 0,
       "second": null,
       "sokak": "",
-      "kapi": "61"
+      "kapi": "4/8"
     }
   ],
-  "sampleSkipped": []
+  "sampleSkipped": [
+    {
+      "rows": 1,
+      "m": 91.13042947267643,
+      "second": 91.13048658241777,
+      "bina": "A17",
+      "reason": "TOO_FAR_WRONG_SITE"
+    },
+    {
+      "rows": 5,
+      "m": 40.327376745525676,
+      "second": 40.36279152211452,
+      "bina": "B5",
+      "reason": "TOO_FAR_NEIGHBOR"
+    },
+    {
+      "rows": 1,
+      "m": 297.925856985127,
+      "second": 297.92621061111714,
+      "bina": "CT2",
+      "reason": "TOO_FAR_WRONG_SITE"
+    },
+    {
+      "rows": 1,
+      "m": 136.4626398073439,
+      "second": 136.4627666767669,
+      "bina": "A17",
+      "reason": "TOO_FAR_WRONG_SITE"
+    },
+    {
+      "rows": 1,
+      "m": 22.34538987500291,
+      "second": 22.34538987500291,
+      "bina": "A18",
+      "reason": "AMBIGUOUS_NEAREST"
+    },
+    {
+      "rows": 1,
+      "m": 555.8999386391257,
+      "second": 570.9774435639138,
+      "bina": "Bina #4566",
+      "reason": "TOO_FAR_WRONG_SITE"
+    },
+    {
+      "rows": 1,
+      "m": 842.0520589694795,
+      "second": 842.0535360747609,
+      "bina": "B5",
+      "reason": "TOO_FAR_WRONG_SITE"
+    },
+    {
+      "rows": 1,
+      "m": 64.03547589434382,
+      "second": 64.03547589434382,
+      "bina": "A18",
+      "reason": "TOO_FAR_WRONG_SITE"
+    },
+    {
+      "rows": 1,
+      "m": 137.7070105250524,
+      "second": 155.14799131156917,
+      "bina": "Bina #4548",
+      "reason": "TOO_FAR_WRONG_SITE"
+    },
+    {
+      "rows": 1,
+      "m": 810.7883693343257,
+      "second": 812.1353281313105,
+      "bina": "Bina #4567",
+      "reason": "TOO_FAR_WRONG_SITE"
+    },
+    {
+      "rows": 1,
+      "m": 470.63789060426024,
+      "second": 475.2227281136576,
+      "bina": "Bina #4566",
+      "reason": "TOO_FAR_WRONG_SITE"
+    },
+    {
+      "rows": 9,
+      "m": 26.654592578868222,
+      "second": 43.816982227338755,
+      "bina": "AT1-2",
+      "reason": "TOO_FAR_NEIGHBOR"
+    }
+  ]
 }

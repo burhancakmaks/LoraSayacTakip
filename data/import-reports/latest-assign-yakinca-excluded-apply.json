@@ -1,0 +1,166 @@
+{
+  "mode": "apply",
+  "excludeMahalle": "Yakınca Mahallesi",
+  "yakincaBuildingsExcluded": 209,
+  "searchableBuildings": 6482,
+  "alreadyInDb": 11738,
+  "duplicateSource": 44,
+  "emptyOrInvalid": 1,
+  "remainingRows": 957,
+  "remainingPoints": 75,
+  "matchedRows": 957,
+  "skippedRows": 0,
+  "methodDist": {
+    "nearest": 830,
+    "nearest_tiebreak": 127
+  },
+  "distanceBuckets": {
+    "500m-2km": 956,
+    "137-500m": 1
+  },
+  "distance": {
+    "min": 439.16382155533444,
+    "p10": 929.1408441572557,
+    "median": 1778.1986900405404,
+    "p90": 1839.245865794464,
+    "max": 1866.7858431612208
+  },
+  "topBuildings": [
+    {
+      "bina_id": 4654,
+      "value": "T1-4",
+      "n": 411
+    },
+    {
+      "bina_id": 5839,
+      "value": "BTİC3",
+      "n": 294
+    },
+    {
+      "bina_id": 6013,
+      "value": "D3A-1",
+      "n": 76
+    },
+    {
+      "bina_id": 4653,
+      "value": "T1-3",
+      "n": 47
+    },
+    {
+      "bina_id": 5763,
+      "value": "BTIC6",
+      "n": 45
+    },
+    {
+      "bina_id": 5838,
+      "value": "BTİC2",
+      "n": 34
+    },
+    {
+      "bina_id": 5523,
+      "value": "B11",
+      "n": 19
+    },
+    {
+      "bina_id": 5665,
+      "value": "H TİC 1",
+      "n": 16
+    },
+    {
+      "bina_id": 4651,
+      "value": "T1-1",
+      "n": 15
+    }
+  ],
+  "sampleMatched": [
+    {
+      "meter": "1444543",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    },
+    {
+      "meter": "1444540",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    },
+    {
+      "meter": "1444541",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    },
+    {
+      "meter": "1444552",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    },
+    {
+      "meter": "1444539",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    },
+    {
+      "meter": "1444556",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    },
+    {
+      "meter": "1444536",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    },
+    {
+      "meter": "1444535",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    },
+    {
+      "meter": "1444558",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    },
+    {
+      "meter": "1444551",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    },
+    {
+      "meter": "1444554",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    },
+    {
+      "meter": "1444516",
+      "bina": "BTİC3",
+      "method": "nearest",
+      "m": 1699.4946352226732,
+      "second": null
+    }
+  ],
+  "sampleSkipped": [],
+  "backup": "C:/Users/Surface/Desktop/LoraLast/LoraSayacTakip/data/backups/binalar.before-yakinca-excluded-2026-08-17T05-59-11-992Z.db",
+  "inserted": 957,
+  "buildingsTouched": 9,
+  "leftoverYakincaMeters": 0
+}

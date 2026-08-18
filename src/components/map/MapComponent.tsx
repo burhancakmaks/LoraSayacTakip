@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import BuildingInfoModal from "./BuildingInfoModal";
@@ -478,6 +478,8 @@ const MAP_TOOLBAR_CARD = `${MAP_TOOLBAR_SURFACE} overflow-hidden`;
 const MAP_DROPDOWN_PANEL = `${MAP_TOOLBAR_SURFACE} z-[1001]`;
 const MAP_TOOLBAR_BTN =
   "flex items-center justify-center gap-1.5 rounded-xl border border-blue-light-100 bg-blue-light-50/60 px-2 py-2 text-[10px] font-semibold text-blue-light-800 transition hover:border-blue-light-300 hover:bg-blue-light-50 dark:border-blue-light-900/40 dark:bg-blue-light-950/25 dark:text-blue-light-300 dark:hover:border-blue-light-700";
+const DEFAULT_MAP_CENTER: L.LatLngExpression = [38.3552, 38.3302];
+const DEFAULT_MAP_ZOOM = 14;
 
 type TileKey = keyof typeof TILE_LAYERS;
 
@@ -505,9 +507,11 @@ export default function MapComponent() {
   const applySayacDeepLinkRef = useRef<(binaId: number, sayacParam: string) => boolean>(() => false);
   const applyBinaFocusRef = useRef<(binaId: number) => boolean>(() => false);
 
+  const router = useRouter();
   const searchParams = useSearchParams();
   const searchParamsRef = useRef(searchParams);
   searchParamsRef.current = searchParams;
+  const sayacFlyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState({ total: 0, rezervClassified: 0 });
@@ -533,6 +537,8 @@ export default function MapComponent() {
   // Neighborhood UI state
   const [mahalleList, setMahalleList] = useState<MahalleListItem[]>([]);
   const [selectedMahalle, setSelectedMahalle] = useState<string>("Mahalleler");
+  const selectedMahalleRef = useRef(selectedMahalle);
+  selectedMahalleRef.current = selectedMahalle;
   const [mahallePickerOpen, setMahallePickerOpen] = useState(false);
   const [mahalleSearch, setMahalleSearch] = useState("");
 
@@ -1126,7 +1132,7 @@ export default function MapComponent() {
 
     const map = L.map(mapContainerRef.current, {
       zoomControl: false,
-    }).setView([38.3552, 38.3302], 14);
+    }).setView(DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM);
 
     mapRef.current = map;
 
@@ -1283,14 +1289,13 @@ export default function MapComponent() {
             ? readSavedMapView()
             : null;
 
+        const bounds = L.latLngBounds(boundsPoints);
+        if (bounds.isValid()) allBoundsRef.current = bounds;
+
         if (!initialDeepLink && !initialBinaFocus && savedMapView && mapRef.current) {
           mapRef.current.setView([savedMapView.lat, savedMapView.lng], savedMapView.zoom, {
             animate: false,
           });
-        } else if (!initialDeepLink && !initialBinaFocus && boundsPoints.length > 0) {
-          const bounds = L.latLngBounds(boundsPoints);
-          allBoundsRef.current = bounds;
-          if (bounds.isValid()) map.fitBounds(bounds, { padding: [20, 20] });
         }
 
         setStats({ total: data.length, rezervClassified });
@@ -1382,8 +1387,13 @@ export default function MapComponent() {
     if (bounds?.isValid()) {
       const center = bounds.getCenter();
       map.stop();
+      if (sayacFlyTimeoutRef.current) {
+        window.clearTimeout(sayacFlyTimeoutRef.current);
+        sayacFlyTimeoutRef.current = null;
+      }
       map.setView(center, 19, { animate: false });
-      window.setTimeout(() => {
+      sayacFlyTimeoutRef.current = window.setTimeout(() => {
+        sayacFlyTimeoutRef.current = null;
         if (!mapRef.current) return;
         mapRef.current.flyTo(center, 19, { duration: 0.6, animate: true });
       }, 50);
@@ -1826,6 +1836,7 @@ export default function MapComponent() {
 
   useEffect(() => {
     if (loading || error) return;
+    if (selectedMahalleRef.current !== "Mahalleler") return;
 
     const sayacLink = parseSayacDeepLink(searchParams);
     if (sayacLink) {
@@ -1959,55 +1970,71 @@ export default function MapComponent() {
   };
 
   const handleMahalleSelect = (name: string, center: [number, number] | null) => {
-    if (mapRef.current) {
-      const map = mapRef.current;
-      setMahallePickerOpen(false);
-      setMahalleSearch(""); // Clear search value when selected
+    if (!mapRef.current) return;
+    const map = mapRef.current;
+    setMahallePickerOpen(false);
+    setMahalleSearch("");
 
-      // Clean up previous highlight
-      if (activeHighlightRef.current) {
-        map.removeLayer(activeHighlightRef.current);
-        activeHighlightRef.current = null;
-      }
-
-      // If "Clear" is clicked
-      if (!center) {
-        setSelectedMahalle("Mahalleler");
-        if (allBoundsRef.current && allBoundsRef.current.isValid()) {
-          map.fitBounds(allBoundsRef.current, { padding: [20, 20] });
-        }
-        return;
-      }
-
-      setSelectedMahalle(name);
-
-      // Fetch dynamic neighborhood polygon from database API
-      fetch(`/api/mahalleler?name=${encodeURIComponent(name)}`)
-        .then((res) => {
-          if (!res.ok) throw new Error("Mahalle sınırları yüklenemedi.");
-          return res.json();
-        })
-        .then((data) => {
-          if (!mapRef.current) return;
-
-          map.setView(data.center, 16);
-
-          // Draw official boundary polygon with click-through enabled (interactive: false)
-          const highlight = L.polygon(data.coordinates, {
-            color: "#f97316", // Orange boundary line
-            fillColor: "#f97316",
-            fillOpacity: 0.03, // Low opacity to keep building layers fully visible
-            weight: 2.5,
-            dashArray: "6, 10", // Dashed outline
-            interactive: false, // Passes all clicks to underlying binalar
-          }).addTo(mapRef.current);
-
-          activeHighlightRef.current = highlight;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+    lastDeepLinkKeyRef.current = null;
+    lastBinaFocusIdRef.current = null;
+    if (sayacFlyTimeoutRef.current) {
+      window.clearTimeout(sayacFlyTimeoutRef.current);
+      sayacFlyTimeoutRef.current = null;
     }
+    map.stop();
+    stopSayacAlarm();
+    clearSayacMarker();
+    setFocusSayacId(null);
+    setSelectedSayacLabel(null);
+    setSelectedSayacTarget(null);
+    setSayacSearch("");
+    if (searchParams.get("bina_id") || searchParams.get("sayac")) {
+      router.replace("/map", { scroll: false });
+    }
+
+    if (activeHighlightRef.current) {
+      map.removeLayer(activeHighlightRef.current);
+      activeHighlightRef.current = null;
+    }
+
+    if (!center) {
+      selectedMahalleRef.current = "Mahalleler";
+      setSelectedMahalle("Mahalleler");
+      map.setView(DEFAULT_MAP_CENTER, DEFAULT_MAP_ZOOM);
+      return;
+    }
+
+    selectedMahalleRef.current = name;
+    setSelectedMahalle(name);
+
+    fetch(`/api/mahalleler?name=${encodeURIComponent(name)}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("Mahalle sınırları yüklenemedi.");
+        return res.json();
+      })
+      .then((data) => {
+        if (!mapRef.current || selectedMahalleRef.current !== name) return;
+
+        const highlight = L.polygon(data.coordinates, {
+          color: "#f97316",
+          fillColor: "#f97316",
+          fillOpacity: 0.03,
+          weight: 2.5,
+          dashArray: "6, 10",
+          interactive: false,
+        }).addTo(mapRef.current);
+
+        activeHighlightRef.current = highlight;
+        const bounds = highlight.getBounds();
+        if (bounds.isValid()) {
+          mapRef.current.fitBounds(bounds, { padding: [28, 28], maxZoom: 16 });
+        } else if (Array.isArray(data.center) && data.center.length === 2) {
+          mapRef.current.setView(data.center, 16);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   // Filter neighborhood list dynamically based on search

@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState,useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSidebar } from "../context/SidebarContext";
 import { notifyMapNavReset } from "../lib/sayac-events";
 import {
@@ -124,6 +124,7 @@ const othersItems: NavItem[] = [];
 const AppSidebar: React.FC = () => {
   const { isExpanded, isMobileOpen, isHovered, setIsHovered } = useSidebar();
   const pathname = usePathname();
+  const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
@@ -182,7 +183,7 @@ const AppSidebar: React.FC = () => {
                 href={nav.path}
                 onClick={() => {
                   if (nav.path === "/map" && pathname === "/map") {
-                    window.history.replaceState({}, "", "/map");
+                    router.replace("/map");
                     notifyMapNavReset();
                   }
                 }}

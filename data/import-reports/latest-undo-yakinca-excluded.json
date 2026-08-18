@@ -1,0 +1,64 @@
+{
+  "deleted": 957,
+  "leftover": 0,
+  "buildings": [
+    {
+      "bina_id": 4654,
+      "value": "T1-4",
+      "c": 411
+    },
+    {
+      "bina_id": 5839,
+      "value": "BTİC3",
+      "c": 294
+    },
+    {
+      "bina_id": 6013,
+      "value": "D3A-1",
+      "c": 76
+    },
+    {
+      "bina_id": 4653,
+      "value": "T1-3",
+      "c": 47
+    },
+    {
+      "bina_id": 5763,
+      "value": "BTIC6",
+      "c": 45
+    },
+    {
+      "bina_id": 5838,
+      "value": "BTİC2",
+      "c": 34
+    },
+    {
+      "bina_id": 5523,
+      "value": "B11",
+      "c": 19
+    },
+    {
+      "bina_id": 5665,
+      "value": "H TİC 1",
+      "c": 16
+    },
+    {
+      "bina_id": 4651,
+      "value": "T1-1",
+      "c": 15
+    }
+  ],
+  "t14_after": {
+    "total": 31,
+    "with_id": 31
+  },
+  "t14_bilgi": {
+    "daire_sayisi": 31,
+    "toplam_bagımsız_bolum": 31
+  },
+  "btic3_after": {
+    "total": 0,
+    "with_id": null
+  },
+  "backup": "C:/Users/Surface/Desktop/LoraLast/LoraSayacTakip/data/backups/binalar.before-undo-yakinca-excluded-2026-08-17T06-18-21-040Z.db"
+}
